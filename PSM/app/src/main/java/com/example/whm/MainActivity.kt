@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity() {
        super.onCreate(savedInstanceState)
         setContentView(com.example.myapplication.R.layout.activity_main)
 
-
-
         scancode = findViewById<EditText>(com.example.myapplication.R.id.scancodeu)
         var AppVersion = findViewById<TextView>(com.example.myapplication.R.id.txtAppVersion)
 
