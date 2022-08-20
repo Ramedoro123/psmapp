@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Ram/A1WHM v3.0.0.13 source Code 16.08/PSM/app/src/main/res/layout/activity_start_packing_order_list.xml" value="0.287962962962963" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.13 source Code 16.08/PSM/app/src/main/res/layout/activity_stock_not_available_list.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.13 source Code 16.08/PSM/app/src/main/res/layout/pack_boxpopup.xml" value="0.287962962962963" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.13 source Code 16.08/PSM/app/src/main/res/layout/popupbox_picker.xml" value="0.287962962962963" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.13 source Code 16.08/PSM/app/src/main/res/layout/popupbox_updatelocation.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.13 source Code 16.08/PSM/app/src/main/res/layout/stock_list_popup.xml" value="0.287962962962963" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.13 source Code 16.08/PSM/app/src/main/res/layout/update_location.xml" value="0.5" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/font/allerta.xml" value="0.3880208333333333" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/font/arial.xml" value="0.3880208333333333" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/font/arizonia.xml" value="0.3880208333333333" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/layout/activity_receive_po.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/layout/activity_start_packing_order_list.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/layout/activity_stock_not_available_list.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/layout/add_barcode_fragment.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/layout/fragment_draftpol_list2.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/layout/fragment_inventory_fragment.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/layout/stock_listview.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/menu/activity_main_drawer.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/menu/ipomenuitem.xml" value="0.3578125" />
+        <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/menu/main_activity2.xml" value="0.3578125" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

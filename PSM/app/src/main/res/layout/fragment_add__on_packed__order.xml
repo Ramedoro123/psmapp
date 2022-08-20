@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <TextView
+        android:id="@+id/orderNotAvailable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No order available"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        />
+<androidx.recyclerview.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/Add_OnPacked_OrderListFragment_Packer"
+    app:layoutManager="LinearLayoutManager"
+    tools:listitem="@layout/orderlist_view"
+    tools:context="com.example.whm.ui.Piker_And_Packer_OrderList.Add_OnPacked_OrderFragment"
+    >
+
+</androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

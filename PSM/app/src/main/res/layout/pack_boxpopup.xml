@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    tools:visibility="visible">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.067">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/btnPlus"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="16dp"
+                android:text="Packing Boxes"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/black"
+                app:layout_constraintTop_toBottomOf="@+id/textView17"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="0dp" />
+
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="5dp"
+                android:text="No. of Boxes*"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/btnmainus"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/btnmainus"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/squre_button"
+                android:paddingBottom="10dp"
+                android:text="-"
+                android:gravity="center"
+                android:focusable="false"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toStartOf="@+id/textBoxNumber"
+                app:layout_constraintTop_toTopOf="@+id/textView18" />
+
+            <TextView
+                android:id="@+id/btnPackedOrder"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/squier_button_color"
+                android:backgroundTint="@color/green"
+                android:gravity="center"
+                android:focusable="true"
+                android:text="Pack"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toStartOf="@+id/btnClose"
+                app:layout_constraintTop_toBottomOf="@+id/view8"
+                tools:ignore="MissingConstraints">
+                <requestFocus/>
+            </TextView>
+
+            <TextView
+                android:id="@+id/btnClose"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/squier_button_color"
+                android:backgroundTint="@color/redLight"
+                android:gravity="center"
+                android:text="Close"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btnPackedOrder"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/textBoxNumber"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/squre_button"
+                android:gravity="center"
+                android:hint="0"
+                android:editable="false"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/btnPlus"
+                app:layout_constraintTop_toTopOf="@+id/btnmainus" />
+
+            <Button
+                android:id="@+id/btnPlus"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:focusable="false"
+                android:layout_marginEnd="1dp"
+                android:background="@drawable/squre_button"
+                android:text="+"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textBoxNumber"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
