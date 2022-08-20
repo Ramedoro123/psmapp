@@ -164,9 +164,7 @@ class StartPackingOrderList : AppCompatActivity() {
 
         })
         //Close First Item Button code
-
-
-        //Code here Button Last Item
+       //Code here Button Last Item
         btnLastItem.setOnClickListener(View.OnClickListener {
             addbarcode1!!.requestFocus()
             itemcount = TItems
@@ -200,11 +198,6 @@ class StartPackingOrderList : AppCompatActivity() {
             btnSaveNext.isEnabled = true
             btnPrevious.isEnabled = true
         })
-
-
-        //var btnPackedOrder=Dilogview.findViewById<Button>(R.id.btnPackedOrder)
-        //val btnPackedOrder: Button =view.findViewById(R.id.btnPackedOrder)
-
         btnPacked.setOnClickListener(View.OnClickListener {
             // Toast.makeText(this,PackStatus1.toString(),Toast.LENGTH_LONG).show()
             if (PackStatus1 == 1) {
@@ -362,14 +355,6 @@ class StartPackingOrderList : AppCompatActivity() {
                             if (rescode == "200") {
                                 val responsData = resultobj.getJSONArray("responseData")
                                 for (i in 0 until responsData.length()) {
-                                    //var icount: Int? = 0
-//                                    var PId: Int = 0
-//                                    var PName: String? = null
-//                                    var Unitype: String? = null
-//                                    var OrderRQty: Int = 0
-//                                    var ShipQty: Int? = 0
-//                                    var Stock: String? = null
-//                                    var Loc: String? = null
                                     ProductID = responsData.getJSONObject(i).getInt("PId")
                                     isFreeItem = responsData.getJSONObject(i).getInt("isFreeItem")
                                     IsExchange = responsData.getJSONObject(i).getInt("IsExchange")
