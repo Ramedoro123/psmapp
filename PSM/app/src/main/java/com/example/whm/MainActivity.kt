@@ -33,13 +33,9 @@ class MainActivity : AppCompatActivity() {
 
         scancode = findViewById<EditText>(com.example.myapplication.R.id.scancodeu)
         var AppVersion = findViewById<TextView>(com.example.myapplication.R.id.txtAppVersion)
-
-
-        AppVersion.text = "version : " + AppPreferences.AppVersion
-
+     AppVersion.text = "version : " + AppPreferences.AppVersion
         scancode.requestFocus()
-
-        scancode.setOnKeyListener OnKeyListener@{ v_, keyCode, event ->
+       scancode.setOnKeyListener OnKeyListener@{ v_, keyCode, event ->
             if ((keyCode == KeyEvent.KEYCODE_ENTER) && (event.action == KeyEvent.ACTION_DOWN)) {
                 try {
                     checkinternet(scancode.text as Editable)
@@ -52,7 +48,6 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
-
     }
     val APIURL: String = AppPreferences.apiurl+"wpackerlogin.asmx/login"
     fun login(email: Editable) {
