@@ -217,7 +217,7 @@ class StartPackingOrderList : AppCompatActivity() {
                 val mSilog = builder.show()
                 btnYesPack.visibility = View.GONE
                 btnNoCancle.setOnClickListener(View.OnClickListener { mSilog.dismiss() })
-            } else if (PackStatus1 == 2) {
+            } else if (PackStatus1 ==2) {
                 val Dilogview = View.inflate(this@StartPackingOrderList, R.layout.popupbox_picker, null)
                 val builder = AlertDialog.Builder(this@StartPackingOrderList).setView(Dilogview)
                 builder.setCancelable(false);
@@ -457,7 +457,6 @@ class StartPackingOrderList : AppCompatActivity() {
             btnFirstItem.isEnabled = true
             btnPrevious.isEnabled = true
         })
-
         ViewBtn.setOnClickListener(View.OnClickListener {
             ViewBtn.isEnabled = true
             intent = Intent(this, OrderDetailsActicity::class.java)
@@ -504,11 +503,12 @@ class StartPackingOrderList : AppCompatActivity() {
         val Dilogview = View.inflate(this@StartPackingOrderList, R.layout.pack_boxpopup, null)
         val builder = AlertDialog.Builder(this@StartPackingOrderList).setView(Dilogview)
         val mSilog1 = builder.show()
-        builder.setCancelable(false);
-        builder.setCanceledOnTouchOutside(false);
+        mSilog1.setCancelable(false);
+        mSilog1.setCanceledOnTouchOutside(false);
         var Count = Dilogview.findViewById<EditText>(R.id.textBoxNumber)
         Count.setText("1")
         var btnPluse = Dilogview.findViewById<Button>(R.id.btnPlus)
+        var btnMainus = Dilogview.findViewById<Button>(R.id.btnmainus)
         btnPluse.setOnClickListener(View.OnClickListener {
             var valueIncrement = Count.text.trim().toString()
             if (valueIncrement.trim() == "" || valueIncrement.trim() == "0") {
@@ -524,8 +524,6 @@ class StartPackingOrderList : AppCompatActivity() {
             }
 
         })
-
-        var btnMainus = Dilogview.findViewById<Button>(R.id.btnmainus)
         btnMainus.setOnClickListener(View.OnClickListener {
             var valueIncrement = Count.text.trim().toString()
             var orderstatus = StatusAutoId;
@@ -546,11 +544,11 @@ class StartPackingOrderList : AppCompatActivity() {
                 }
             }
         })
-
         var btnPackedOrder = Dilogview.findViewById<TextView>(R.id.btnPackedOrder)
         btnPackedOrder.requestFocus()
         var btnClose = Dilogview.findViewById<TextView>(R.id.btnClose)
-
+        builder.setCancelable(false);
+        builder.setCanceledOnTouchOutside(false);
         btnPackedOrder.setOnClickListener(View.OnClickListener {
              //mSilog1.dismiss()
             val Dilogview = View.inflate(this@StartPackingOrderList, R.layout.popupbox_picker, null)
@@ -837,6 +835,7 @@ class StartPackingOrderList : AppCompatActivity() {
 
             mSilog1.dismiss()
         })
+
         btnClose.setOnClickListener(View.OnClickListener { mSilog1.dismiss() })
     }
     private fun PreviousButton() {
@@ -1006,7 +1005,6 @@ class StartPackingOrderList : AppCompatActivity() {
         btnFirstItem.isEnabled = false
         btnPrevious.isEnabled = true
     }
-
     fun ScanproducDetails() {
         if (AppPreferences.internetConnectionCheck(this)) {
             var OrderNo: String? = null
