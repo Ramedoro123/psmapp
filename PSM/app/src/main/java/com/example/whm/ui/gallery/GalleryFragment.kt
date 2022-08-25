@@ -48,6 +48,7 @@ import android.text.style.StyleSpan
 import android.util.TypedValue
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.com.example.whm.ui.UpdateLocation.setCanceledOnTouchOutside
 import com.example.myapplication.com.example.whm.ui.inventoryreceive.ReceivePOAdapter1
 import org.json.JSONArray
 class GalleryFragment : Fragment() {
@@ -191,8 +192,32 @@ class GalleryFragment : Fragment() {
                             }
                             else {
                                 if (AppPreferences.internetConnectionCheck(this.context)) {
-                                    updatestock(ProductID_S, TotalStockQTY!!, TxtRemark!!)
-                                }else{
+                                    var Totalstockqtycheck = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
+                                    Totalstockqtycheck.titleText = "Are you sure?"
+                                    Totalstockqtycheck.contentText = "You want to Update stock?"
+                                    Totalstockqtycheck.cancelButtonBackgroundColor = Color.parseColor("#4cae4c")
+                                    Totalstockqtycheck.setCancelButton( "Yes")
+                                    {
+                                            sDialog -> sDialog.dismissWithAnimation()
+                                    }
+                                    Totalstockqtycheck.confirmText = "No"
+                                    Totalstockqtycheck.confirmButtonBackgroundColor = Color.parseColor("#E60606")
+                                    Totalstockqtycheck.setCancelClickListener {
+                                            sDialog ->
+                                        sDialog.dismissWithAnimation()
+                                        if (AppPreferences.internetConnectionCheck(this.context)) {
+                                            updatestock(ProductID_S, TotalStockQTY!!, TxtRemark!!)
+                                        }else{
+                                            CheckInterNetDailog()
+                                        }
+                                    }
+                                    Totalstockqtycheck.setConfirmClickListener {
+                                            sDialog -> sDialog.dismissWithAnimation()
+                                    }
+                                    Totalstockqtycheck.setCanceledOnTouchOutside(false)
+                                    Totalstockqtycheck.show()
+                                }
+                                else{
                                     CheckInterNetDailog()
                                 }
                             }
@@ -782,6 +807,7 @@ class GalleryFragment : Fragment() {
     }
     private fun updatestock(_ProductID: TextView?, StrockQty: EditText, Remark: EditText){
         if (AppPreferences.internetConnectionCheck(this.context)) {
+
             val Jsonarra = JSONObject()
             val Jsonarrastock = JSONObject()
             val JSONObj = JSONObject()
@@ -892,7 +918,9 @@ class GalleryFragment : Fragment() {
         Totalstockqtycheck.contentText = "You want to make out of stock."
         Totalstockqtycheck.cancelButtonBackgroundColor = Color.parseColor("#4cae4c")
         Totalstockqtycheck.setCancelButton( "Yes")
-            { sDialog -> sDialog.dismissWithAnimation() }
+        {
+                    sDialog -> sDialog.dismissWithAnimation()
+        }
         Totalstockqtycheck.confirmText = "No"
         Totalstockqtycheck.confirmButtonBackgroundColor = Color.parseColor("#E60606")
         Totalstockqtycheck.setCancelClickListener {
