@@ -92,8 +92,6 @@ class UpdateLocation : AppCompatActivity() {
             dialog?.show()
         }
 
-
-
         if (AppPreferences.internetConnectionCheck(this)){
             shouldExecuteOnResume = false
             val recyclerview = findViewById<RecyclerView>(R.id.Update_Location_recyclerView)
