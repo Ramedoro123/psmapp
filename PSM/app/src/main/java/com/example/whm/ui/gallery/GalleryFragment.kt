@@ -194,7 +194,7 @@ class GalleryFragment : Fragment() {
                                 if (AppPreferences.internetConnectionCheck(this.context)) {
                                     var Totalstockqtycheck = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
                                     Totalstockqtycheck.titleText = "Are you sure?"
-                                    Totalstockqtycheck.contentText = "You want to Update stock?"
+                                    Totalstockqtycheck.contentText = "You want to Update stock."
                                     Totalstockqtycheck.cancelButtonBackgroundColor = Color.parseColor("#4cae4c")
                                     Totalstockqtycheck.setCancelButton( "Yes")
                                     {
