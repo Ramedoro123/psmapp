@@ -40,6 +40,7 @@ class UpdateLocation : AppCompatActivity() {
     lateinit var ScanOrderBarcode:EditText
     lateinit var btnBackArrow:TextView
     var ScanOrderBarcode1:String?=null
+    var number=0
     var UpdateLocationData: ArrayList<UpdateLocationModel> = arrayListOf()
     lateinit var adapterUpdateLocation: UpdateLocationAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,11 +62,11 @@ class UpdateLocation : AppCompatActivity() {
                     if (scanbarcodeproduct.trim().isEmpty()) {
                         ScanOrderBarcode.text.clear()
                         ScanOrderBarcode.setText("")
-
                         ScanOrderBarcode.requestFocus()
                     } else {
                         // Scan barcode function calling here
                         UpdateLocationData.clear()
+                        number=1
                          UpdateLocationFunctoin()
                         ScanOrderBarcode.requestFocus()
                         ScanOrderBarcode.text.clear()
@@ -182,22 +183,42 @@ class UpdateLocation : AppCompatActivity() {
                         pDialog.dismiss()
                     }
                 }else{
-                    val Dilogview2 = View.inflate(this@UpdateLocation, R.layout.stock_list_popup, null)
-                    val builder2 = AlertDialog.Builder(this@UpdateLocation).setView(Dilogview2)
-                    var mSilog2=builder2.show()
-                    builder2.setCancelable(false);
-                    builder2.setCanceledOnTouchOutside(false);
-                    mSilog2.show()
-                    var Message2=Dilogview2.findViewById<TextView>(R.id.Message)
-                    var btnOk = Dilogview2.findViewById<TextView>(R.id.btnOk1)
-                    Message2.setText(resmsg.toString())
-                    // pDialog!!.dismiss()
+                    if (number==0){
+                        val Dilogview2 = View.inflate(this@UpdateLocation, R.layout.stock_list_popup, null)
+                        val builder2 = AlertDialog.Builder(this@UpdateLocation).setView(Dilogview2)
+                        var mSilog2=builder2.show()
+                        mSilog2.setCancelable(false);
+                        mSilog2.setCanceledOnTouchOutside(false);
+                        mSilog2.show()
+                        var Message2=Dilogview2.findViewById<TextView>(R.id.Message)
+                        var btnOk = Dilogview2.findViewById<TextView>(R.id.btnOk1)
+                        Message2.setText(resmsg.toString())
+                        // pDialog!!.dismiss()
                         btnOk!!.setOnClickListener(View.OnClickListener {
-                        UpdateLocationFunctoin()
-                          mSilog2.dismiss()
-                        pDialog.dismiss()
-                       // finish()
-                    })
+                            mSilog2.dismiss()
+                            pDialog.dismiss()
+                            finish()
+                        })
+                    }
+                    else{
+                        val Dilogview2 = View.inflate(this@UpdateLocation, R.layout.stock_list_popup, null)
+                        val builder2 = AlertDialog.Builder(this@UpdateLocation).setView(Dilogview2)
+                        var mSilog2=builder2.show()
+                        mSilog2.setCancelable(false);
+                        mSilog2.setCanceledOnTouchOutside(false);
+                        mSilog2.show()
+                        var Message2=Dilogview2.findViewById<TextView>(R.id.Message)
+                        var btnOk = Dilogview2.findViewById<TextView>(R.id.btnOk1)
+                        Message2.setText(resmsg.toString())
+                        // pDialog!!.dismiss()
+                        btnOk!!.setOnClickListener(View.OnClickListener {
+                            number=0;
+                            UpdateLocationFunctoin()
+                            mSilog2.dismiss()
+                            pDialog.dismiss()
+                            // finish()
+                        })
+                    }
 
                 }
         },

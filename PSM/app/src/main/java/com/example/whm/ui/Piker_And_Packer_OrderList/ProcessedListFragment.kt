@@ -70,9 +70,9 @@ class ProcessedListFragment : Fragment() {
 //        super.onResume()
 //        processOrderedlist()
 //    }
-
     private fun processOrderedlist() {
-        if (AppPreferences.internetConnectionCheck(this.context)) {
+        if (AppPreferences.internetConnectionCheck(this.context))
+        {
             //here is call valley library
             val Jsonarra = JSONObject()
             val JSONObj = JSONObject()
@@ -177,7 +177,8 @@ class ProcessedListFragment : Fragment() {
             }
 
         }
-        else {
+        else
+        {
             val dialog = context?.let { Dialog(it) }
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
