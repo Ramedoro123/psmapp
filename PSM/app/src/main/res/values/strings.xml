@@ -30,6 +30,7 @@
     <string name="AddonOrderListPicker">Add-On </string>
     <string name="AddonPackedOrderListPicker">Add-On Packed </string>
     <string name="Update_Location">Load Order Location </string>
+    <string name="Customer_List">Customer List</string>
     <string name="title_activity_scanproduct">scanproduct</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

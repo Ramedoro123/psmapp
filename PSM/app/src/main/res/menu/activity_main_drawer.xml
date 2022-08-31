@@ -96,6 +96,12 @@
             android:icon="@drawable/ic_baseline_view_list_24"
             android:visible="false"
             android:title="@string/Update_Location" />
+        <item
+            android:id="@+id/nav_Customer_List"
+            android:icon="@drawable/ic_baseline_person_4_24"
+            android:visible="false"
+            android:title="@string/Customer_List" />
+
 
         <item
             android:id="@+id/nav_info"

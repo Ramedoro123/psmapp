@@ -57,19 +57,23 @@ class HomeFragment : Fragment() {
             mView.findViewById<Button>(com.example.myapplication.R.id.btnsubmitpolist)
         val btnrevertpolist =
             mView.findViewById<Button>(com.example.myapplication.R.id.btnrevertpolist)
-        val btnpointernallist =
-            mView.findViewById<Button>(com.example.myapplication.R.id.btnpointernallist)
+        val btnpointernallist = mView.findViewById<Button>(com.example.myapplication.R.id.btnpointernallist)
         val btnProcessedOrder=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Processed_order_list_Picker)
         val btnPacked_order=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Packed_order_list_Picker)
         val btnAddOn_order=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Add_On_order_list_Picker)
         val btnAddOnPacked_order=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Add_OnPacked_order_list_Picker)
          val Update_Location=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Update_Location)
+         val Customer_List=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Customer_List)
 
         var Usertype = preferences.getString("EmpTypeNo", "")
         val editor = preferences.edit()
-        if (Usertype.toString() != "2") {
+        if (Usertype.toString() == "2") {
             btnInvCheck.visibility = View.GONE
             btnAddBar.visibility = View.GONE
+            btnUnLoadList.visibility=View.GONE
+            btnDriLoad.visibility=View.GONE
+            btnOrderList.visibility=View.GONE
+            Customer_List.visibility=View.VISIBLE
         }
         if (Usertype.toString() == "9") {
 
@@ -167,6 +171,9 @@ class HomeFragment : Fragment() {
         }
         Update_Location.setOnClickListener{
             this.findNavController().navigate(com.example.myapplication.R.id.nav_Update_Location)
+        }
+        Customer_List.setOnClickListener{
+            this.findNavController().navigate(com.example.myapplication.R.id.nav_Customer_List)
         }
         return mView
     }

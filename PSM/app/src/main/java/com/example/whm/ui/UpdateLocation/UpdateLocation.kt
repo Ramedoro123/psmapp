@@ -237,6 +237,7 @@ class UpdateLocation : AppCompatActivity() {
 
     private fun addUpdateLocationModel(AId: Int, OrderNo: String, cName: String, ODate: String, PackedBoxes: Int,ColorCode:String, ol: String,Status:String)    {
         var UpdateLocationModel= UpdateLocationModel(AId, OrderNo,ODate,cName,PackedBoxes,ColorCode,ol,Status)
+
         UpdateLocationData.add(UpdateLocationModel)
         val recyclerview = findViewById<RecyclerView>(R.id.Update_Location_recyclerView)
         adapterUpdateLocation= UpdateLocationAdapter(UpdateLocationData, this)

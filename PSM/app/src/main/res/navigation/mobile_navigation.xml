@@ -127,4 +127,11 @@
         android:label="@string/Update_Location"
         tools:layout="@layout/activity_update_location"
         />
+    <activity
+        android:id="@+id/nav_Customer_List"
+        android:name="com.example.whm.ui.Sales_Person.CustomerListActivity"
+        android:label="@string/Customer_List"
+        tools:layout="@layout/activity_customer_list"
+        />
+
 </navigation>
