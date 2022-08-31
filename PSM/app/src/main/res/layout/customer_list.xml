@@ -11,10 +11,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame"
+        android:background=" #FFF9EB"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         app:cardPreventCornerOverlap="true"
         android:layout_marginEnd="6dp"
         android:elevation="100dp"
@@ -27,15 +27,16 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="#FFF9EB">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/textView36"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="3dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                app:civ_circle_background_color="#77c593"
+                app:civ_circle_background_color="#FC5E03"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,9 +45,9 @@
 
             <TextView
                 android:id="@+id/textView37"
-                android:layout_width="8dp"
+                android:layout_width="3dp"
                 android:layout_height="0dp"
-                android:background="#77c593"
+                android:background="#FC5E03"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,13 +56,15 @@
                 android:id="@+id/customerName1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="3dp"
+                android:layout_marginBottom="3dp"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/customerID"
                 app:layout_constraintEnd_toStartOf="@+id/textView36"
                 app:layout_constraintStart_toEndOf="@+id/textView37"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -70,10 +73,12 @@
                 android:id="@+id/customerID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="3dp"
+                android:layout_marginBottom="5dp"
                 android:text="TextView"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView37"
                 app:layout_constraintTop_toBottomOf="@+id/customerName1" />
 
@@ -81,11 +86,12 @@
                 android:id="@+id/Duevalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Due :$25.000"
-                android:textColor="#ed3572"
+                android:text="Due :$25.00"
+                android:textColor="#C60101"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/textView36"
+                app:layout_constraintHorizontal_bias="0.857"
                 app:layout_constraintStart_toEndOf="@+id/customerID"
                 app:layout_constraintTop_toTopOf="@+id/customerID" />
         </androidx.constraintlayout.widget.ConstraintLayout>
