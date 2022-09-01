@@ -17,6 +17,8 @@ object AppPreferences {
     const val BASEURL = "http://api1.a1whm.com/AndroidAPI/"  // This is Test Api's
     const val apiurl = "http://api1.a1whm.com/Packerapi/"    // This is Test Api's
     const val PackerUrl= "http://api1.a1whm.com/PackerApi/"  // This is Test Api's
+    const val salesPersonUrl="http://api1.a1whm.com//WebApi/"//This is test Api's By Ram 01/09/2022
+
     const val GET_ORDERS = "WDriverOrder.asmx/getOrders"
     const val SUBMIT_LOAD_ORDER = "WDriverOrder.asmx/SubmitLoadOrder"
     const val GET_ASSIGN_ORDER = "WDriverOrder.asmx/getDriverOrderList"
@@ -52,6 +54,7 @@ object AppPreferences {
     const val UpdateLocation_Url=apiurl+"WPackerOrder.asmx/getorderlocation"
     const val updateOrderLocation=apiurl+"WPackerOrder.asmx/updateOrderLocation"
     const val ChangeBillNo_And_Date=BASEURL+"WPOReceive.asmx/updatebillno"
+    const val Customer_ListUrl=salesPersonUrl+"WLiveCustomer.asmx/getCustomerList"
     //for devices
     var manufacturer = Build.MANUFACTURER
     var model = Build.MODEL

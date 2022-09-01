@@ -147,7 +147,7 @@ class ProcessedListAdapter(
         if (OderList.size != 0) {
             var t: String? = ""
             t = OderList.size.toString()
-            (activity as AppCompatActivity).supportActionBar?.setTitle("Processed($t)                 ")
+            (activity as AppCompatActivity).supportActionBar?.setTitle("Processed($t)")
             (activity as AppCompatActivity).getActionBar()?.setDisplayShowTitleEnabled(false);
             (activity as AppCompatActivity).getActionBar()?.setDisplayShowTitleEnabled(true);
 

@@ -27,7 +27,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#FFF9EB">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -86,10 +86,9 @@
                 android:id="@+id/Duevalue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Due :$25.00"
                 android:textColor="#C60101"
+                android:visibility="gone"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/textView36"
                 app:layout_constraintHorizontal_bias="0.857"
                 app:layout_constraintStart_toEndOf="@+id/customerID"

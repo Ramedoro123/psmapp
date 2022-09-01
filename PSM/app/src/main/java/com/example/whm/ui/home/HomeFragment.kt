@@ -64,10 +64,9 @@ class HomeFragment : Fragment() {
         val btnAddOnPacked_order=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Add_OnPacked_order_list_Picker)
          val Update_Location=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Update_Location)
          val Customer_List=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Customer_List)
-
         var Usertype = preferences.getString("EmpTypeNo", "")
         val editor = preferences.edit()
-        if (Usertype.toString() == "2") {
+        if (Usertype.toString()=="2") {
             btnInvCheck.visibility = View.GONE
             btnAddBar.visibility = View.GONE
             btnUnLoadList.visibility=View.GONE

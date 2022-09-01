@@ -146,6 +146,7 @@ class UpdateLocation : AppCompatActivity() {
         Log.d("TAG", ScanOrderBarcode1.toString())
         Log.d("TAG",Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID).toString())
         //Toast.makeText(this,empautoid.toString(),Toast.LENGTH_LONG).show()
+
         val queue = Volley.newRequestQueue(this)
 // Request a string response from the provided URL.
         val JsonObjectRequest = JsonObjectRequest(Request.Method.POST, AppPreferences.UpdateLocation_Url, JSONObj,

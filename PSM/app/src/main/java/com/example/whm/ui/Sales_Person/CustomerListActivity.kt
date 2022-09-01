@@ -1,72 +1,155 @@
 package com.example.whm.ui.Sales_Person
 
-import android.accounts.AccountManager.get
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.provider.Settings
 import android.util.Log
+import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.myapplication.R
+import com.example.myapplication.com.example.whm.AppPreferences
+import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.AdapterClassCustomerList
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassCustomerList
-import java.io.ObjectStreamClass
+import org.json.JSONObject
+import java.math.BigDecimal
 
 class CustomerListActivity : AppCompatActivity() {
 
     var ModelClassCustomer: ArrayList<ModelClassCustomerList> = arrayListOf()
     lateinit var CustomerAdapter: AdapterClassCustomerList
+    var accessToken: String? = null
+    var empautoid: String? = null
+    var CustomerlistSize: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_list)
+        var backbtn=findViewById<TextView>(R.id.btnBackarrow)
+        var CustomerTitle=findViewById<TextView>(R.id.CustomerTitle)
+        backbtn.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(this,MainActivity2::class.java))
+            finish()
+        })
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this@CustomerListActivity)
+        accessToken = preferences.getString("accessToken", "")
+        empautoid = preferences.getString("EmpAutoId", "")
+        CustomerlistSize = preferences.getString("CustomerlistSize", "")
+        CustomerTitle.setText("Customer List"+"("+CustomerlistSize+")")
+       // Toast.makeText(this,CustomerlistSize.toString(),Toast.LENGTH_LONG).show()
+        if (AppPreferences.internetConnectionCheck(this)) {
+            Log.e("accessToken", accessToken.toString())
+            Log.e("empautoid", empautoid.toString())
+            val recyclerview = findViewById<RecyclerView>(R.id.CustomerView)
+            val layoutManager = LinearLayoutManager(this)
+            recyclerview.layoutManager = layoutManager
+            CustomerList()
+        } else {
+            val dialog = this?.let { Dialog(it) }
+            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+            val btDismiss =
+                dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+            btDismiss?.setOnClickListener {
+                dialog.dismiss()
+                startActivity(Intent(this, MainActivity2::class.java))
+                finish()
+            }
+            dialog?.show()
+        }
 
-        val preferences= PreferenceManager.getDefaultSharedPreferences(this@CustomerListActivity)
-        var accessToken = preferences.getString("accessToken", "")
-        var empautoid = preferences.getString("EmpAutoId", "")
-              Log.e("accessToken",accessToken.toString())
-              Log.e("empautoid",empautoid.toString())
-        val recyclerview = findViewById<RecyclerView>(R.id.CustomerView)
-        val layoutManager = LinearLayoutManager(this)
-        recyclerview.layoutManager = layoutManager
-        val marks = arrayOf("7 Eleven (Toms River Rt 37 West)",
-            "7 ELEVEN (MANNY TOMS RIVER ALL STORES)","Country Food Market (Bayville)","Robins Deli & Convenience (Beachwood)",
-            "Hometown Food Market (Forked River)","Sawyers Liquor (Beachwood)")
-        val marks1 = arrayOf("CST10213",
-            "CST10214","CST10215","CST10216",
-            "CST10217","CST10218")
-        var d:Int=6
-        val data = HashMap<String, String>()
-        data["CN"] = "7 Eleven (Toms River Rt 37 West)"
-        data["CN"] = "7 ELEVEN (MANNY TOMS RIVER ALL STORES)"
-        data["CN"] = "Country Food Market (Bayville)"
-        data["CN"] = "Robins Deli & Convenience (Beachwood))"
-        data["CN"] = "Sawyers Liquor (Beachwood)"
-        data["CN"] = "Hometown Food Market (Forked River)"
-        data["CId"] = "CST10213"
-        data["CId"] = "CST10214"
-        data["CId"] = "CST10215"
-        data["CId"] = "CST10216"
-        data["CId"] = "CST10217"
-        data["CId"] = "CST10218"
 
-        for (i in 0 until marks.size) {
-            var CN=marks.get(i)
-            var CId=marks1.get(i)
-                    ModelClassCustomer(
-                        CN.toString(),
-                        CId.toString()
-                    )
+    }
+
+    private fun CustomerList() {
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
+        pDialog.titleText = "Fetching ..."
+        pDialog.setCancelable(false)
+        pDialog.show()
+
+        //We Create Json object to send request for server
+
+        val requestContainer=JSONObject()
+        val ContainerObject=JSONObject()
+        ContainerObject.put("requestContainer",requestContainer.put("appVersion",AppPreferences.AppVersion))
+        ContainerObject.put("requestContainer",requestContainer.put("deviceID", Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)))
+        ContainerObject.put("requestContainer", requestContainer.put("deviceVersion", AppPreferences.versionRelease))
+        ContainerObject.put("requestContainer", requestContainer.put("deviceName", AppPreferences.DeviceName))
+        ContainerObject.put("requestContainer",requestContainer.put("accessToken",accessToken))
+        ContainerObject.put("requestContainer",requestContainer.put("userAutoId",empautoid))
+        // Send request Queue in vally
+        val queue=Volley.newRequestQueue(this)
+
+        // Request a string response from the provided URL.
+               var url:String=""
+        val JsonObjectRequest=JsonObjectRequest(Request.Method.POST,AppPreferences.Customer_ListUrl,ContainerObject,
+            {response ->
+                val Response = (response.toString())
+                val responseResultData = JSONObject(Response.toString())
+                val ResponseResult=JSONObject(responseResultData.getString("d"))
+                val ResponseMessage=ResponseResult.getString("responseMessage")
+                val responseCode=ResponseResult.getString("responseCode")
+                if (responseCode=="201"){
+                    val responseData=ResponseResult.getJSONArray("responseData")
+                    for (i in 0 until responseData.length())
+                    {
+                        var AI=responseData.getJSONObject(i).getInt("AI")
+                        var CId=responseData.getJSONObject(i).getString("CId")
+                        var CN=responseData.getJSONObject(i).getString("CN")
+                        var CT=responseData.getJSONObject(i).getString("CT")
+                        var DueBalance=responseData.getJSONObject(i).getString("DBA")
+
+                  //    Log.e("DueBalance",twoDigitValue.)
+                        ModelClassCustomer(AI,CN,CId,CT,DueBalance)
+                    }
+                    pDialog.dismiss()
+                }else{
+                    Toast.makeText(this,ResponseMessage.toString(),Toast.LENGTH_LONG).show()
+                    pDialog.dismiss()
+                }
+
+        }, Response.ErrorListener { pDialog.dismiss() })
+        JsonObjectRequest.retryPolicy=DefaultRetryPolicy(
+            10000000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+        try {
+            queue.add(JsonObjectRequest)
+        }catch (e:Exception){
+            Toast.makeText(this, "Server Error", Toast.LENGTH_LONG).show()
         }
     }
-    private fun ModelClassCustomer( CN: String,CId:String)    {
-        var ModelClassCustomer1= ModelClassCustomerList(CN,CId)
+
+
+    private fun ModelClassCustomer(AI:Int,CN: String, CId: String,CT:String,DueBalance:String) {
+        var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalance)
 
         ModelClassCustomer.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.CustomerView)
-        CustomerAdapter= AdapterClassCustomerList(ModelClassCustomer, this)
+        CustomerAdapter = AdapterClassCustomerList(ModelClassCustomer, this)
         recyclerview.adapter = CustomerAdapter
         // DetailsAdapter.notifyDataSetChanged()
     }
+}
+
+private fun TextView.setText(s: String, toString: String) {
+
 }
 
 
