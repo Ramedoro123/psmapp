@@ -1,17 +1,17 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
-class ModelClassCustomerList(AI:Int,CN:String,CId:String,CT:String,DueBalance:String) {
+class ModelClassCustomerList(AI:Int,CN:String,CId:String,CT:String,DueBalances:Float) {
     private var AI:Int
     private var CN:String
     private var CId: String
     private var CT: String
-    private var DueBalance: String
+    private var DueBalances: Float
     init {
         this.AI=AI
         this.CN=CN
         this.CId=CId
         this.CT=CT
-        this.DueBalance=DueBalance
+        this.DueBalances=DueBalances
     }
     fun getAI(): Int? {
         return AI
@@ -29,8 +29,8 @@ class ModelClassCustomerList(AI:Int,CN:String,CId:String,CT:String,DueBalance:St
     }
     fun getCT(): String? {
         return CT
-    }fun getDueBalance(): String? {
-        return DueBalance
+    }fun getDueBalances(): Float? {
+        return DueBalances
     }
 
 

@@ -26,18 +26,18 @@ class AdapterClassCustomerList(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): AdapterClassCustomerList.ViewHolder {
+    ):ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.customer_list, parent, false)
-        return AdapterClassCustomerList.ViewHolder(view)
+        return ViewHolder(view)
     }
-    override fun onBindViewHolder(holder: AdapterClassCustomerList.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         var CustomerList = CustomerList[position]
         holder.CustomerName.text = CustomerList.getCN().toString()
         holder.customerID.text = CustomerList.getCId().toString()
-        var deuBalance=CustomerList.getDueBalance().toString()
-        if (deuBalance>"0") {
-                          holder.Duevalue.setText("Due : $"+deuBalance.toFloat())
+        var deuBalance=CustomerList.getDueBalances()!!.toFloat()
+        if (deuBalance>0.00) {
+                          holder.Duevalue.setText("Due : $"+"%.2f".format(deuBalance))
                               holder.Duevalue.visibility=View.VISIBLE
                            }
             //Toast.makeText(UpdateLocation,UpdateLocationList.getAId().toString(),Toast.LENGTH_LONG).show()
@@ -46,6 +46,7 @@ class AdapterClassCustomerList(
         var CustomerlistSize=CustomerList.size.toString()
         val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(Listdata)
         val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
+
         sharedLoadOrderPage.putString("CustomerlistSize", CustomerlistSize)
         sharedLoadOrderPage.apply()
 

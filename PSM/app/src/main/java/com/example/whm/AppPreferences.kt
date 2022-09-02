@@ -25,7 +25,7 @@ object AppPreferences {
     const val GET_ASSIGN_ORDER_LIST = "WDriverOrder.asmx/AssignedOrderList"
     const val GET_Packing_details = "WPackerProductList.asmx/getPackingDetails"
     const val UPDATE_STOCK = apiurl + "WPackerProductList.asmx/UpdateStock"
-    const val Bind_VENDER_LIST = BASEURL + "WPOReceive.asmx/getVendor"
+    const val Bind_VENDER_LIST = BASEURL + "WPOReceive.asmx/getVendorNew"
     const val SCAND_BARCODE_PADD = BASEURL + "WPOReceive.asmx/getproductbybarcode"
     const val SUBMIT_PO_LIST = BASEURL + "WPOReceive.asmx/submitPO"
     const val DELETE_PO_LIST = BASEURL + "WPOReceive.asmx/deletePOItem"

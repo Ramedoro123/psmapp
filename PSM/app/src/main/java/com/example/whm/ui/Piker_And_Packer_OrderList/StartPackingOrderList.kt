@@ -201,8 +201,7 @@ class StartPackingOrderList : AppCompatActivity() {
         btnPacked.setOnClickListener(View.OnClickListener {
             // Toast.makeText(this,PackStatus1.toString(),Toast.LENGTH_LONG).show()
             if (PackStatus1 == 1) {
-                val Dilogview =
-                    View.inflate(this@StartPackingOrderList, R.layout.popupbox_picker, null)
+                val Dilogview = View.inflate(this@StartPackingOrderList, R.layout.popupbox_picker, null)
                 val builder = AlertDialog.Builder(this@StartPackingOrderList).setView(Dilogview)
                 builder.setCancelable(false);
                 builder.setCanceledOnTouchOutside(false);

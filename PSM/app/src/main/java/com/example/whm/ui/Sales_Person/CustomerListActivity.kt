@@ -1,17 +1,17 @@
 package com.example.whm.ui.Sales_Person
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,8 +26,8 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.AdapterClassCustomerList
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassCustomerList
+import com.example.myapplication.com.example.whm.ui.UpdateLocation.setCanceledOnTouchOutside
 import org.json.JSONObject
-import java.math.BigDecimal
 
 class CustomerListActivity : AppCompatActivity() {
 
@@ -36,20 +36,47 @@ class CustomerListActivity : AppCompatActivity() {
     var accessToken: String? = null
     var empautoid: String? = null
     var CustomerlistSize: String? = null
+    lateinit var spinner:Spinner
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_list)
         var backbtn=findViewById<TextView>(R.id.btnBackarrow)
+        var SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
         var CustomerTitle=findViewById<TextView>(R.id.CustomerTitle)
         backbtn.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this,MainActivity2::class.java))
             finish()
         })
+
+        SearchCustomer1.setOnClickListener(View.OnClickListener {
+            DilogCustom()
+//            val Dilogview = View.inflate(this@CustomerListActivity, R.layout.activity_search_customer, null)
+//            val builder = AlertDialog.Builder(this@CustomerListActivity).setView(Dilogview)
+//            builder.setCancelable(false);
+//            builder.setCanceledOnTouchOutside(false);
+//            val dilog = builder.show()
+
+//            val CancleBtn =Dilogview.findViewById<View>(R.id.CancleBtn)
+             spinner!!.prompt = "Select your favorite Planet!"
+            // Create an ArrayAdapter
+            val adapter = ArrayAdapter.createFromResource(this,
+                R.array.city_list, android.R.layout.simple_spinner_item)
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner!!.adapter=adapter
+//            CancleBtn.setOnClickListener(View.OnClickListener {
+//                dilog.dismiss()
+//            })
+        })
+
+
         val preferences = PreferenceManager.getDefaultSharedPreferences(this@CustomerListActivity)
         accessToken = preferences.getString("accessToken", "")
         empautoid = preferences.getString("EmpAutoId", "")
         CustomerlistSize = preferences.getString("CustomerlistSize", "")
         CustomerTitle.setText("Customer List"+"("+CustomerlistSize+")")
+
        // Toast.makeText(this,CustomerlistSize.toString(),Toast.LENGTH_LONG).show()
         if (AppPreferences.internetConnectionCheck(this)) {
             Log.e("accessToken", accessToken.toString())
@@ -58,7 +85,8 @@ class CustomerListActivity : AppCompatActivity() {
             val layoutManager = LinearLayoutManager(this)
             recyclerview.layoutManager = layoutManager
             CustomerList()
-        } else {
+        }
+        else {
             val dialog = this?.let { Dialog(it) }
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
@@ -113,9 +141,9 @@ class CustomerListActivity : AppCompatActivity() {
                         var CN=responseData.getJSONObject(i).getString("CN")
                         var CT=responseData.getJSONObject(i).getString("CT")
                         var DueBalance=responseData.getJSONObject(i).getString("DBA")
-
+                        val DueBalances : Float = DueBalance.toFloat()
                   //    Log.e("DueBalance",twoDigitValue.)
-                        ModelClassCustomer(AI,CN,CId,CT,DueBalance)
+                        ModelClassCustomer(AI,CN,CId,CT,DueBalances)
                     }
                     pDialog.dismiss()
                 }else{
@@ -136,9 +164,8 @@ class CustomerListActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun ModelClassCustomer(AI:Int,CN: String, CId: String,CT:String,DueBalance:String) {
-        var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalance)
+    private fun ModelClassCustomer(AI:Int,CN: String, CId: String,CT:String,DueBalances:Float) {
+        var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalances)
 
         ModelClassCustomer.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.CustomerView)
@@ -146,10 +173,21 @@ class CustomerListActivity : AppCompatActivity() {
         recyclerview.adapter = CustomerAdapter
         // DetailsAdapter.notifyDataSetChanged()
     }
+    private  fun DilogCustom(){
+        var dilog=Dialog(this@CustomerListActivity)
+        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dilog.setCancelable(false)
+        dilog.setContentView(R.layout.activity_search_customer)
+        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        var btnCancle=dilog.findViewById<TextView>(R.id.CancleBtn)
+        spinner =dilog.findViewById<View>(R.id.textView30) as Spinner
+        btnCancle.setOnClickListener(View.OnClickListener {
+            dilog.dismiss()
+        })
+        dilog.show()
+    }
 }
 
-private fun TextView.setText(s: String, toString: String) {
 
-}
 
 
