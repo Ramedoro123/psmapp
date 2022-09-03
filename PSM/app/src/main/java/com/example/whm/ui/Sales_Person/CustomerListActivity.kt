@@ -1,6 +1,5 @@
 package com.example.whm.ui.Sales_Person
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
@@ -9,8 +8,10 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,8 +27,8 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.AdapterClassCustomerList
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassCustomerList
-import com.example.myapplication.com.example.whm.ui.UpdateLocation.setCanceledOnTouchOutside
 import org.json.JSONObject
+
 
 class CustomerListActivity : AppCompatActivity() {
 
@@ -49,25 +50,29 @@ class CustomerListActivity : AppCompatActivity() {
         })
 
         SearchCustomer1.setOnClickListener(View.OnClickListener {
-            DilogCustom()
+
+            getCustomerType()
+
+//            DilogCustom()
 //            val Dilogview = View.inflate(this@CustomerListActivity, R.layout.activity_search_customer, null)
 //            val builder = AlertDialog.Builder(this@CustomerListActivity).setView(Dilogview)
 //            builder.setCancelable(false);
 //            builder.setCanceledOnTouchOutside(false);
 //            val dilog = builder.show()
-
 //            val CancleBtn =Dilogview.findViewById<View>(R.id.CancleBtn)
-             spinner!!.prompt = "Select your favorite Planet!"
-            // Create an ArrayAdapter
-            val adapter = ArrayAdapter.createFromResource(this,
-                R.array.city_list, android.R.layout.simple_spinner_item)
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            spinner!!.adapter=adapter
+//
+//             spinner!!.prompt = "Select your favorite Planet!"
+//            // Create an ArrayAdapter
+//            val adapter = ArrayAdapter.createFromResource(this,
+//                R.array.city_list, android.R.layout.simple_spinner_item)
+//            // Specify the layout to use when the list of choices appears
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            // Apply the adapter to the spinner
+//            spinner!!.adapter=adapter
 //            CancleBtn.setOnClickListener(View.OnClickListener {
 //                dilog.dismiss()
 //            })
+            startActivity(Intent(this,SearchCustomer::class.java))
         })
 
 
@@ -103,6 +108,48 @@ class CustomerListActivity : AppCompatActivity() {
 
     }
 
+    private fun getCustomerType() {
+        val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
+        pDialog.titleText = "Fetching ..."
+        pDialog.setCancelable(false)
+        pDialog.show()
+
+        //We Create Json object to send request for server
+
+        val requestContainer=JSONObject()
+        val ContainerObject=JSONObject()
+        ContainerObject.put("requestContainer",requestContainer.put("appVersion",AppPreferences.AppVersion))
+        ContainerObject.put("requestContainer",requestContainer.put("deviceID", Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)))
+        ContainerObject.put("requestContainer", requestContainer.put("deviceVersion", AppPreferences.versionRelease))
+        ContainerObject.put("requestContainer", requestContainer.put("deviceName", AppPreferences.DeviceName))
+        ContainerObject.put("requestContainer",requestContainer.put("accessToken",accessToken))
+        ContainerObject.put("requestContainer",requestContainer.put("userAutoId",empautoid))
+        // send request Queue in vally
+        val queue=Volley.newRequestQueue(this)
+        val JsonObjectRequest=JsonObjectRequest(Request.Method.POST,AppPreferences.getCustomerType,ContainerObject,
+            { response->
+                val Response = (response.toString())
+                val responseResultData = JSONObject(Response.toString())
+                val ResponseResult=JSONObject(responseResultData.getString("d"))
+                val ResponseMessage=ResponseResult.getString("responseMessage")
+                Toast.makeText(this,ResponseMessage.toString(),Toast.LENGTH_LONG).show()
+                pDialog.dismiss()
+        },Response.ErrorListener { pDialog.dismiss() })
+        JsonObjectRequest.retryPolicy=DefaultRetryPolicy(
+            10000000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+
+        )
+        try {
+            queue.add(JsonObjectRequest)
+        }catch (e:Exception){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+        }
+
+    }
+
     private fun CustomerList() {
         val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
@@ -124,7 +171,6 @@ class CustomerListActivity : AppCompatActivity() {
         val queue=Volley.newRequestQueue(this)
 
         // Request a string response from the provided URL.
-               var url:String=""
         val JsonObjectRequest=JsonObjectRequest(Request.Method.POST,AppPreferences.Customer_ListUrl,ContainerObject,
             {response ->
                 val Response = (response.toString())
@@ -173,19 +219,25 @@ class CustomerListActivity : AppCompatActivity() {
         recyclerview.adapter = CustomerAdapter
         // DetailsAdapter.notifyDataSetChanged()
     }
-    private  fun DilogCustom(){
-        var dilog=Dialog(this@CustomerListActivity)
-        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dilog.setCancelable(false)
-        dilog.setContentView(R.layout.activity_search_customer)
-        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        var btnCancle=dilog.findViewById<TextView>(R.id.CancleBtn)
-        spinner =dilog.findViewById<View>(R.id.textView30) as Spinner
-        btnCancle.setOnClickListener(View.OnClickListener {
-            dilog.dismiss()
-        })
-        dilog.show()
-    }
+//    private  fun DilogCustom(){
+//        var dilog=Dialog(this@CustomerListActivity)
+//        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        dilog.setCancelable(false)
+//        dilog.setContentView(R.layout.activity_search_customer)
+//        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//        dilog.window!!.setGravity(Gravity.CENTER)
+//        val lp = WindowManager.LayoutParams()
+//        lp.copyFrom(dilog.getWindow()!!.getAttributes())
+//        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+//        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+//        var btnCancle=dilog.findViewById<TextView>(R.id.CancleBtn)
+//        spinner =dilog.findViewById<View>(R.id.textView30) as Spinner
+//        btnCancle.setOnClickListener(View.OnClickListener {
+//            dilog.dismiss()
+//        })
+//        dilog.show()
+//        dilog.getWindow()!!.setAttributes(lp);
+//    }
 }
 
 

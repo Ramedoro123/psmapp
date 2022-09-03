@@ -55,6 +55,8 @@ object AppPreferences {
     const val updateOrderLocation=apiurl+"WPackerOrder.asmx/updateOrderLocation"
     const val ChangeBillNo_And_Date=BASEURL+"WPOReceive.asmx/updatebillno"
     const val Customer_ListUrl=salesPersonUrl+"WLiveCustomer.asmx/getCustomerList"
+    const val getCustomerType=salesPersonUrl+"WCustomerList.asmx/getCustomerType"
+
     //for devices
     var manufacturer = Build.MANUFACTURER
     var model = Build.MODEL
