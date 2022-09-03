@@ -39,12 +39,14 @@ class CustomerListActivity : AppCompatActivity() {
     var empautoid: String? = null
     var CustomerlistSize: String? = null
     var CustomerType: String? = null
+    var CustomerType1: JSONArray? = null
     lateinit var spinner:Spinner
+    lateinit var SearchCustomer1:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_list)
         var backbtn=findViewById<TextView>(R.id.btnBackarrow)
-        var SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
+           SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
         var CustomerTitle=findViewById<TextView>(R.id.CustomerTitle)
 
         backbtn.setOnClickListener(View.OnClickListener {
@@ -52,23 +54,7 @@ class CustomerListActivity : AppCompatActivity() {
             finish()
         })
 
-        SearchCustomer1.setOnClickListener(View.OnClickListener {
 
-            getCustomerType()
-
-            DilogCustom()
-
-            val arrayList = ArrayList<String>()
-             spinner!!.prompt = "Select your favorite Planet!"
-            // Create an ArrayAdapter
-            val adapter = ArrayAdapter.createFromResource(this,
-                R.array.city_list, android.R.layout.simple_spinner_item)
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner
-            spinner!!.adapter=adapter
-
-        })
 
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this@CustomerListActivity)
@@ -131,11 +117,29 @@ class CustomerListActivity : AppCompatActivity() {
                 val responseCode=ResponseResult.getString("responseCode")
                 if (responseCode=="201")
                 {
-                  var  responseData=ResponseResult.getJSONArray("responseData")
-                    for (i  in 0 until responseData.length() )
-                    {
-                     CustomerType=responseData.getJSONObject(i).getString("CustomerType")
-                    }
+                  var  CustomerType1=ResponseResult.getJSONArray("responseData")
+                    SearchCustomer1.setOnClickListener(View.OnClickListener {
+                        if (CustomerType1.length()>0) {
+                            DilogCustom()
+                            Log.e("CustomerType",CustomerType1.toString())
+                            val arrayList = ArrayList<String>()
+                            spinner!!.prompt = "Select your favorite Planet!"
+                            // Create an ArrayAdapter
+                            val adapter = ArrayAdapter.createFromResource(
+                                this,
+                                R.array.city_list, android.R.layout.simple_spinner_item
+                            )
+                            // Specify the layout to use when the list of choices appears
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                            // Apply the adapter to the spinner
+                            spinner!!.adapter = adapter
+
+                        }else {
+                            getCustomerType()
+                            Log.e("CustomerType",CustomerType1.toString())
+                        }
+
+                    })
 
                         pDialog.dismiss()
                 }
