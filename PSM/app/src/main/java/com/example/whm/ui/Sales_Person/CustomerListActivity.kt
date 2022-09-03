@@ -27,6 +27,7 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.AdapterClassCustomerList
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassCustomerList
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -37,6 +38,7 @@ class CustomerListActivity : AppCompatActivity() {
     var accessToken: String? = null
     var empautoid: String? = null
     var CustomerlistSize: String? = null
+    var CustomerType: String? = null
     lateinit var spinner:Spinner
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,7 @@ class CustomerListActivity : AppCompatActivity() {
         var backbtn=findViewById<TextView>(R.id.btnBackarrow)
         var SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
         var CustomerTitle=findViewById<TextView>(R.id.CustomerTitle)
+
         backbtn.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this,MainActivity2::class.java))
             finish()
@@ -53,26 +56,18 @@ class CustomerListActivity : AppCompatActivity() {
 
             getCustomerType()
 
-//            DilogCustom()
-//            val Dilogview = View.inflate(this@CustomerListActivity, R.layout.activity_search_customer, null)
-//            val builder = AlertDialog.Builder(this@CustomerListActivity).setView(Dilogview)
-//            builder.setCancelable(false);
-//            builder.setCanceledOnTouchOutside(false);
-//            val dilog = builder.show()
-//            val CancleBtn =Dilogview.findViewById<View>(R.id.CancleBtn)
-//
-//             spinner!!.prompt = "Select your favorite Planet!"
-//            // Create an ArrayAdapter
-//            val adapter = ArrayAdapter.createFromResource(this,
-//                R.array.city_list, android.R.layout.simple_spinner_item)
-//            // Specify the layout to use when the list of choices appears
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//            // Apply the adapter to the spinner
-//            spinner!!.adapter=adapter
-//            CancleBtn.setOnClickListener(View.OnClickListener {
-//                dilog.dismiss()
-//            })
-            startActivity(Intent(this,SearchCustomer::class.java))
+            DilogCustom()
+
+            val arrayList = ArrayList<String>()
+             spinner!!.prompt = "Select your favorite Planet!"
+            // Create an ArrayAdapter
+            val adapter = ArrayAdapter.createFromResource(this,
+                R.array.city_list, android.R.layout.simple_spinner_item)
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner!!.adapter=adapter
+
         })
 
 
@@ -133,8 +128,18 @@ class CustomerListActivity : AppCompatActivity() {
                 val responseResultData = JSONObject(Response.toString())
                 val ResponseResult=JSONObject(responseResultData.getString("d"))
                 val ResponseMessage=ResponseResult.getString("responseMessage")
-                Toast.makeText(this,ResponseMessage.toString(),Toast.LENGTH_LONG).show()
-                pDialog.dismiss()
+                val responseCode=ResponseResult.getString("responseCode")
+                if (responseCode=="201")
+                {
+                  var  responseData=ResponseResult.getJSONArray("responseData")
+                    for (i  in 0 until responseData.length() )
+                    {
+                     CustomerType=responseData.getJSONObject(i).getString("CustomerType")
+                    }
+
+                        pDialog.dismiss()
+                }
+
         },Response.ErrorListener { pDialog.dismiss() })
         JsonObjectRequest.retryPolicy=DefaultRetryPolicy(
             10000000,
@@ -219,25 +224,26 @@ class CustomerListActivity : AppCompatActivity() {
         recyclerview.adapter = CustomerAdapter
         // DetailsAdapter.notifyDataSetChanged()
     }
-//    private  fun DilogCustom(){
-//        var dilog=Dialog(this@CustomerListActivity)
-//        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        dilog.setCancelable(false)
-//        dilog.setContentView(R.layout.activity_search_customer)
-//        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dilog.window!!.setGravity(Gravity.CENTER)
-//        val lp = WindowManager.LayoutParams()
-//        lp.copyFrom(dilog.getWindow()!!.getAttributes())
-//        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-//        lp.height = WindowManager.LayoutParams.MATCH_PARENT
-//        var btnCancle=dilog.findViewById<TextView>(R.id.CancleBtn)
-//        spinner =dilog.findViewById<View>(R.id.textView30) as Spinner
-//        btnCancle.setOnClickListener(View.OnClickListener {
-//            dilog.dismiss()
-//        })
-//        dilog.show()
-//        dilog.getWindow()!!.setAttributes(lp);
-//    }
+
+    private  fun DilogCustom(){
+        var dilog=Dialog(this@CustomerListActivity)
+        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dilog.setCancelable(false)
+        dilog.setContentView(R.layout.activity_search_customer)
+        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dilog.window!!.setGravity(Gravity.CENTER)
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dilog.getWindow()!!.getAttributes())
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+        var btnCancle=dilog.findViewById<TextView>(R.id.CancleBtn)
+        spinner =dilog.findViewById<View>(R.id.textView30) as Spinner
+        btnCancle.setOnClickListener(View.OnClickListener {
+            dilog.dismiss()
+        })
+        dilog.show()
+        dilog.getWindow()!!.setAttributes(lp);
+    }
 }
 
 
