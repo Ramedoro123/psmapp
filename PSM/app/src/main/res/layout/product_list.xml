@@ -136,31 +136,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
             android:layout_marginStart="3dp"
+            android:layout_marginRight="10dp"
             android:backgroundTint="@color/white"
             android:text="Order Total : 100.00"
             android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/information"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_toLeftOf="@id/cart1"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@id/framelayout"
             android:background="@drawable/ic_baseline_info_24"
             android:backgroundTint="@color/white" />
-        <TextView
-            android:id="@+id/cart1"
+
+        <FrameLayout
+            style="?attr/actionButtonStyle"
+            android:id="@+id/framelayout"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clipToPadding="false"
+            android:focusable="true">
+        <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_baseline_shopping_cart_24"
-            android:backgroundTint="@color/white" />
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_shopping_cart_24"/>
+        <TextView
+            android:id="@+id/cart_badge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="right|end|top"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="-5dp"
+            android:layout_marginRight="-5dp"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+        </FrameLayout>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
