@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.Window
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -115,7 +114,7 @@ class StartPackingOrderList : AppCompatActivity() {
 
         OrderNo1 = findViewById(R.id.OrderTitle)
         ProductIDText = findViewById(R.id.Product_Id)
-        ProductNameText = findViewById(R.id.ProductName)
+        ProductNameText = findViewById(R.id.care1name)
         UnitTypeText = findViewById(R.id.Unit_Type)
         LoctaionText = findViewById(R.id.LocationProduct)
         StockText = findViewById(R.id.Stock)

@@ -16,10 +16,16 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.example.whm.ui.Sales_Person.SearchCustomer"
+            android:name="com.example.whm.ui.Sales_Person.SalesPersonProductList"
+            android:exported="false" />
+        <activity
+            android:name="com.example.whm.ui.Sales_Person.CustomerDetailsActivity"
             android:exported="false" />
         <activity
             android:name="com.example.whm.ui.Sales_Person.CustomerListActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.whm.ui.Sales_Person.SearchCustomer"
             android:exported="false" />
         <activity
             android:name="com.example.whm.ui.Piker_And_Packer_OrderList.StockNotAvailableList"

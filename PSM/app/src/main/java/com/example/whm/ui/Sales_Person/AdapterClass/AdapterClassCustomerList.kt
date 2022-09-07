@@ -1,5 +1,7 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.provider.Settings.Global.getString
@@ -9,9 +11,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassCustomerList
+import com.example.whm.ui.Sales_Person.CustomerDetailsActivity
+import com.example.whm.ui.UpdateLocation.UpdateLocation
 import com.example.whm.ui.Sales_Person.CustomerListActivity as CustomerListActivity1
 
 class AdapterClassCustomerList(
@@ -22,6 +28,7 @@ class AdapterClassCustomerList(
         var customerID: TextView = itemView.findViewById(R.id.customerID)
         var CustomerName: TextView = itemView.findViewById(R.id.customerName1)
         var Duevalue: TextView = itemView.findViewById(R.id.Duevalue)
+        var CustomerListCard: CardView = itemView.findViewById(R.id.CustomerListCard)
     }
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -35,6 +42,16 @@ class AdapterClassCustomerList(
         var CustomerList = CustomerList[position]
         holder.CustomerName.text = CustomerList.getCN().toString()
         holder.customerID.text = CustomerList.getCId().toString()
+        holder.CustomerListCard.setOnClickListener(View.OnClickListener {
+            val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(Listdata)
+            val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
+            sharedLoadOrderPage.putString("CustomerName", CustomerList.getCN().toString())
+            //sharedLoadOrderPage.putString("UpdateLocation",ValueUpdate.toString())
+            sharedLoadOrderPage.apply()
+            var intent: Intent = Intent(Listdata, CustomerDetailsActivity::class.java)
+            Listdata?.startActivity(intent)
+            (Listdata as Activity).finish()
+        })
         var deuBalance=CustomerList.getDueBalances()!!.toFloat()
         if (deuBalance>0.00) {
                           holder.Duevalue.setText("Due : $"+"%.2f".format(deuBalance))

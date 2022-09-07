@@ -74,7 +74,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/profile"></TextView>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textlogo"
@@ -96,7 +96,7 @@
                         android:drawableStart="@drawable/user_person_24"
                         android:drawableLeft="@drawable/user_person_24"
                         android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3"
+                        app:layout_constraintTop_toBottomOf="@+id/text"
                         app:startIconDrawable="@drawable/user_person_24">
 
                         <EditText
@@ -147,9 +147,9 @@
                         android:drawableStart="@drawable/passowrd_vpn_key_24"
                         android:drawableLeft="@drawable/passowrd_vpn_key_24"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/textView3"
-                        app:layout_constraintStart_toStartOf="@+id/textView3"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3"
+                        app:layout_constraintEnd_toEndOf="@+id/text"
+                        app:layout_constraintStart_toStartOf="@+id/text"
+                        app:layout_constraintTop_toBottomOf="@+id/text"
                         app:startIconDrawable="@drawable/passowrd_vpn_key_24">
 
                         <EditText
