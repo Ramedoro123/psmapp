@@ -1,17 +1,19 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
-class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:Int,BP:Float) {
+class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:Int,BP:Float,UnitType:String) {
     private var PId:String
     private var PName:String
     private var ImageUrl:String
     private var CStock:Int
     private var BP:Float
+    private var UnitType:String
     init {
         this.PId=PId
         this.PName=PName
         this.ImageUrl=ImageUrl
         this.CStock=CStock
         this.BP=BP
+        this.UnitType=UnitType
     }
     fun getPId():String?{
         return PId
@@ -43,4 +45,11 @@ class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:Int
     fun setBP(BP:Float?){
         this.BP=BP!!
     }
+    fun getUnitType():String?{
+        return UnitType
+    }
+    fun setUnitType(UnitType:String?){
+        this.UnitType=UnitType!!
+    }
+
 }

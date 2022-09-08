@@ -59,7 +59,22 @@ class CustomerListActivity : AppCompatActivity() {
         if (CustmerTypeModelList.isEmpty())
         {
             DilogCustom()
-            getCustomerType("CustomerType")
+            if (AppPreferences.internetConnectionCheck(this)) {
+                getCustomerType()
+            }
+            else {
+                val dialog = this?.let { Dialog(it) }
+                dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+                val btDismiss =
+                    dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+                btDismiss?.setOnClickListener {
+                    dialog.dismiss()
+                    startActivity(Intent(this, MainActivity2::class.java))
+                    finish()
+                }
+                dialog?.show()
+            }
             }
         else {
             DilogCustom()
@@ -71,6 +86,7 @@ class CustomerListActivity : AppCompatActivity() {
         accessToken = preferences.getString("accessToken", "")
         empautoid = preferences.getString("EmpAutoId", "")
         CustomerlistSize = preferences.getString("CustomerlistSize", "")
+
         CustomerTitle.setText("Customer List"+"("+CustomerlistSize+")")
        // Toast.makeText(this,CustomerlistSize.toString(),Toast.LENGTH_LONG).show()
         if (AppPreferences.internetConnectionCheck(this)) {
@@ -103,7 +119,7 @@ class CustomerListActivity : AppCompatActivity() {
 
 
 
-    private fun getCustomerType(CustomerType:String) {
+    private fun getCustomerType() {
         val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
         pDialog.titleText = "Fetching ..."
@@ -111,7 +127,6 @@ class CustomerListActivity : AppCompatActivity() {
         pDialog.show()
         //We Create Json object to send request for server
         val requestContainer=JSONObject()
-        val searchcustomer=JSONObject()
         val ContainerObject=JSONObject()
         ContainerObject.put("requestContainer",requestContainer.put("appVersion",AppPreferences.AppVersion))
         ContainerObject.put("requestContainer",requestContainer.put("deviceID", Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)))
@@ -142,6 +157,8 @@ class CustomerListActivity : AppCompatActivity() {
                       }
                       SpinnerValue()
                         pDialog.dismiss()
+                }else{
+
                 }
         },Response.ErrorListener { pDialog.dismiss() })
         JsonObjectRequest.retryPolicy=DefaultRetryPolicy(
@@ -190,6 +207,7 @@ class CustomerListActivity : AppCompatActivity() {
         dilog.show()
         dilog.getWindow()!!.setAttributes(lp);
     }
+
     private fun CustomerList(customerId: String, customerName: String) {
         val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
@@ -237,18 +255,19 @@ class CustomerListActivity : AppCompatActivity() {
                         ModelClassCustomer(AI,CN,CId,CT,DueBalances)
                     }
                     pDialog.dismiss()
-                }else{
+                }else
+                {
 
-                   var Totalstockqtycheck=SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)
-                    Totalstockqtycheck.setContentText(ResponseMessage)
-                    Totalstockqtycheck.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                    Totalstockqtycheck.setConfirmClickListener()
+                   var popUp=SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)
+                    popUp.setContentText(ResponseMessage)
+                    popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                    popUp.setConfirmClickListener()
                     {
                             sDialog -> sDialog.dismissWithAnimation()
                             CustomerList("","",)
                     }
-                    Totalstockqtycheck.show()
-                    Totalstockqtycheck.setCanceledOnTouchOutside(false)
+                    popUp.show()
+                    popUp.setCanceledOnTouchOutside(false)
                     pDialog.dismiss()
                 }
         }, Response.ErrorListener { pDialog.dismiss() })
@@ -263,6 +282,7 @@ class CustomerListActivity : AppCompatActivity() {
             Toast.makeText(this, "Server Error", Toast.LENGTH_LONG).show()
         }
     }
+
     private fun ModelClassCustomer(AI:Int,CN: String, CId: String,CT:String,DueBalances:Float) {
         var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalances)
         ModelClassCustomer.add(ModelClassCustomer1)

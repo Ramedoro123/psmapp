@@ -29,24 +29,110 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="50dp"
-            android:layout_toRightOf="@id/btnBackarrow"
-            android:gravity="center"
-            android:text="Products"
+            android:layout_centerInParent="true"
+            android:text="Products(1)"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/SearchProduct"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_baseline_search_24"
+            android:backgroundTint="@color/white" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ProductListRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:background="@color/teal_700"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
         tools:listitem="@layout/product_list" />
 
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/cart2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/white"
+            android:text="Order Total : 100.00"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/information"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/framelayout"
+            android:background="@drawable/ic_baseline_info_24"
+            android:backgroundTint="@color/white" />
+
+        <FrameLayout
+            style="?attr/actionButtonStyle"
+            android:id="@+id/framelayout"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clipToPadding="false"
+            android:focusable="true">
+            <ImageView
+                android:id="@+id/cartview"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_shopping_cart_24"/>
+            <TextView
+                android:id="@+id/cart_badge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|end|top"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="-5dp"
+                android:layout_marginRight="-5dp"
+                android:background="@drawable/badge_background"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="4"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+        </FrameLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/bg_edittext"
+        android:hint="Scan Barcode"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/ProductListRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

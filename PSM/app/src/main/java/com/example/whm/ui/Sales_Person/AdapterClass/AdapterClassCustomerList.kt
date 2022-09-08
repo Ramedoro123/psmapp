@@ -20,8 +20,7 @@ import com.example.whm.ui.Sales_Person.CustomerDetailsActivity
 import com.example.whm.ui.UpdateLocation.UpdateLocation
 import com.example.whm.ui.Sales_Person.CustomerListActivity as CustomerListActivity1
 
-class AdapterClassCustomerList(
-    private val CustomerList:List<ModelClassCustomerList>,
+class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerList>,
     var Listdata: Context?
     ):RecyclerView.Adapter<AdapterClassCustomerList.ViewHolder>(){
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {

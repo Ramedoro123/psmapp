@@ -32,7 +32,6 @@ class CustomerDetailsActivity : AppCompatActivity() {
             popupMenu.setOnMenuItemClickListener { item->
                 when(item.itemId){
                 R.id.NewOrder->{
-                     Toast.makeText(this,"New Order",Toast.LENGTH_LONG).show()
                     startActivity(Intent(this, SalesPersonProductList::class.java))
                  true
                 }

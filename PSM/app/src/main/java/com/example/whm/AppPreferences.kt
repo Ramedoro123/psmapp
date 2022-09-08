@@ -56,6 +56,7 @@ object AppPreferences {
     const val ChangeBillNo_And_Date=BASEURL+"WPOReceive.asmx/updatebillno"
     const val Customer_ListUrl=salesPersonUrl+"WLiveCustomer.asmx/getCustomerList"
     const val getCustomerType=salesPersonUrl+"WCustomerList.asmx/getCustomerType"
+    const val getProductListApi=salesPersonUrl+"WLiveProductMaster.asmx/getProductsList"
 
     //for devices
     var manufacturer = Build.MANUFACTURER
