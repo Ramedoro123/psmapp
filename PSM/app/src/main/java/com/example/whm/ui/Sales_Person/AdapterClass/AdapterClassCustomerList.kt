@@ -2,23 +2,17 @@ package com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassCustomerList
 import com.example.whm.ui.Sales_Person.CustomerDetailsActivity
-import com.example.whm.ui.UpdateLocation.UpdateLocation
-import com.example.whm.ui.Sales_Person.CustomerListActivity as CustomerListActivity1
+
 
 class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerList>,
     var Listdata: Context?
@@ -41,10 +35,12 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
         var CustomerList = CustomerList[position]
         holder.CustomerName.text = CustomerList.getCN().toString()
         holder.customerID.text = CustomerList.getCId().toString()
+
         holder.CustomerListCard.setOnClickListener(View.OnClickListener {
             val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(Listdata)
             val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
             sharedLoadOrderPage.putString("CustomerName", CustomerList.getCN().toString())
+            sharedLoadOrderPage.putString("customerId", CustomerList.getCId().toString())
             //sharedLoadOrderPage.putString("UpdateLocation",ValueUpdate.toString())
             sharedLoadOrderPage.apply()
             var intent: Intent = Intent(Listdata, CustomerDetailsActivity::class.java)
@@ -62,7 +58,6 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
         var CustomerlistSize=CustomerList.size.toString()
         val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(Listdata)
         val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
-
         sharedLoadOrderPage.putString("CustomerlistSize", CustomerlistSize)
         sharedLoadOrderPage.apply()
 

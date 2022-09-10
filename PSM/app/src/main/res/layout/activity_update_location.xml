@@ -49,6 +49,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:hint="Scan order barcode"
+        android:maxLength="20"
         android:windowSoftInputMode="stateAlwaysHidden"
         android:padding="5dp"
         android:singleLine="true"

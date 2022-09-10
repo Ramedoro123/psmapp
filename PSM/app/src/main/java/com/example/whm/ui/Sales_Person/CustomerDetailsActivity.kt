@@ -17,9 +17,9 @@ class CustomerDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_customer_details)
+        setContentView(R.layout.activity_detail1)
         var btnBackarrow=findViewById<TextView>(R.id.btnBackarrow)
-        var CustomerName=findViewById<TextView>(R.id.CustomerName)
+//        var CustomerName=findViewById<TextView>(R.id.CustomerName)
         var moreOption=findViewById<ImageView>(R.id.moreOption)
 
         btnBackarrow.setOnClickListener(View.OnClickListener {

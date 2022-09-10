@@ -27,7 +27,7 @@
             android:backgroundTint="@color/white" />
 
         <TextView
-            android:id="@+id/CustomerName"
+            android:id="@+id/customerHeader"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

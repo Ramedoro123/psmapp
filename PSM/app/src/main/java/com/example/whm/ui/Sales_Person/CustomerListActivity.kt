@@ -28,7 +28,7 @@ import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.Mode
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
-class CustomerListActivity : AppCompatActivity() {
+public class CustomerListActivity : AppCompatActivity() {
 
     var ModelClassCustomer: ArrayList<ModelClassCustomerList> = arrayListOf()
     var CustmerTypeModelList: ArrayList<CustmerTypeModel> = arrayListOf()
@@ -50,7 +50,7 @@ class CustomerListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_customer_list)
         var backbtn=findViewById<TextView>(R.id.btnBackarrow)
            SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
-        var CustomerTitle=findViewById<TextView>(R.id.CustomerName)
+        var CustomerTitle=findViewById<TextView>(R.id.customerHeader)
         backbtn.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this,MainActivity2::class.java))
             finish()
@@ -86,7 +86,6 @@ class CustomerListActivity : AppCompatActivity() {
         accessToken = preferences.getString("accessToken", "")
         empautoid = preferences.getString("EmpAutoId", "")
         CustomerlistSize = preferences.getString("CustomerlistSize", "")
-
         CustomerTitle.setText("Customer List"+"("+CustomerlistSize+")")
        // Toast.makeText(this,CustomerlistSize.toString(),Toast.LENGTH_LONG).show()
         if (AppPreferences.internetConnectionCheck(this)) {
@@ -255,7 +254,8 @@ class CustomerListActivity : AppCompatActivity() {
                         ModelClassCustomer(AI,CN,CId,CT,DueBalances)
                     }
                     pDialog.dismiss()
-                }else
+                }
+                else
                 {
 
                    var popUp=SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)

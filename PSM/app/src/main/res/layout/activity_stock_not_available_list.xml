@@ -35,7 +35,7 @@
         tools:listitem="@layout/stock_listview" />
 
     <TextView
-        android:id="@+id/message"
+        android:id="@+id/messagetitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -58,7 +58,7 @@
         android:layout_height="2dp"
         android:layout_marginTop="10dp"
         android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/message"
+        app:layout_constraintTop_toBottomOf="@+id/messagetitle"
         tools:layout_editor_absoluteX="21dp" />
 
     <Button

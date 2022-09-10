@@ -71,7 +71,7 @@ class StockNotAvailableList : AppCompatActivity() {
    }
 
     fun findbyid(){
-        message1=findViewById(R.id.message)
+        message1=findViewById(R.id.messagetitle)
         btnOk1=findViewById(R.id.btnOk1)
     }
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

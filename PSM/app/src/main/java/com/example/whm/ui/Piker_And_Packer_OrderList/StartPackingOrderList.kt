@@ -114,7 +114,7 @@ class StartPackingOrderList : AppCompatActivity() {
 
         OrderNo1 = findViewById(R.id.OrderTitle)
         ProductIDText = findViewById(R.id.Product_Id)
-        ProductNameText = findViewById(R.id.SProductName)
+        ProductNameText = findViewById(R.id.productIdSalse)
         UnitTypeText = findViewById(R.id.Unit_Type)
         LoctaionText = findViewById(R.id.LocationProduct)
         StockText = findViewById(R.id.Stock)

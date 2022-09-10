@@ -24,31 +24,44 @@
         <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/menu/ipomenuitem.xml" value="0.3578125" />
         <entry key="..\:/Ram/A1WHM v3.0.0.14 source Code 20.08/PSM/app/src/main/res/menu/main_activity2.xml" value="0.3578125" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable-v24/button_background.xml" value="0.269" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/backgroundimg.xml" value="0.2315" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/badge_background.xml" value="0.352" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/bg_edittext.xml" value="0.269" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/bg_lightedittext.xml" value="0.269" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/bg_totalqty.xml" value="0.2315" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/border.xml" value="0.269" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/borderd.xml" value="0.269" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/borderline.xml" value="0.2315" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/buttondrb.xml" value="0.269" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/cardview.xml" value="0.269" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/clendericon.xml" value="0.2315" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/corner4.xml" value="0.282" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/edittextboxborder.xml" value="0.269" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/frame.xml" value="0.2315" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/frame1.xml" value="0.2315" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.244" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/squier_button_color.xml" value="0.269" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/squre_button.xml" value="0.269" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/drawable/txtscan.xml" value="0.2315" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_cart_view_acticity.xml" value="0.3625" />
-        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_customer_details.xml" value="0.3578125" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_customer_details.xml" value="0.22" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_customer_list.xml" value="0.3484375" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_data.xml" value="0.3484375" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_detail1.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_internalpodetails.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_main.xml" value="0.3578125" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_main2.xml" value="0.3578125" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_order_details_acticity.xml" value="0.30104166666666665" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_receive_po.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_sales_person_product_list.xml" value="0.33" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_search_customer.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_splash_screen.xml" value="0.3578125" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_start_packing_order_list.xml" value="0.3625" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_stock_not_available_list.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_submitdetails.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/activity_update_location.xml" value="0.3567708333333333" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/add_barcode_fragment.xml" value="0.3625" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/add_to_cart_popupview.xml" value="0.33" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/app_bar_main.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/content_main.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/customer_list.xml" value="0.3614583333333333" />
@@ -56,6 +69,7 @@
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/dailog_log.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/details__items_fragment.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/editqtylayout.xml" value="0.3625" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/fragment_add__on__order_.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/fragment_customer_list.xml" value="0.21145833333333333" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/fragment_customer_list2.xml" value="0.3328125" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/fragment_draftpol_list2.xml" value="0.3625" />
@@ -82,7 +96,9 @@
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/receivepolist.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/searchproduct.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/stock_list_popup.xml" value="0.3625" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/stock_listview.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/submit_details_item_fragment.xml" value="0.3625" />
+        <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/success_message_popup.xml" value="0.3614583333333333" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/update_location.xml" value="0.3567708333333333" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/layout/verifyeditqtylayout.xml" value="0.3625" />
         <entry key="..\:/edoroProject2022/psmapp/PSM/app/src/main/res/menu/activity_main_drawer.xml" value="0.21145833333333333" />
