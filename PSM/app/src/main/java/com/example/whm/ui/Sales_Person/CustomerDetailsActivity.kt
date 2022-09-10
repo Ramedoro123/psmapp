@@ -17,9 +17,22 @@ class CustomerDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail1)
+        setContentView(R.layout.activity_customer_details)
         var btnBackarrow=findViewById<TextView>(R.id.btnBackarrow)
-//        var CustomerName=findViewById<TextView>(R.id.CustomerName)
+        var customerID=findViewById<TextView>(R.id.CSTID)
+        var customerType=findViewById<TextView>(R.id.CstType)
+        var onRoute=findViewById<TextView>(R.id.onRoute)
+        var contectPerson=findViewById<TextView>(R.id.contectPerson)
+        var cstNumber=findViewById<TextView>(R.id.cstNumber)
+        var TermsId=findViewById<TextView>(R.id.TermsId)
+        var dueBalenceId=findViewById<TextView>(R.id.dueBalenceId)
+        var storeCreditBalence=findViewById<TextView>(R.id.storeCreditBalence)
+        var CstEmail=findViewById<TextView>(R.id.CstEmail)
+        var priceLavelCst=findViewById<TextView>(R.id.priceLavelCst)
+        var customerNameCst=findViewById<TextView>(R.id.customerNameCst)
+        var storePhoneNo=findViewById<TextView>(R.id.storePhoneNo)
+        var shippingAddressCst=findViewById<TextView>(R.id.shippingAddressCst)
+        var CstBillingAddress=findViewById<TextView>(R.id.CstBillingAddress)
         var moreOption=findViewById<ImageView>(R.id.moreOption)
 
         btnBackarrow.setOnClickListener(View.OnClickListener {
