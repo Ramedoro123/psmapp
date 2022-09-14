@@ -116,7 +116,7 @@
                         android:id="@+id/textView97"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/CSTID" />
@@ -153,13 +153,50 @@
                         android:id="@+id/textView100"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/CstType" />
 
                     <TextView
                         android:id="@+id/textView101"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="Customer Name"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/customerNameCst"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/customerNameCst"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:padding="2dp"
+                        android:text="4 Eleven Food Mart (Atl\nantic City)"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="normal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView101"
+                        app:layout_constraintTop_toBottomOf="@+id/CstType" />
+
+                    <TextView
+                        android:id="@+id/textView103"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/colorAccents"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/customerNameCst" />
+
+                    <TextView
+                        android:id="@+id/textView104"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
@@ -178,60 +215,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:padding="2dp"
-                        android:text="No"
-                        android:textColor="@color/black"
-                        android:textSize="15dp"
-                        android:textStyle="normal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView101"
-                        app:layout_constraintTop_toBottomOf="@+id/CstType" />
-
-                    <TextView
-                        android:id="@+id/textView103"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/onRoute" />
-
-                    <TextView
-                        android:id="@+id/textView104"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:padding="2dp"
-                        android:text="Contact Person"
-                        android:textColor="@color/black"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/contectPerson" />
-
-                    <TextView
-                        android:id="@+id/contectPerson"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:padding="2dp"
                         android:text="Abm Shahid ullah"
                         android:textColor="@color/black"
                         android:textSize="15dp"
                         android:textStyle="normal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView104"
-                        app:layout_constraintTop_toBottomOf="@+id/onRoute" />
+                        app:layout_constraintTop_toBottomOf="@+id/customerNameCst" />
 
                     <TextView
                         android:id="@+id/textView106"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/contectPerson" />
+                        app:layout_constraintTop_toBottomOf="@+id/onRoute" />
 
                     <TextView
                         android:id="@+id/textView107"
@@ -239,17 +239,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
-                        android:text="Mobile"
+                        android:text="Shipping Address"
                         android:textColor="@color/black"
 
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/cstNumber" />
+                        app:layout_constraintTop_toTopOf="@+id/shippingAddressCst" />
 
                     <TextView
-                        android:id="@+id/cstNumber"
+                        android:id="@+id/shippingAddressCst"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -266,10 +266,10 @@
                         android:id="@+id/textView109"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cstNumber" />
+                        app:layout_constraintTop_toBottomOf="@+id/shippingAddressCst" />
 
                     <TextView
                         android:id="@+id/textView110"
@@ -277,16 +277,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
-                        android:text="Terms"
+                        android:text="Billing Address"
                         android:textColor="@color/black"
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/TermsId" />
+                        app:layout_constraintTop_toTopOf="@+id/CstBillingAddress" />
 
                     <TextView
-                        android:id="@+id/TermsId"
+                        android:id="@+id/CstBillingAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -297,16 +297,16 @@
                         android:textStyle="normal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView110"
-                        app:layout_constraintTop_toBottomOf="@+id/cstNumber" />
+                        app:layout_constraintTop_toBottomOf="@+id/shippingAddressCst" />
 
                     <TextView
                         android:id="@+id/textView112"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/TermsId" />
+                        app:layout_constraintTop_toBottomOf="@+id/CstBillingAddress" />
 
                     <TextView
                         android:id="@+id/textView113"
@@ -314,29 +314,27 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
-                        android:text="Due Balance"
+                        android:text="Contact Person"
                         android:textColor="@color/black"
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/dueBalenceId" />
+                        app:layout_constraintTop_toTopOf="@+id/Contactperson" />
 
                     <TextView
-                        android:id="@+id/dueBalenceId"
+                        android:id="@+id/Contactperson"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3.5dp"
                         android:drawablePadding="2dp"
                         android:gravity="left"
                         android:padding="2dp"
-                        android:text="$0.00"
-                        android:textColor="@color/redLight"
+                        android:textColor="@color/black"
                         android:textSize="15dp"
-                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView113"
-                        app:layout_constraintTop_toBottomOf="@+id/TermsId" />
+                        app:layout_constraintTop_toBottomOf="@+id/CstBillingAddress" />
 
                     <TextView
                         android:id="@+id/textView115"
@@ -344,59 +342,18 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="3dp"
                         android:layout_marginBottom="3dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintBottom_toTopOf="@+id/textView116"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/dueBalenceId" />
+                        app:layout_constraintTop_toBottomOf="@+id/Contactperson" />
 
                     <TextView
                         android:id="@+id/textView116"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="Store Credit"
-                        android:textColor="@color/black"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/storeCreditBalence" />
-
-                    <TextView
-                        android:id="@+id/storeCreditBalence"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4.5dp"
-                        android:drawablePadding="2dp"
-                        android:padding="2dp"
-                        android:gravity="left"
-                        android:text="$0.00"
-                        android:textColor="@color/Kelly_Green"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/textView118"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline2"
-                        app:layout_constraintTop_toBottomOf="@+id/dueBalenceId" />
-
-                    <TextView
-                        android:id="@+id/textView118"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/Kelly_Green"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/storeCreditBalence" />
-
-                    <TextView
-                        android:id="@+id/textView119"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:padding="2dp"
-                        android:text="Store phone No."
+                        android:text="Store Phone No."
                         android:textColor="@color/black"
                         android:textSize="15dp"
                         android:textStyle="bold"
@@ -406,6 +363,45 @@
 
                     <TextView
                         android:id="@+id/storePhoneNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4.5dp"
+                        android:drawablePadding="2dp"
+                        android:gravity="left"
+                        android:padding="2dp"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView118"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline2"
+                        app:layout_constraintTop_toBottomOf="@+id/Contactperson" />
+
+                    <TextView
+                        android:id="@+id/textView118"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@color/colorAccents"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/storePhoneNo" />
+
+                    <TextView
+                        android:id="@+id/textView119"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="Mobile"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/storeMobile" />
+
+                    <TextView
+                        android:id="@+id/storeMobile"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -422,10 +418,10 @@
                         android:id="@+id/textView121"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/storePhoneNo" />
+                        app:layout_constraintTop_toBottomOf="@+id/storeMobile" />
 
                     <TextView
                         android:id="@+id/textView122"
@@ -454,7 +450,7 @@
                         android:textStyle="normal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView122"
-                        app:layout_constraintTop_toBottomOf="@+id/storePhoneNo" />
+                        app:layout_constraintTop_toBottomOf="@+id/storeMobile" />
 
                     <TextView
                         android:id="@+id/textView124"
@@ -474,6 +470,7 @@
                         android:id="@+id/priceLavelCst"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:layout_marginEnd="4dp"
                         android:layout_marginBottom="3dp"
                         android:padding="3dp"
@@ -492,7 +489,7 @@
                         android:layout_width="0dp"
                         android:layout_height="1dp"
                         android:layout_marginTop="3dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.384"
                         app:layout_constraintStart_toStartOf="parent"
@@ -502,7 +499,7 @@
                         android:id="@+id/textView127"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/priceLavelCst" />
@@ -513,21 +510,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
-                        android:text="Customer Name"
+                        android:text="Terms"
                         android:textColor="@color/black"
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/customerNameCst" />
+                        app:layout_constraintTop_toTopOf="@+id/termsId" />
 
                     <TextView
-                        android:id="@+id/customerNameCst"
+                        android:id="@+id/termsId"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:padding="2dp"
-                        android:text="4 Eleven Food Mart (Atl\nantic City)"
                         android:textColor="@color/black"
                         android:textSize="15dp"
                         android:textStyle="normal"
@@ -539,10 +535,10 @@
                         android:id="@+id/textView130"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/customerNameCst" />
+                        app:layout_constraintTop_toBottomOf="@+id/termsId" />
 
                     <TextView
                         android:id="@+id/textView131"
@@ -550,36 +546,36 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
-                        android:text="Shipping Address"
-                        android:textColor="@color/black"
+                        android:text="Due Balance"
+                        android:textColor="@color/redLight"
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/shippingAddressCst" />
+                        app:layout_constraintTop_toTopOf="@+id/dueBlance" />
 
                     <TextView
-                        android:id="@+id/shippingAddressCst"
+                        android:id="@+id/dueBlance"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:padding="2dp"
-                        android:text="1240 Atlantic Ave Atlant\nic City, NJ-08401"
-                        android:textColor="@color/black"
+                        android:text="$0.00"
+                        android:textColor="@color/redLight"
                         android:textSize="15dp"
-                        android:textStyle="normal"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView131"
-                        app:layout_constraintTop_toBottomOf="@+id/customerNameCst" />
+                        app:layout_constraintTop_toBottomOf="@+id/termsId" />
 
                     <TextView
                         android:id="@+id/textView133"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/Kelly_Green"
+                        android:background="@color/colorAccents"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/shippingAddressCst" />
+                        app:layout_constraintTop_toBottomOf="@+id/dueBlance" />
 
                     <TextView
                         android:id="@+id/textView134"
@@ -587,27 +583,27 @@
                         android:layout_height="50dp"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
-                        android:text="Billing Address"
-                        android:textColor="@color/black"
+                        android:text="Store Credit"
+                        android:textColor="@color/Kelly_Green"
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/CstBillingAddress" />
+                        app:layout_constraintTop_toTopOf="@+id/StoreCredit" />
 
                     <TextView
-                        android:id="@+id/CstBillingAddress"
+                        android:id="@+id/StoreCredit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
                         android:padding="2dp"
-                        android:text="1240 Atlantic Ave Atlant\nic City,kghlhfiHIGudsgufghugfuSGuyg NJ-08401"
-                        android:textColor="@color/black"
+                        android:text="$0.00"
+                        android:textColor="@color/Kelly_Green"
                         android:textSize="15dp"
                         android:textStyle="normal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/textView134"
-                        app:layout_constraintTop_toBottomOf="@+id/shippingAddressCst" />
+                        app:layout_constraintTop_toBottomOf="@+id/dueBlance" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

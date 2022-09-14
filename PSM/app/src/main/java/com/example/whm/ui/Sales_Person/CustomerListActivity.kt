@@ -189,7 +189,7 @@ public class CustomerListActivity : AppCompatActivity() {
         lp.copyFrom(dilog.getWindow()!!.getAttributes())
         lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.MATCH_PARENT
-        CustomerID=dilog.findViewById<EditText>(R.id.CustomerID)
+        CustomerID=dilog.findViewById<EditText>(R.id.AmountP)
         CustomerName=dilog.findViewById<EditText>(R.id.CustomerName)
         var btnSearch=dilog.findViewById<Button>(R.id.btnSearch)
 
@@ -223,7 +223,6 @@ public class CustomerListActivity : AppCompatActivity() {
         ContainerObject.put("requestContainer", requestContainer.put("deviceName", AppPreferences.DeviceName))
         ContainerObject.put("requestContainer",requestContainer.put("accessToken",accessToken))
         ContainerObject.put("requestContainer",requestContainer.put("userAutoId",empautoid))
-
         ContainerObject.put("searchcustomer", searchcustomer.put("customerId",customerId ))
         ContainerObject.put("searchcustomer", searchcustomer.put("customerName",customerName ))
         ContainerObject.put("searchcustomer", searchcustomer.put("customerType",autoId ))
@@ -250,8 +249,20 @@ public class CustomerListActivity : AppCompatActivity() {
                         var CT=responseData.getJSONObject(i).getString("CT")
                         var DueBalance=responseData.getJSONObject(i).getString("DBA")
                         val DueBalances : Float = DueBalance.toFloat()
+                        var SAdd=responseData.getJSONObject(i).getString("SAdd")
+                        var BAdd=responseData.getJSONObject(i).getString("BAdd")
+                        var CPN=responseData.getJSONObject(i).getString("CPN")
+                        var Email=responseData.getJSONObject(i).getString("E")
+                        var C1=responseData.getJSONObject(i).getString("C1")
+                        var MN=responseData.getJSONObject(i).getString("MN")
+                        var SCA=responseData.getJSONObject(i).getString("SCA")
+                        var PLN=responseData.getJSONObject(i).getString("PLN")
+                        var TD=responseData.getJSONObject(i).getString("TD")
+                        var ctype=responseData.getJSONObject(i).getString("ctype")
+                        var OnRoute=responseData.getJSONObject(i).getString("OnRoute")
+
                   //    Log.e("DueBalance",twoDigitValue.)
-                        ModelClassCustomer(AI,CN,CId,CT,DueBalances)
+                        ModelClassCustomer(AI,CN,CId,CT,DueBalances,SAdd,BAdd,CPN,Email,C1,MN,SCA,PLN,TD,ctype,OnRoute)
                     }
                     pDialog.dismiss()
                 }
@@ -283,8 +294,9 @@ public class CustomerListActivity : AppCompatActivity() {
         }
     }
 
-    private fun ModelClassCustomer(AI:Int,CN: String, CId: String,CT:String,DueBalances:Float) {
-        var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalances)
+    private fun ModelClassCustomer(AI:Int,CN: String, CId: String,CT:String,DueBalances:Float,SAdd:String,BAdd:String,
+                                   CPN:String,Email:String,C1:String,MN:String,SCA:String,PLN:String,TD:String,ctype:String,OnRoute:String) {
+        var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalances,SAdd,BAdd,CPN,Email,C1,MN,SCA,PLN,TD,ctype,OnRoute)
         ModelClassCustomer.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.CustomerView)
         CustomerAdapter = AdapterClassCustomerList(ModelClassCustomer, this)

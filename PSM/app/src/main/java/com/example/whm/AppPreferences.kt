@@ -57,6 +57,7 @@ object AppPreferences {
     const val Customer_ListUrl=salesPersonUrl+"WLiveCustomer.asmx/getCustomerList"
     const val getCustomerType=salesPersonUrl+"WCustomerList.asmx/getCustomerType"
     const val getProductListApi=salesPersonUrl+"WLiveProductMaster.asmx/getProductsList"
+    const val getpackingdetails=salesPersonUrl+"WLiveProductMaster.asmx/getpackingdetails"
 
     //for devices
     var manufacturer = Build.MANUFACTURER

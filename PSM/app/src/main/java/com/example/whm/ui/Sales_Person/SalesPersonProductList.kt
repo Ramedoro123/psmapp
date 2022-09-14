@@ -1,8 +1,6 @@
 package com.example.whm.ui.Sales_Person
 
-import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -25,7 +23,6 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalesPersonProductAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
-import com.example.myapplication.com.example.whm.ui.UpdateLocation.setCanceledOnTouchOutside
 import org.json.JSONObject
 
 
@@ -259,7 +256,7 @@ try {
         lp.copyFrom(dilog.getWindow()!!.getAttributes())
         lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.MATCH_PARENT
-        var productId=dilog.findViewById<EditText>(R.id.CustomerID)
+        var productId=dilog.findViewById<EditText>(R.id.AmountP)
         var productName=dilog.findViewById<EditText>(R.id.CustomerName)
         productId.setHint("Product ID ")
         productName.setHint("Product Name ")

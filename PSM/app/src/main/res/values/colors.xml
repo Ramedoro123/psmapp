@@ -10,6 +10,7 @@
     <color name="colorPrimary">#2a7ee6</color>
     <color name="colorPrimaryDark">#76a5df</color>
     <color name="colorAccent">#ffff8800</color>
+    <color name="colorAccents">#F6AF5F</color>
     <color name="zircon">#e0e6e4</color>
     <color name="red">#AAA5A5</color>
     <color name="redLight">#ED1A1A</color>

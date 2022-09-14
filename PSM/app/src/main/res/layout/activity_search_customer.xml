@@ -25,7 +25,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/CustomerID"
+                android:id="@+id/AmountP"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_marginHorizontal="16dp"
@@ -54,7 +54,7 @@
                 android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/CustomerID" />
+                app:layout_constraintTop_toBottomOf="@+id/AmountP" />
 
             <Spinner
                 android:id="@+id/Spinnervalue"

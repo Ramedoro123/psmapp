@@ -82,6 +82,50 @@
                         app:srcCompat="@drawable/default_pic" />
                 </androidx.cardview.widget.CardView>
 
+                <FrameLayout
+                    android:id="@+id/frameLayout3"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/borderline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cardView6"
+                    app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/text"
+                            android:layout_width="25dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/borderline"
+                            android:gravity="center"
+                            android:text="$"
+                            android:textColor="@color/black"
+                            android:textSize="19dp" />
+
+                        <EditText
+                            android:id="@+id/Price"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@id/text"
+                            android:background="@drawable/borderline"
+                            android:gravity="end"
+                            android:hint="Unit Price"
+                            android:inputType="numberDecimal"
+                            android:lines="1"
+                            android:maxLength="8"
+                            android:padding="7dp"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
+                    </RelativeLayout>
+
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/textView42"
@@ -94,7 +138,7 @@
                     android:textSize="17sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+                    app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
 
 
                 <CheckBox
@@ -193,7 +237,7 @@
 
                         <TextView
                             android:id="@+id/textView43"
-                            android:layout_width="25dp"
+                            android:layout_width="23dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/borderline"
                             android:gravity="center"
@@ -202,7 +246,7 @@
                             android:textSize="16dp" />
 
                         <EditText
-                            android:id="@+id/CustomerID"
+                            android:id="@+id/AmountP"
                             android:layout_width="60dp"
                             android:layout_height="match_parent"
                             android:layout_toRightOf="@id/textView43"
@@ -216,25 +260,24 @@
 
                         <EditText
                             android:id="@+id/textView45"
-                            android:layout_width="25dp"
+                            android:layout_width="23dp"
                             android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/CustomerID"
+                            android:layout_toRightOf="@id/AmountP"
                             android:background="@drawable/borderline"
                             android:gravity="center"
                             android:text="$"
                             android:textSize="16sp" />
 
                         <EditText
-                            android:id="@+id/textView46"
+                            android:id="@+id/TaxAmount"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_toRightOf="@id/textView45"
                             android:background="@drawable/transparent"
-                            android:gravity="center_vertical"
-                            android:maxLength="7"
-                            android:padding="3dp"
-                            android:text="9999.00"
-                            android:textColorHint="@color/black"
+                            android:gravity="fill_vertical"
+                            android:hint="Amount"
+                            android:inputType="numberDecimal"
+                            android:lines="1"
                             android:textSize="15sp" />
                     </RelativeLayout>
                 </FrameLayout>
@@ -245,60 +288,18 @@
                     android:layout_height="34dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginEnd="1dp"
+                    android:layout_marginEnd="5dp"
                     android:background="@drawable/borderline"
-                    app:layout_constraintEnd_toStartOf="@+id/frameLayout3"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cardView6"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <Spinner
+                        android:id="@+id/spineer"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
                 </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/frameLayout3"
-                    android:layout_width="0dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="1dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/borderline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/frameLayout"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/text"
-                            android:layout_width="25dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/borderline"
-                            android:gravity="center"
-                            android:text="$"
-                            android:textColor="@color/black"
-                            android:textSize="19dp" />
-
-                        <EditText
-                            android:id="@+id/text1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/text"
-                            android:background="@drawable/borderline"
-                            android:gravity="center_vertical"
-                            android:maxLength="7"
-                            android:padding="3dp"
-                            android:text="9999.00"
-                            android:textColor="@color/black"
-                            android:textSize="15dp" />
-                    </RelativeLayout>
-
-                </FrameLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
