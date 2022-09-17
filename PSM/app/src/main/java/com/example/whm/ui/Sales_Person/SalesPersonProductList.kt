@@ -23,6 +23,7 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalesPersonProductAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
+import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getCartdetailsModle
 import org.json.JSONObject
 
 
@@ -40,12 +41,6 @@ class SalesPersonProductList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_person_product_list)
-        val actionBar = supportActionBar
-        actionBar?.subtitle = "   Design a custom Action Bar"
-        // adding icon in the ActionBar
-        // methods to display the icon in the ActionBar
-        actionBar?.setDisplayUseLogoEnabled(true)
-        actionBar?.setDisplayShowHomeEnabled(true)
         var userInformation=findViewById<TextView>(R.id.information)
         var ScanBarcode=findViewById<EditText>(R.id.ScanBarcodeEditeTextView)
           productTitle=findViewById<TextView>(R.id.productTitle)
@@ -57,7 +52,7 @@ class SalesPersonProductList : AppCompatActivity() {
         customerName = preferences.getString("CustomerName", "")
         customerId = preferences.getString("customerId", "")
         ProductItemList = preferences.getString("ProductItemList", "")
-        productTitle.setText("Product("+ProductItemList+")").toString()
+
         userInformation.setOnClickListener(View.OnClickListener {
             var dilog=Dialog(this@SalesPersonProductList)
             dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -203,6 +198,8 @@ else {
                        var BP:Float=balencePrice.toFloat()
                        addProductdataModelClass(PId,PName,ImageUrl,CStock,BP,UnitType)
                    }
+                        var totalSize=productListModelClass.size
+                        productTitle.setText("Product("+totalSize+")").toString()
                          pDialog!!.dismiss()
                     }
                     else

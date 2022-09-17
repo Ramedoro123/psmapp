@@ -2,12 +2,12 @@ package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
 import kotlin.math.min
 
-class getCartdetailsModle(uiDs: Int, uName:String, frees: Int, price: Double, minPrices: Int, isdefault: Int) {
+class getCartdetailsModle(uiDs: Int, uName:String, frees: Int, price: String, minPrices: Int, isdefault: Int) {
 
     private var uiDs:Int
     private var uName:String
     private var frees: Int
-    private var price:Double
+    private var price:String
     private var minPrices: Int
     private var isdefault:Int
     init{
@@ -27,7 +27,7 @@ class getCartdetailsModle(uiDs: Int, uName:String, frees: Int, price: Double, mi
     fun getfrees(): Int? {
         return frees
     }
-    fun getprice():Double?{
+    fun getprice():String?{
         return price
     }
     fun getminPrices(): Int? {

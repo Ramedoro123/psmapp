@@ -42,6 +42,7 @@ public class CustomerListActivity : AppCompatActivity() {
    lateinit var CustomerID:EditText
    lateinit var CustomerName:EditText
    lateinit var SearchCustomer1:TextView
+   lateinit var CustomerTitle:TextView
 
     var ResponseResult=JSONObject()
     var responseData=JSONArray()
@@ -50,7 +51,7 @@ public class CustomerListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_customer_list)
         var backbtn=findViewById<TextView>(R.id.btnBackarrow)
            SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
-        var CustomerTitle=findViewById<TextView>(R.id.customerHeader)
+        CustomerTitle=findViewById<TextView>(R.id.customerHeader)
         backbtn.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this,MainActivity2::class.java))
             finish()
@@ -86,7 +87,6 @@ public class CustomerListActivity : AppCompatActivity() {
         accessToken = preferences.getString("accessToken", "")
         empautoid = preferences.getString("EmpAutoId", "")
         CustomerlistSize = preferences.getString("CustomerlistSize", "")
-        CustomerTitle.setText("Customer List"+"("+CustomerlistSize+")")
        // Toast.makeText(this,CustomerlistSize.toString(),Toast.LENGTH_LONG).show()
         if (AppPreferences.internetConnectionCheck(this)) {
             Log.e("accessToken", accessToken.toString())
@@ -264,6 +264,8 @@ public class CustomerListActivity : AppCompatActivity() {
                   //    Log.e("DueBalance",twoDigitValue.)
                         ModelClassCustomer(AI,CN,CId,CT,DueBalances,SAdd,BAdd,CPN,Email,C1,MN,SCA,PLN,TD,ctype,OnRoute)
                     }
+                    var totalCustomer=ModelClassCustomer.size
+                    CustomerTitle.setText("Customer List"+"("+totalCustomer+")")
                     pDialog.dismiss()
                 }
                 else

@@ -6,6 +6,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.preference.PreferenceManager
 import android.provider.Settings
+import android.text.Editable
+import android.text.InputFilter
+import android.text.Spanned
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -24,25 +28,31 @@ import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getC
 import com.squareup.picasso.Picasso
 import org.json.JSONArray
 import org.json.JSONObject
+import java.lang.reflect.Field
+import java.util.regex.Pattern
+
 
 class SalesPersonProductAdapterClass(
     private val ProductItemList: List<SalesPersonProductModel>,
     var data: Context?
-) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>() {
+) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>()
+{
     var responseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var Price: TextView
     lateinit var TaxAmount: EditText
     lateinit var AmountP: EditText
-    var isdefault: Int? = null
-    var UName = arrayOf(String())
-    var UID = intArrayOf()
-    var free = intArrayOf()
-    var price:Double?=null
-    var getcartDetailsdata: ArrayList<getCartdetailsModle> = arrayListOf()
-    var numbers = intArrayOf()
-    var MinPrice = intArrayOf()
-
+    var mylist = ArrayList<String>()
+    var mylist1 = ArrayList<String>()
+    var isdefault = ArrayList<Int>()
+    var UIDs:Int?=null
+    var frees:Int?=null
+    var MinPrices:Int?=null
+    var isdefault1:Int?=null
+    var UName:String?=null
+    var price:String?=null
+    var pricess:String?=null
+    var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         var ProductName = itemView.findViewById<TextView>(R.id.productIdSalse)
         var ProductdID = itemView.findViewById<TextView>(R.id.ProductdID)
@@ -51,7 +61,6 @@ class SalesPersonProductAdapterClass(
         var ProductImage = itemView.findViewById<ImageView>(R.id.ProductImage)
         var cardView5 = itemView.findViewById<CardView>(R.id.cardView5)
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
 
@@ -127,29 +136,58 @@ class SalesPersonProductAdapterClass(
                     val responseCode = responsedData.getString("responseCode")
                     if (responseCode == "201") {
                         responseResultData = responsedData.getJSONArray("responseData")
+                       // array.clear()
+                        getcartDetailsdata.clear()
                         if (responseResultData.length() != null && responseResultData.length() > 0)
                         {
                             for (i in 0 until responseResultData.length()) {
-                                var UIDs = responseResultData.getJSONObject(i).getInt("UID")
-                                UID = IntArray(UIDs)
-                               var UName =responseResultData.getJSONObject(i).getString("UName")
+                                   UIDs = responseResultData.getJSONObject(i).getInt("UID")
+                                   UName =responseResultData.getJSONObject(i).getString("UName")
+                                  frees = responseResultData.getJSONObject(i).getInt("Free")
+                                   price =responseResultData.getJSONObject(i).getString("price")
+                                  MinPrices = responseResultData.getJSONObject(i).getInt("MinPrice")
+                                  isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
+                                 var cartdata= getCartdetailsModle(UIDs!!,UName!!, frees!!, price!!, MinPrices!!, isdefault1!!)
+                                   getcartDetailsdata.add(cartdata)
 
-                                var frees = responseResultData.getJSONObject(i).getInt("Free")
-                                free = IntArray(frees)
-                                price =responseResultData.getJSONObject(i).getDouble("price")
-
-                                var MinPrices = responseResultData.getJSONObject(i).getInt("MinPrice")
-                                MinPrice = IntArray(MinPrices)
-                                var isdefault = responseResultData.getJSONObject(i).getInt("isdefault")
-                                numbers = IntArray(isdefault)
-                                //     names= arrayOf(UName)
-//                                 Free=price.toFloat()
-                                Price.setText("%.2f".format(price).toString())
-                                cartDetailsdata(UIDs,UName,frees, price!!,MinPrices,isdefault)
                             }
+                            mylist.clear()
+                            mylist1.clear()
+                            isdefault.clear()
+                            for (n in 0..getcartDetailsdata.size-1){
+                                pricess=getcartDetailsdata[n].getprice()
+                                mylist1.add(pricess.toString())
+                              var isdefault1=getcartDetailsdata[n].getisdefault()
+                                isdefault.add(isdefault1!!.toInt())
+                                var UName=getcartDetailsdata[n].getuName()
+                                mylist.add(UName.toString())
+                            }
+                            var adapter=ArrayAdapter<String>(it.context,R.layout.support_simple_spinner_dropdown_item,mylist)
+                               spineer.adapter=adapter
+                           for (i in 0..isdefault.size-1){
+                                    Log.e("isdefault",isdefault[i].toString())
+                                   var number=isdefault[i]
+                                       if (number==1){
+                                           spineer.setSelection(i);
+                                       }else{
 
-                                Log.e("UID",UID.count().toString())
-                            SpinnerValue()
+                                       }
+                           }
+                            spineer.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
+                                       override fun onNothingSelected(parent: AdapterView<*>?) {}
+                                       override fun onItemSelected(
+                                           parent: AdapterView<*>?,
+                                           view: View?,
+                                           position: Int,
+                                           id: Long
+                                       )
+                                       {
+                                       val item2:String=mylist1[position]
+                                       Price.setText(item2)
+                                       }
+                                   }
+                               listDropdown(spineer)
+
                             pDialog!!.dismiss()
                         }
                         else {
@@ -195,25 +233,50 @@ class SalesPersonProductAdapterClass(
             var SProductID = dilog.findViewById<TextView>(R.id.productIdSalse)
             var s_ProductName = dilog.findViewById<TextView>(R.id.text_ProductName)
             var stockProductS = dilog.findViewById<TextView>(R.id.stockProductS)
-            Price = dilog.findViewById<EditText>(R.id.Price)
             TaxAmount = dilog.findViewById<EditText>(R.id.TaxAmount)
             AmountP = dilog.findViewById<EditText>(R.id.AmountP)
-            var amout = TaxAmount.text.trim().toString()
-            if (amout == "" || amout == "0") {
-                TaxAmount.setText("0.00")
-            } else {
-                TaxAmount.setText(amout.toString())
-            }
+            Price = dilog.findViewById<EditText>(R.id.Price)
+           var checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
+           var checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
             var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
             spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
+
+            AmountP.filters = arrayOf(DecimalDigitsInputFilter1(3, 2))
+
+            Price.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
+
+            AmountP.addTextChangedListener(object :TextWatcher{
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    computeTotal()
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    computeTotal()
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+            })
+
             SProductID.setText(ProductItem.getPId())
             s_ProductName.setText(ProductItem.getPName())
             stockProductS.setText("Stock : " + ProductItem.getCStock().toString())
-
-            Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic)
-                .into(imageView13);
+            Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(imageView13);
+            checkBox.setOnCheckedChangeListener{_,isChecked->
+                      Toast.makeText(data,isChecked.toString(),Toast.LENGTH_LONG).show()
+            }
+            checkBox2.setOnCheckedChangeListener{_,isChecked->
+                Toast.makeText(data,isChecked.toString(),Toast.LENGTH_LONG).show()
+            }
             var btnCancle = dilog.findViewById<TextView>(R.id.textView33)
-
             btnCancle.setOnClickListener(View.OnClickListener {
                 dilog.dismiss()
             })
@@ -221,75 +284,95 @@ class SalesPersonProductAdapterClass(
             dilog.getWindow()!!.setAttributes(lp);
         })
 
+    }
+
+    private fun listDropdown(spineer: Spinner) {
+        val popup:Field=Spinner::class.java.getDeclaredField("mPopup")
+        popup.isAccessible=true
+        val popupWindow:ListPopupWindow=popup.get(spineer)as ListPopupWindow
+        popupWindow.height=(200).toInt()
 
 
     }
 
-    private fun cartDetailsdata(uiDs: Int, uName:String, frees: Int, price: Double, minPrices: Int, isdefault: Int) {
-        var CartDatalist = getCartdetailsModle(uiDs,uName,frees,price,minPrices,isdefault)
-          getcartDetailsdata.add(CartDatalist)
+    private fun computeTotal() {
+
+        if (AmountP.text.toString().isEmpty())
+        {
+            TaxAmount.text.toString()==""
+            AmountP.text.toString()==""
+             return
+        }
+        if (AmountP.text.toString()=="."){
+         // Toast.makeText(data,AmountP.text.toString(),Toast.LENGTH_LONG).show()
+            return
+        }else if (AmountP.text.toString()>="100")
+        {
+            return
+        }
+        else {
+            val taxamount = AmountP.text.toString().toDouble()
+            val price = Price.text.toString().toDouble()
+            val totaldiscount = taxamount * price / 100
+            TaxAmount.setText(totaldiscount.toString())
+        }
     }
 
-    private fun SpinnerValue() {
-        var array1: Array<String?> = emptyArray()
+    class DecimalDigitsInputFilter(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
+        //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
+        private val pattern = Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
 
-        val adapter: ArrayAdapter<String?> = object :
-            ArrayAdapter<String?>(
-                data!!.applicationContext,
-                android.R.layout.simple_spinner_dropdown_item
-            ) {
-            override fun getView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val v = super.getView(position, convertView, parent)
-                if (position == count) {
-                    (v.findViewById<View>(android.R.id.text1) as TextView).text = ""
-                    (v.findViewById<View>(android.R.id.text1) as TextView).text = getItem(count) //"Hint to be displayed"
-
+        override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int): CharSequence? {
+            return if (source.isEmpty()) {
+                // When the source text is empty, we need to remove characters and check the result
+                if (pattern.matcher(dest.removeRange(dstart, dend)).matches()) {
+                    // No changes to source
+                    null
+                } else {
+                    // Don't delete characters, return the old subsequence
+                    dest.subSequence(dstart, dend)
                 }
-                return v
-            }
-
-            override fun getCount(): Int {
-                return super.getCount()-1// you dont display last item. It is used as hint.
-            }
-        }
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        var Unames: String? = null
-        var Number:Int=1
-        for (i in 0 until responseResultData.length()) {
-             var isdefault = responseResultData.getJSONObject(i).getInt("isdefault")
-            if (Number==isdefault) {
-                Unames = responseResultData.getJSONObject(i).getString("UName")
-                adapter.add(Unames.toString())
-            }else{
-                var Unamess = responseResultData.getJSONObject(i).getString("UName")
-                adapter.add(Unamess.toString())
+            } else {
+                // Check the result
+                if (pattern.matcher(dest.replaceRange(dstart, dend, source)).matches()) {
+                    // No changes to source
+                    null
+                } else {
+                    // Return nothing
+                    ""
+                }
             }
         }
+    }
+    class DecimalDigitsInputFilter1(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
+        //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
+        private val pattern = Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
 
-        adapter.add(Unames)
-        spineer.adapter = adapter
-        spineer.setSelection(adapter.count)
-        //      spineer.setSelection(i);//to set default values
-//        spineer.setSelection(adapter.count) //set the hint the default selection so it appears on launch.
+        override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int): CharSequence? {
 
+            return if (source.isEmpty()) {
+                // When the source text is empty, we need to remove characters and check the result
+                if (pattern.matcher(dest.removeRange(dstart, dend)).matches()) {
+                    // No changes to source
+                    null
+                } else {
+                    // Don't delete characters, return the old subsequence
+                    dest.subSequence(dstart, dend)
+                }
+            } else {
+                // Check the result
+                if (pattern.matcher(dest.replaceRange(dstart, dend, source)).matches()) {
+                    // No changes to source
+                    null
+                } else {
+                    // Return nothing
+                    ""
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        var CustomerlistSize = ProductItemList.size.toString()
-        val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(data)
-        val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
-        sharedLoadOrderPage.putString("ProductItemList", CustomerlistSize)
-        sharedLoadOrderPage.apply()
-//        if(ProductItemList.size!=0){
-//            (data as AppCompatActivity)!!.supportActionBar!!.setWindowTitle("Add-On("+ProductItemList.size+")")
-//        }else{
-//            (data as AppCompatActivity)!!.supportActionBar!!.title = "Add-On("+ProductItemList.size+")"
-//
-//        }
         return ProductItemList.size
     }
 

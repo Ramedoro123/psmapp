@@ -252,9 +252,11 @@
                             android:layout_toRightOf="@id/textView43"
                             android:background="@drawable/transparent"
                             android:gravity="center_vertical"
+                            android:inputType="numberDecimal"
+                            android:lines="1"
                             android:maxLength="6"
                             android:padding="3dp"
-                            android:text="100.00"
+                            android:text="0.00"
                             android:textColorHint="@color/black"
                             android:textSize="15dp" />
 
@@ -276,6 +278,7 @@
                             android:background="@drawable/transparent"
                             android:gravity="fill_vertical"
                             android:hint="Amount"
+                            android:maxLength="8"
                             android:inputType="numberDecimal"
                             android:lines="1"
                             android:textSize="15sp" />
