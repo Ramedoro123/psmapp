@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.android.volley.DefaultRetryPolicy
@@ -35,8 +36,7 @@ import java.util.regex.Pattern
 class SalesPersonProductAdapterClass(
     private val ProductItemList: List<SalesPersonProductModel>,
     var data: Context?
-) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>()
-{
+) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>() {
     var responseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var Price: TextView
@@ -45,14 +45,15 @@ class SalesPersonProductAdapterClass(
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
     var isdefault = ArrayList<Int>()
-    var UIDs:Int?=null
-    var frees:Int?=null
-    var MinPrices:Int?=null
-    var isdefault1:Int?=null
-    var UName:String?=null
-    var price:String?=null
-    var pricess:String?=null
+    var UIDs: Int? = null
+    var frees: Int? = null
+    var MinPrices: Int? = null
+    var isdefault1: Int? = null
+    var UName: String? = null
+    var price: String? = null
+    var pricess: String? = null
     var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
+
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         var ProductName = itemView.findViewById<TextView>(R.id.productIdSalse)
         var ProductdID = itemView.findViewById<TextView>(R.id.ProductdID)
@@ -61,6 +62,7 @@ class SalesPersonProductAdapterClass(
         var ProductImage = itemView.findViewById<ImageView>(R.id.ProductImage)
         var cardView5 = itemView.findViewById<CardView>(R.id.cardView5)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
 
@@ -136,61 +138,70 @@ class SalesPersonProductAdapterClass(
                     val responseCode = responsedData.getString("responseCode")
                     if (responseCode == "201") {
                         responseResultData = responsedData.getJSONArray("responseData")
-                       // array.clear()
+                        // array.clear()
                         getcartDetailsdata.clear()
-                        if (responseResultData.length() != null && responseResultData.length() > 0)
-                        {
+                        if (responseResultData.length() != null && responseResultData.length() > 0) {
                             for (i in 0 until responseResultData.length()) {
-                                   UIDs = responseResultData.getJSONObject(i).getInt("UID")
-                                   UName =responseResultData.getJSONObject(i).getString("UName")
-                                  frees = responseResultData.getJSONObject(i).getInt("Free")
-                                   price =responseResultData.getJSONObject(i).getString("price")
-                                  MinPrices = responseResultData.getJSONObject(i).getInt("MinPrice")
-                                  isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
-                                 var cartdata= getCartdetailsModle(UIDs!!,UName!!, frees!!, price!!, MinPrices!!, isdefault1!!)
-                                   getcartDetailsdata.add(cartdata)
+                                UIDs = responseResultData.getJSONObject(i).getInt("UID")
+                                UName = responseResultData.getJSONObject(i).getString("UName")
+                                frees = responseResultData.getJSONObject(i).getInt("Free")
+                                price = responseResultData.getJSONObject(i).getString("price")
+                                MinPrices = responseResultData.getJSONObject(i).getInt("MinPrice")
+                                isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
+                                var cartdata = getCartdetailsModle(
+                                    UIDs!!,
+                                    UName!!,
+                                    frees!!,
+                                    price!!,
+                                    MinPrices!!,
+                                    isdefault1!!
+                                )
+                                getcartDetailsdata.add(cartdata)
 
                             }
                             mylist.clear()
                             mylist1.clear()
                             isdefault.clear()
-                            for (n in 0..getcartDetailsdata.size-1){
-                                pricess=getcartDetailsdata[n].getprice()
+                            for (n in 0..getcartDetailsdata.size - 1) {
+                                pricess = getcartDetailsdata[n].getprice()
                                 mylist1.add(pricess.toString())
-                              var isdefault1=getcartDetailsdata[n].getisdefault()
+                                var isdefault1 = getcartDetailsdata[n].getisdefault()
                                 isdefault.add(isdefault1!!.toInt())
-                                var UName=getcartDetailsdata[n].getuName()
+                                var UName = getcartDetailsdata[n].getuName()
                                 mylist.add(UName.toString())
                             }
-                            var adapter=ArrayAdapter<String>(it.context,R.layout.support_simple_spinner_dropdown_item,mylist)
-                               spineer.adapter=adapter
-                           for (i in 0..isdefault.size-1){
-                                    Log.e("isdefault",isdefault[i].toString())
-                                   var number=isdefault[i]
-                                       if (number==1){
-                                           spineer.setSelection(i);
-                                       }else{
+                            var adapter = ArrayAdapter<String>(
+                                it.context,
+                                R.layout.support_simple_spinner_dropdown_item,
+                                mylist
+                            )
+                            spineer.adapter = adapter
+                            for (i in 0..isdefault.size - 1) {
+                                Log.e("isdefault", isdefault[i].toString())
+                                var number = isdefault[i]
+                                if (number == 1) {
+                                    spineer.setSelection(i);
+                                } else {
 
-                                       }
-                           }
-                            spineer.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
-                                       override fun onNothingSelected(parent: AdapterView<*>?) {}
-                                       override fun onItemSelected(
-                                           parent: AdapterView<*>?,
-                                           view: View?,
-                                           position: Int,
-                                           id: Long
-                                       )
-                                       {
-                                       val item2:String=mylist1[position]
-                                       Price.setText(item2)
-                                       }
-                                   }
-                               listDropdown(spineer)
+                                }
+                            }
+                            spineer.onItemSelectedListener =
+                                object : AdapterView.OnItemSelectedListener {
+                                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                                    override fun onItemSelected(
+                                        parent: AdapterView<*>?,
+                                        view: View?,
+                                        position: Int,
+                                        id: Long
+                                    ) {
+                                        val item2: String = mylist1[position]
+                                        Price.setText(item2)
+                                    }
+                                }
+                            listDropdown(spineer)
 
                             pDialog!!.dismiss()
-                        }
-                        else {
+                        } else {
                             var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
                             popUp.setContentText(responseMessage)
                             popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -236,45 +247,52 @@ class SalesPersonProductAdapterClass(
             TaxAmount = dilog.findViewById<EditText>(R.id.TaxAmount)
             AmountP = dilog.findViewById<EditText>(R.id.AmountP)
             Price = dilog.findViewById<EditText>(R.id.Price)
-           var checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
-           var checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
+            var checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
+            var checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
             var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
             spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
-
-            AmountP.filters = arrayOf(DecimalDigitsInputFilter1(3, 2))
-
+          //  AmountP.filters = arrayOf(DecimalDigitsInputFilter1(3, 2))
             Price.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
 
-            AmountP.addTextChangedListener(object :TextWatcher{
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    computeTotal()
-                }
+            AmountP.addTextChangedListener(
+                afterTextChanged = {
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    computeTotal()
+                },
+                onTextChanged = {s, start, before, count->
+                    TaxAmount.text.clear()
+                    computeTotal(1)
+                   // TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
+                },
+                beforeTextChanged = {s, start, before, count->
 
                 }
+            )
+            TaxAmount.addTextChangedListener(
+                afterTextChanged = {
 
-                override fun afterTextChanged(s: Editable?) {
+                },
+                onTextChanged = {s, start, before, count->
+                    TaxAmount.text.clear()
+                    computeTotal(2)
+                    // TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
+                },
+                beforeTextChanged = {s, start, before, count->
 
                 }
+            )
 
-            })
+
 
             SProductID.setText(ProductItem.getPId())
             s_ProductName.setText(ProductItem.getPName())
             stockProductS.setText("Stock : " + ProductItem.getCStock().toString())
-            Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(imageView13);
-            checkBox.setOnCheckedChangeListener{_,isChecked->
-                      Toast.makeText(data,isChecked.toString(),Toast.LENGTH_LONG).show()
+            Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic)
+                .into(imageView13);
+            checkBox.setOnCheckedChangeListener { _, isChecked ->
+                Toast.makeText(data, isChecked.toString(), Toast.LENGTH_LONG).show()
             }
-            checkBox2.setOnCheckedChangeListener{_,isChecked->
-                Toast.makeText(data,isChecked.toString(),Toast.LENGTH_LONG).show()
+            checkBox2.setOnCheckedChangeListener { _, isChecked ->
+                Toast.makeText(data, isChecked.toString(), Toast.LENGTH_LONG).show()
             }
             var btnCancle = dilog.findViewById<TextView>(R.id.textView33)
             btnCancle.setOnClickListener(View.OnClickListener {
@@ -287,42 +305,50 @@ class SalesPersonProductAdapterClass(
     }
 
     private fun listDropdown(spineer: Spinner) {
-        val popup:Field=Spinner::class.java.getDeclaredField("mPopup")
-        popup.isAccessible=true
-        val popupWindow:ListPopupWindow=popup.get(spineer)as ListPopupWindow
-        popupWindow.height=(200).toInt()
+        val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
+        popup.isAccessible = true
+        val popupWindow: ListPopupWindow = popup.get(spineer) as ListPopupWindow
+        popupWindow.height = (200).toInt()
 
 
     }
 
-    private fun computeTotal() {
-
-        if (AmountP.text.toString().isEmpty())
-        {
-            TaxAmount.text.toString()==""
-            AmountP.text.toString()==""
-             return
-        }
-        if (AmountP.text.toString()=="."){
-         // Toast.makeText(data,AmountP.text.toString(),Toast.LENGTH_LONG).show()
-            return
-        }else if (AmountP.text.toString()>="100")
-        {
+    private fun computeTotal(a:Int) {
+        if (AmountP.text.toString().isEmpty()){
+            AmountP.text.toString() == " "
             return
         }
-        else {
+        if(AmountP.text.toString() == "." || TaxAmount.text.toString()==".") {
+            return
+        }
+        if (equals(a)) {
             val taxamount = AmountP.text.toString().toDouble()
             val price = Price.text.toString().toDouble()
-            val totaldiscount = taxamount * price / 100
-            TaxAmount.setText(totaldiscount.toString())
+            val totaldiscount1 = taxamount * price / 100
+            TaxAmount.setText(totaldiscount1.toString())
         }
+       else{
+            val amountPercents = TaxAmount.text.toString().toDouble()
+            val price = Price.text.toString().toDouble()
+            val totaldiscount = amountPercents * 100 / price
+            AmountP.setText(totaldiscount.toString())
+        }
+
     }
 
     class DecimalDigitsInputFilter(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
         //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
-        private val pattern = Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
+        private val pattern =
+            Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
 
-        override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int): CharSequence? {
+        override fun filter(
+            source: CharSequence,
+            start: Int,
+            end: Int,
+            dest: Spanned,
+            dstart: Int,
+            dend: Int
+        ): CharSequence? {
             return if (source.isEmpty()) {
                 // When the source text is empty, we need to remove characters and check the result
                 if (pattern.matcher(dest.removeRange(dstart, dend)).matches()) {
@@ -344,11 +370,20 @@ class SalesPersonProductAdapterClass(
             }
         }
     }
+
     class DecimalDigitsInputFilter1(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
         //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
-        private val pattern = Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
+        private val pattern =
+            Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
 
-        override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int): CharSequence? {
+        override fun filter(
+            source: CharSequence,
+            start: Int,
+            end: Int,
+            dest: Spanned,
+            dstart: Int,
+            dend: Int
+        ): CharSequence? {
 
             return if (source.isEmpty()) {
                 // When the source text is empty, we need to remove characters and check the result
