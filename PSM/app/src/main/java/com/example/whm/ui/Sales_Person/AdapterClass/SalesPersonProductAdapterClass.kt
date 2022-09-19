@@ -40,8 +40,8 @@ class SalesPersonProductAdapterClass(
     var responseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var Price: TextView
-    lateinit var TaxAmount: EditText
-    lateinit var AmountP: EditText
+    lateinit var discountAmount: EditText
+    lateinit var discountPercent: EditText
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
     var isdefault = ArrayList<Int>()
@@ -244,36 +244,51 @@ class SalesPersonProductAdapterClass(
             var SProductID = dilog.findViewById<TextView>(R.id.productIdSalse)
             var s_ProductName = dilog.findViewById<TextView>(R.id.text_ProductName)
             var stockProductS = dilog.findViewById<TextView>(R.id.stockProductS)
-            TaxAmount = dilog.findViewById<EditText>(R.id.TaxAmount)
-            AmountP = dilog.findViewById<EditText>(R.id.AmountP)
+            discountAmount = dilog.findViewById<EditText>(R.id.TaxAmount)
+            discountPercent = dilog.findViewById<EditText>(R.id.AmountP)
             Price = dilog.findViewById<EditText>(R.id.Price)
             var checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
             var checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
             var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
             spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
-          //  AmountP.filters = arrayOf(DecimalDigitsInputFilter1(3, 2))
+            discountPercent.filters = arrayOf(DecimalDigitsInputFilter(3, 2))
             Price.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
-
-            AmountP.addTextChangedListener(
+           var checkstatus:Int=0;
+//            AmountP.text.clear()
+//            TaxAmount.text.clear()
+            discountPercent.addTextChangedListener(
                 afterTextChanged = {
+
 
                 },
                 onTextChanged = {s, start, before, count->
-                    TaxAmount.text.clear()
-                    computeTotal(1)
+                    if(checkstatus!=2) {
+                        computeTotal(1)
+                        checkstatus=1;
+                    }else
+                    {
+                        checkstatus=0;
+                    }
+
                    // TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
                 },
                 beforeTextChanged = {s, start, before, count->
 
                 }
             )
-            TaxAmount.addTextChangedListener(
+            discountAmount.addTextChangedListener(
                 afterTextChanged = {
 
                 },
                 onTextChanged = {s, start, before, count->
-                    TaxAmount.text.clear()
-                    computeTotal(2)
+                    if(checkstatus!=1) {
+                        computeTotal(2)
+                        checkstatus=2;
+                    }else
+                    {
+                        checkstatus=0;
+                    }
+
                     // TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
                 },
                 beforeTextChanged = {s, start, before, count->
@@ -314,24 +329,43 @@ class SalesPersonProductAdapterClass(
     }
 
     private fun computeTotal(a:Int) {
-        if (AmountP.text.toString().isEmpty()){
-            AmountP.text.toString() == " "
-            return
-        }
-        if(AmountP.text.toString() == "." || TaxAmount.text.toString()==".") {
-            return
-        }
-        if (equals(a)) {
-            val taxamount = AmountP.text.toString().toDouble()
-            val price = Price.text.toString().toDouble()
-            val totaldiscount1 = taxamount * price / 100
-            TaxAmount.setText(totaldiscount1.toString())
-        }
-       else{
-            val amountPercents = TaxAmount.text.toString().toDouble()
-            val price = Price.text.toString().toDouble()
-            val totaldiscount = amountPercents * 100 / price
-            AmountP.setText(totaldiscount.toString())
+        try {
+
+
+            if (discountPercent.text.toString().isEmpty() && discountAmount.text.toString().isEmpty()) {
+                discountPercent.text.toString() == "0.00"
+                discountAmount.text.toString() == "0.00"
+                return
+            }
+            if (discountPercent.text.toString() == "." || discountAmount.text.toString() == ".") {
+                discountPercent.text.toString() == "0.00"
+                discountAmount.text.toString() == "0.00"
+                return
+            }
+            if (a == 1) {
+                try {
+                    var percent=discountPercent.text.toString().toDouble()
+                    if (percent>100){
+                        discountPercent.text.replace(0,discountPercent.text.length,"0")
+                    }
+                }catch (e:Exception){}
+                try {
+                    val taxamount = discountPercent.text.toString().toDouble()
+                    val price = Price.text.toString().toDouble()
+                    val totaldiscount1 = taxamount * price / 100
+                    discountAmount.setText(totaldiscount1.toString())
+           //         TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
+                }catch (e:Exception){}
+
+            }
+            if (a == 2) {
+                val amountPercents = discountAmount.text.toString().toDouble()
+                val price = Price.text.toString().toDouble()
+                val totaldiscount = amountPercents * 100 / price
+                discountPercent.setText(totaldiscount.toString())
+            }
+        }catch (e:Exception){
+
         }
 
     }
@@ -370,43 +404,6 @@ class SalesPersonProductAdapterClass(
             }
         }
     }
-
-    class DecimalDigitsInputFilter1(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
-        //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
-        private val pattern =
-            Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
-
-        override fun filter(
-            source: CharSequence,
-            start: Int,
-            end: Int,
-            dest: Spanned,
-            dstart: Int,
-            dend: Int
-        ): CharSequence? {
-
-            return if (source.isEmpty()) {
-                // When the source text is empty, we need to remove characters and check the result
-                if (pattern.matcher(dest.removeRange(dstart, dend)).matches()) {
-                    // No changes to source
-                    null
-                } else {
-                    // Don't delete characters, return the old subsequence
-                    dest.subSequence(dstart, dend)
-                }
-            } else {
-                // Check the result
-                if (pattern.matcher(dest.replaceRange(dstart, dend, source)).matches()) {
-                    // No changes to source
-                    null
-                } else {
-                    // Return nothing
-                    ""
-                }
-            }
-        }
-    }
-
     override fun getItemCount(): Int {
         return ProductItemList.size
     }

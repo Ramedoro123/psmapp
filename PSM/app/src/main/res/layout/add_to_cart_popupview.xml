@@ -252,12 +252,12 @@
                             android:layout_toRightOf="@id/textView43"
                             android:background="@drawable/transparent"
                             android:gravity="center_vertical"
+                            android:hint="Percent"
                             android:inputType="numberDecimal"
                             android:lines="1"
                             android:maxLength="6"
                             android:padding="3dp"
                             android:text="0.00"
-                            android:hint="Percent"
                             android:textSize="15dp" />
 
                         <EditText
