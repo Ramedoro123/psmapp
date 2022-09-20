@@ -66,6 +66,7 @@ class SalesPersonProductList : AppCompatActivity() {
             lp.height = WindowManager.LayoutParams.MATCH_PARENT
                   var customerID=dilog.findViewById<TextView>(R.id.Title)
                   var customername=dilog.findViewById<TextView>(R.id.messagetitle)
+                      customerID.visibility=View.VISIBLE
                   var btnOk=dilog.findViewById<TextView>(R.id.btnOk)
                       customerID.setText(customerId)
                       customername.setText(customerName)

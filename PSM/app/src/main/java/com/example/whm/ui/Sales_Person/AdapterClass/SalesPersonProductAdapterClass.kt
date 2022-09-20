@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.android.volley.DefaultRetryPolicy
@@ -40,18 +39,19 @@ class SalesPersonProductAdapterClass(
     var responseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var Price: TextView
-    lateinit var discountAmount: EditText
-    lateinit var discountPercent: EditText
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
+    var minPriceslist = ArrayList<String>()
     var isdefault = ArrayList<Int>()
+    var minPrice:String?=null
     var UIDs: Int? = null
     var frees: Int? = null
-    var MinPrices: Int? = null
+    var MinPric: String? = null
     var isdefault1: Int? = null
     var UName: String? = null
     var price: String? = null
     var pricess: String? = null
+    var minPrices: String? = null
     var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
@@ -146,14 +146,14 @@ class SalesPersonProductAdapterClass(
                                 UName = responseResultData.getJSONObject(i).getString("UName")
                                 frees = responseResultData.getJSONObject(i).getInt("Free")
                                 price = responseResultData.getJSONObject(i).getString("price")
-                                MinPrices = responseResultData.getJSONObject(i).getInt("MinPrice")
+                                MinPric = responseResultData.getJSONObject(i).getString("MinPrice")
                                 isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
                                 var cartdata = getCartdetailsModle(
                                     UIDs!!,
                                     UName!!,
                                     frees!!,
                                     price!!,
-                                    MinPrices!!,
+                                    MinPric!!,
                                     isdefault1!!
                                 )
                                 getcartDetailsdata.add(cartdata)
@@ -162,9 +162,12 @@ class SalesPersonProductAdapterClass(
                             mylist.clear()
                             mylist1.clear()
                             isdefault.clear()
+                            minPriceslist.clear()
                             for (n in 0..getcartDetailsdata.size - 1) {
                                 pricess = getcartDetailsdata[n].getprice()
+                                minPrices = getcartDetailsdata[n].getMinPric()
                                 mylist1.add(pricess.toString())
+                                minPriceslist.add(minPrices.toString())
                                 var isdefault1 = getcartDetailsdata[n].getisdefault()
                                 isdefault.add(isdefault1!!.toInt())
                                 var UName = getcartDetailsdata[n].getuName()
@@ -195,7 +198,9 @@ class SalesPersonProductAdapterClass(
                                         id: Long
                                     ) {
                                         val item2: String = mylist1[position]
-                                        Price.setText(item2)
+                                         minPrice=minPriceslist[position]
+                                        var priceValue=item2.toDouble()
+                                        Price.setText("%.2f".format(priceValue))
                                     }
                                 }
                             listDropdown(spineer)
@@ -244,58 +249,137 @@ class SalesPersonProductAdapterClass(
             var SProductID = dilog.findViewById<TextView>(R.id.productIdSalse)
             var s_ProductName = dilog.findViewById<TextView>(R.id.text_ProductName)
             var stockProductS = dilog.findViewById<TextView>(R.id.stockProductS)
-            discountAmount = dilog.findViewById<EditText>(R.id.TaxAmount)
-            discountPercent = dilog.findViewById<EditText>(R.id.AmountP)
+
+           var discountAmount =dilog.findViewById<EditText>(R.id.TaxAmount);
+           var discountPercent =dilog.findViewById<EditText>(R.id.AmountP);
             Price = dilog.findViewById<EditText>(R.id.Price)
             var checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
             var checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
             var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
             spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
-            discountPercent.filters = arrayOf(DecimalDigitsInputFilter(3, 2))
             Price.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
-           var checkstatus:Int=0;
-//            AmountP.text.clear()
-//            TaxAmount.text.clear()
-            discountPercent.addTextChangedListener(
-                afterTextChanged = {
 
+            var uahEdited = false
+            var usdEdited = false
+            var uah:Float
+            var usd:Float
 
-                },
-                onTextChanged = {s, start, before, count->
-                    if(checkstatus!=2) {
-                        computeTotal(1)
-                        checkstatus=1;
-                    }else
-                    {
-                        checkstatus=0;
+            discountAmount.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    if (!usdEdited) {
+                        uahEdited = true
                     }
-
-                   // TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
-                },
-                beforeTextChanged = {s, start, before, count->
-
                 }
-            )
-            discountAmount.addTextChangedListener(
-                afterTextChanged = {
 
-                },
-                onTextChanged = {s, start, before, count->
-                    if(checkstatus!=1) {
-                        computeTotal(2)
-                        checkstatus=2;
-                    }else
-                    {
-                        checkstatus=0;
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    val tmp = discountAmount.text.toString()
+
+                    if (!tmp.isEmpty() && uahEdited && tmp!=".") {
+                        uah = tmp.toFloat()
+                        val price = Price.text.toString().toFloat()
+                        val minprice= minPrice.toString().toFloat()
+                        var Amountdiscount:Float=price-uah
+                        if (uah>price){
+                            discountAmount.text.replace(0,discountAmount.text.length,"0.00")
+                        }
+                        if(minprice<=Amountdiscount){
+                            usd = uah * 100 / price
+                            discountPercent.setText("%.2f".format(usd))
+                        }else{
+                            var dilog=Dialog(it.context)
+                            dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                            dilog.setCancelable(false)
+                            dilog.setContentView(R.layout.success_message_popup)
+                            dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            dilog.window!!.setGravity(Gravity.CENTER)
+                            val lp = WindowManager.LayoutParams()
+                            lp.copyFrom(dilog.getWindow()!!.getAttributes())
+                            lp.width = WindowManager.LayoutParams.MATCH_PARENT
+                            lp.height = WindowManager.LayoutParams.MATCH_PARENT
+                            var customername=dilog.findViewById<TextView>(R.id.messagetitle)
+                            var btnOk=dilog.findViewById<TextView>(R.id.btnOk)
+                            customername.setText("Price can not be below min price.")
+                            btnOk.setOnClickListener(View.OnClickListener {
+                                dilog.dismiss()
+                                discountAmount.text.clear()
+                            })
+                            dilog.show()
+                            dilog.getWindow()!!.setAttributes(lp);
+                            pDialog!!.dismiss()
+                        }
+                    } else if (tmp.isEmpty()) {
+                        discountPercent.text.clear()
                     }
-
-                    // TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
-                },
-                beforeTextChanged = {s, start, before, count->
-
                 }
-            )
 
+                override fun afterTextChanged(s: Editable) {
+                    uahEdited = false
+                }
+            })
+
+            discountPercent.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    if (!uahEdited) {
+                        usdEdited = true
+                    }
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    val tmp = discountPercent.text.toString()
+                    if (!tmp.isEmpty() && usdEdited && tmp!=".") {
+                         usd =tmp.toFloat()
+                        val price = Price.text.toString().toFloat()
+                        val minprice= minPrice.toString().toFloat()
+                        var Amountdiscount:Float=price-usd*100/100
+                        if (usd>100){
+                            discountPercent.text.replace(0,discountPercent.text.length,"0.00")
+                        }
+                        if(minprice<=Amountdiscount) {
+                            uah = usd * price / 100
+                            discountAmount.setText("%.2f".format(uah))
+                        }else{
+                            var dilog=Dialog(it.context)
+                            dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                            dilog.setCancelable(false)
+                            dilog.setContentView(R.layout.success_message_popup)
+                            dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            dilog.window!!.setGravity(Gravity.CENTER)
+                            val lp = WindowManager.LayoutParams()
+                            lp.copyFrom(dilog.getWindow()!!.getAttributes())
+                            lp.width = WindowManager.LayoutParams.MATCH_PARENT
+                            lp.height = WindowManager.LayoutParams.MATCH_PARENT
+                            var customername=dilog.findViewById<TextView>(R.id.messagetitle)
+                            var Title=dilog.findViewById<TextView>(R.id.Title)
+                               Title.visibility=View.GONE
+                            var btnOk=dilog.findViewById<TextView>(R.id.btnOk)
+                            customername.setText("Price can not be below min price.")
+                            btnOk.setOnClickListener(View.OnClickListener {
+                                dilog.dismiss()
+                                discountPercent.text.clear()
+                            })
+                            dilog.show()
+                            dilog.getWindow()!!.setAttributes(lp);
+                            pDialog!!.dismiss()
+                        }
+                    } else if (tmp.isEmpty()) {
+                        discountAmount.text.clear()
+                    }
+                }
+
+                override fun afterTextChanged(s: Editable) {
+                    usdEdited = false
+                }
+            })
 
 
             SProductID.setText(ProductItem.getPId())
@@ -328,53 +412,9 @@ class SalesPersonProductAdapterClass(
 
     }
 
-    private fun computeTotal(a:Int) {
-        try {
-
-
-            if (discountPercent.text.toString().isEmpty() && discountAmount.text.toString().isEmpty()) {
-                discountPercent.text.toString() == "0.00"
-                discountAmount.text.toString() == "0.00"
-                return
-            }
-            if (discountPercent.text.toString() == "." || discountAmount.text.toString() == ".") {
-                discountPercent.text.toString() == "0.00"
-                discountAmount.text.toString() == "0.00"
-                return
-            }
-            if (a == 1) {
-                try {
-                    var percent=discountPercent.text.toString().toDouble()
-                    if (percent>100){
-                        discountPercent.text.replace(0,discountPercent.text.length,"0")
-                    }
-                }catch (e:Exception){}
-                try {
-                    val taxamount = discountPercent.text.toString().toDouble()
-                    val price = Price.text.toString().toDouble()
-                    val totaldiscount1 = taxamount * price / 100
-                    discountAmount.setText(totaldiscount1.toString())
-           //         TaxAmount.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
-                }catch (e:Exception){}
-
-            }
-            if (a == 2) {
-                val amountPercents = discountAmount.text.toString().toDouble()
-                val price = Price.text.toString().toDouble()
-                val totaldiscount = amountPercents * 100 / price
-                discountPercent.setText(totaldiscount.toString())
-            }
-        }catch (e:Exception){
-
-        }
-
-    }
-
     class DecimalDigitsInputFilter(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
         //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
-        private val pattern =
-            Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
-
+        private val pattern = Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
         override fun filter(
             source: CharSequence,
             start: Int,
@@ -404,6 +444,7 @@ class SalesPersonProductAdapterClass(
             }
         }
     }
+
     override fun getItemCount(): Int {
         return ProductItemList.size
     }
