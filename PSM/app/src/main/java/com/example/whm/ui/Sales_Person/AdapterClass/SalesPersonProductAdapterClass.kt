@@ -35,15 +35,20 @@ import java.util.regex.Pattern
 class SalesPersonProductAdapterClass(
     private val ProductItemList: List<SalesPersonProductModel>,
     var data: Context?
-) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>() {
+) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>(),View.OnClickListener
+{
     var responseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var Price: TextView
+    lateinit var checkBox :CheckBox
+    lateinit var checkBox2:CheckBox
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
     var minPriceslist = ArrayList<String>()
     var isdefault = ArrayList<Int>()
     var minPrice:String?=null
+    var checkFreeValue:Int=0
+    var checkExchangeValue:Int=0
     var UIDs: Int? = null
     var frees: Int? = null
     var MinPric: String? = null
@@ -54,16 +59,18 @@ class SalesPersonProductAdapterClass(
     var minPrices: String? = null
     var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
 
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView){
         var ProductName = itemView.findViewById<TextView>(R.id.productIdSalse)
         var ProductdID = itemView.findViewById<TextView>(R.id.ProductdID)
         var ProductPrice = itemView.findViewById<TextView>(R.id.ProductPrice)
         var ProductStock = itemView.findViewById<TextView>(R.id.ProductStock)
         var ProductImage = itemView.findViewById<ImageView>(R.id.ProductImage)
         var cardView5 = itemView.findViewById<CardView>(R.id.cardView5)
+
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
         var view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
 
         //title.setText("hello")
@@ -253,8 +260,8 @@ class SalesPersonProductAdapterClass(
            var discountAmount =dilog.findViewById<EditText>(R.id.TaxAmount);
            var discountPercent =dilog.findViewById<EditText>(R.id.AmountP);
             Price = dilog.findViewById<EditText>(R.id.Price)
-            var checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
-            var checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
+             checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
+             checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
             var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
             spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
             Price.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
@@ -263,7 +270,8 @@ class SalesPersonProductAdapterClass(
             var usdEdited = false
             var uah:Float
             var usd:Float
-
+                 checkBox.setOnClickListener(this)
+                 checkBox2.setOnClickListener(this)
             discountAmount.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence,
@@ -381,18 +389,12 @@ class SalesPersonProductAdapterClass(
                 }
             })
 
-
             SProductID.setText(ProductItem.getPId())
             s_ProductName.setText(ProductItem.getPName())
             stockProductS.setText("Stock : " + ProductItem.getCStock().toString())
             Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic)
                 .into(imageView13);
-            checkBox.setOnCheckedChangeListener { _, isChecked ->
-                Toast.makeText(data, isChecked.toString(), Toast.LENGTH_LONG).show()
-            }
-            checkBox2.setOnCheckedChangeListener { _, isChecked ->
-                Toast.makeText(data, isChecked.toString(), Toast.LENGTH_LONG).show()
-            }
+
             var btnCancle = dilog.findViewById<TextView>(R.id.textView33)
             btnCancle.setOnClickListener(View.OnClickListener {
                 dilog.dismiss()
@@ -402,7 +404,28 @@ class SalesPersonProductAdapterClass(
         })
 
     }
+ override fun onClick(Box: View?) {
+        Box as CheckBox
+        var isChecked:Boolean=Box.isChecked
+        when(Box.id){
+            R.id.checkBox->if(isChecked){
+                checkFreeValue=1
+                checkBox2.isChecked=false
+                Toast.makeText(data,checkFreeValue.toString(),Toast.LENGTH_LONG);
+            }else{
+                checkFreeValue=0
+            }
+            R.id.checkBox2->if(isChecked){
+                checkExchangeValue=1
+                checkBox.isChecked=false
+                Toast.makeText(data,checkExchangeValue.toString(),Toast.LENGTH_LONG);
+            }else{
+                checkExchangeValue=0
+            }
 
+        }
+
+    }
     private fun listDropdown(spineer: Spinner) {
         val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
         popup.isAccessible = true
