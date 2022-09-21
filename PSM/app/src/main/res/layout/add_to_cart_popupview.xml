@@ -143,7 +143,7 @@
 
 
                 <CheckBox
-                    android:id="@+id/checkBox"
+                    android:id="@+id/isFreeCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="is Free"
@@ -151,12 +151,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
                 <CheckBox
-                    android:id="@+id/checkBox2"
+                    android:id="@+id/isExchangeCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="is Exchange"
                     app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+                    app:layout_constraintTop_toBottomOf="@+id/isFreeCheckBox" />
 
                 <TextView
                     android:id="@+id/stockProductS"
@@ -180,7 +180,7 @@
                     android:background="@drawable/borderline"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/stockProductS"
-                    app:layout_constraintTop_toBottomOf="@+id/checkBox2">
+                    app:layout_constraintTop_toBottomOf="@+id/isExchangeCheckBox">
 
                     <RelativeLayout
                         android:layout_width="match_parent"

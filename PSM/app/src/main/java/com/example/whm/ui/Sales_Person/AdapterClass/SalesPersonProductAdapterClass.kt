@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.text.Editable
@@ -14,7 +13,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -23,7 +21,6 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.bumptech.glide.load.resource.drawable.DrawableResource
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
@@ -43,8 +40,8 @@ class SalesPersonProductAdapterClass(
     var responseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var Price: EditText
-    lateinit var checkBox :CheckBox
-    lateinit var checkBox2:CheckBox
+    lateinit var isFreeCheckBox :CheckBox
+    lateinit var isExchangeCheckBox:CheckBox
     lateinit var discountAmount:EditText
     lateinit var discountPercent:EditText
     var mylist = ArrayList<String>()
@@ -228,15 +225,30 @@ class SalesPersonProductAdapterClass(
                                         priceValue=item2.toDouble()
                                         Price.setText("%.2f".format(priceValue))
                                         Log.e("Price",Price.text.toString())
-                                        checkBox.setEnabled(true)
-                                        checkBox2.setEnabled(true)
-                                        var free=isFrees.toString().toInt()
-
+                                        if (isFreeCheckBox.isChecked) {
+                                            isFreeCheckBox.toggle()
+                                            Price.isEnabled = true
+                                            discountAmount.isEnabled = true
+                                            discountPercent.isEnabled = true
+                                            Price.setBackgroundResource(R.drawable.borderline)
+                                            discountAmount.setBackgroundResource(R.drawable.borderline)
+                                            discountPercent.setBackgroundResource(R.drawable.borderline)
+                                        }
+                                        if(isExchangeCheckBox.isChecked){
+                                           isExchangeCheckBox.toggle()
+                                            Price.isEnabled = true
+                                            discountAmount.isEnabled = true
+                                            discountPercent.isEnabled = true
+                                            Price.setBackgroundResource(R.drawable.borderline)
+                                            discountAmount.setBackgroundResource(R.drawable.borderline)
+                                            discountPercent.setBackgroundResource(R.drawable.borderline)
+                                        }
+                                        var free=isFrees.toInt()
                                         if (free==1){
-                                            checkBox.setEnabled(true)
+                                            isFreeCheckBox.setEnabled(true)
                                         }
                                         else{
-                                            checkBox.setEnabled(false)
+                                            isFreeCheckBox.setEnabled(false)
                                         }
                                     }
                                 }
@@ -290,8 +302,8 @@ class SalesPersonProductAdapterClass(
             discountAmount =dilog.findViewById<EditText>(R.id.TaxAmount);
             discountPercent =dilog.findViewById<EditText>(R.id.AmountP);
             Price = dilog.findViewById<EditText>(R.id.Price)
-            checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
-            checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
+            isFreeCheckBox = dilog.findViewById<CheckBox>(R.id.isFreeCheckBox)
+            isExchangeCheckBox = dilog.findViewById<CheckBox>(R.id.isExchangeCheckBox)
             var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
             spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
 
@@ -419,8 +431,8 @@ class SalesPersonProductAdapterClass(
                 }
             })
 
-            checkBox.setOnClickListener(this)
-            checkBox2.setOnClickListener(this)
+            isFreeCheckBox.setOnClickListener(this)
+            isExchangeCheckBox.setOnClickListener(this)
 
             SProductID.setText(ProductItem.getPId())
             s_ProductName.setText(ProductItem.getPName())
@@ -440,47 +452,54 @@ class SalesPersonProductAdapterClass(
         Box as CheckBox
         var isChecked:Boolean=Box.isChecked
         when(Box.id){
-            R.id.checkBox->if(isChecked){
-                    checkFreeValue = 1
-                    checkBox2.isChecked = false
-                    discountAmount.text.clear()
-                    discountPercent.text.clear()
-                    Log.e("checkFreeValue", checkFreeValue.toString())
-                    Price.isEnabled = false
-                    discountAmount.isEnabled = false
-                    discountPercent.isEnabled = false
-                    Price.setBackgroundColor(Color.parseColor("#E5E5E5"))
-                    discountAmount.setBackgroundColor(Color.parseColor("#E5E5E5"))
-                    discountPercent.setBackgroundColor(Color.parseColor("#E5E5E5"))
-                    Price.setText("0.00")
-//                discountAmount.setText("%.2f".format(0.00))
-//                discountPercent.setText("%.2f".format(0.00))
+            R.id.isFreeCheckBox->if(isChecked){
+
+                isFreeCheckedfunction(true)
             }
             else{
-                checkFreeValue=0
-                Price.isEnabled=true
-                discountAmount.isEnabled=true
-                discountPercent.isEnabled=true
-                Price.setBackgroundResource(R.drawable.borderline)
-                discountAmount.setBackgroundResource(R.drawable.borderline)
-                discountPercent.setBackgroundResource(R.drawable.borderline)
-                Price.setText("%.2f".format(priceValue))
-                discountAmount.setText("%.2f".format(0.00))
-                discountPercent.setText("%.2f".format(0.00))
-                Log.e("checkFreeValue",checkFreeValue.toString())
+                isFreeUnCheckedFunction()
             }
-            R.id.checkBox2->if(isChecked){
-                checkExchangeValue=1
-             Log.e("checkExchangeValue",checkExchangeValue.toString())
+            R.id.isExchangeCheckBox->if(isChecked){
+                isFreeCheckedfunction(isFreeChecked = false)
             }else{
-                checkExchangeValue=0
-                Log.e("checkExchangeValue",checkExchangeValue.toString())
+                isFreeUnCheckedFunction()
             }
 
         }
 
     }
+    private fun isFreeCheckedfunction(isFreeChecked: Boolean) {
+        checkFreeValue = 1
+        if(isFreeChecked) {
+            isExchangeCheckBox.isChecked = false
 
+        }
+        else {
+            isFreeCheckBox.isChecked=false
+        }
+        Price.isEnabled = false
+        discountAmount.isEnabled = false
+        discountPercent.isEnabled = false
+        discountAmount.text.clear()
+        discountPercent.text.clear()
+        Price.setBackgroundColor(Color.parseColor("#E5E5E5"))
+        discountAmount.setBackgroundColor(Color.parseColor("#E5E5E5"))
+        discountPercent.setBackgroundColor(Color.parseColor("#E5E5E5"))
+        Price.setText("0.00")
+    }
+
+    private fun isFreeUnCheckedFunction() {
+        checkFreeValue=0
+        Price.isEnabled=true
+        discountAmount.isEnabled=true
+        discountPercent.isEnabled=true
+        Price.setBackgroundResource(R.drawable.borderline)
+        discountAmount.setBackgroundResource(R.drawable.borderline)
+        discountPercent.setBackgroundResource(R.drawable.borderline)
+        Price.setText("%.2f".format(priceValue))
+        discountAmount.setText("%.2f".format(0.00))
+        discountPercent.setText("%.2f".format(0.00))
+    }
 
     private fun listDropdown(spineer: Spinner) {
         val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
