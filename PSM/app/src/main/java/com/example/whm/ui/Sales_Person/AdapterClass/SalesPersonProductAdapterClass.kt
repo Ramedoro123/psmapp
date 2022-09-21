@@ -65,7 +65,6 @@ class SalesPersonProductAdapterClass(
     var pricess: String? = null
     var minPrices: String? = null
     var isFree: String? = null
-    var isFrees: String? = null
     var priceValue: Double? = null
     var uah:Float=0.0F
     var usd:Float= 0.0F
@@ -204,7 +203,7 @@ class SalesPersonProductAdapterClass(
                                 mylist
                             )
                             spineer.adapter = adapter
-                            for (i in 0..isdefault.size - 1) {
+                            for (i in 0..isdefault.size - 1){
                                 Log.e("isdefault", isdefault[i].toString())
                                 var number = isdefault[i]
                                 if (number == 1) {
@@ -224,11 +223,17 @@ class SalesPersonProductAdapterClass(
                                     ) {
                                         val item2: String = mylist1[position]
                                          minPrice=minPriceslist[position]
-                                        isFrees=isFreelist[position]
+                                        var isFrees=isFreelist[position]
+                                        Log.e("isFrees",isFrees.toString())
                                         priceValue=item2.toDouble()
                                         Price.setText("%.2f".format(priceValue))
-                                        if (isFree=="1"){
-                                            checkBox.isChecked
+                                        Log.e("Price",Price.text.toString())
+                                        checkBox.setEnabled(true)
+                                        checkBox2.setEnabled(true)
+                                        var free=isFrees.toString().toInt()
+
+                                        if (free==1){
+                                            checkBox.setEnabled(true)
                                         }
                                         else{
                                             checkBox.setEnabled(false)
@@ -394,7 +399,7 @@ class SalesPersonProductAdapterClass(
                             var Title=dilog.findViewById<TextView>(R.id.Title)
                                Title.visibility=View.GONE
                             var btnOk=dilog.findViewById<TextView>(R.id.btnOk)
-                            customername.setText("Price can not be below min price2.")
+                            customername.setText("Price can not be below min price.")
                             btnOk.setOnClickListener(View.OnClickListener {
 //                                discountPercent.text.replace(0,discountPercent.text.length,"0.00")
                                 discountPercent.text.clear()
