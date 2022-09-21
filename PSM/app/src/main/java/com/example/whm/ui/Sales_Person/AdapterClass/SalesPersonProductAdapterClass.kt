@@ -227,6 +227,12 @@ class SalesPersonProductAdapterClass(
                                         isFrees=isFreelist[position]
                                         priceValue=item2.toDouble()
                                         Price.setText("%.2f".format(priceValue))
+                                        if (isFree=="1"){
+                                            checkBox.isChecked
+                                        }
+                                        else{
+                                            checkBox.setEnabled(false)
+                                        }
                                     }
                                 }
                             listDropdown(spineer)
@@ -427,11 +433,9 @@ class SalesPersonProductAdapterClass(
     }
  override fun onClick(Box: View?) {
         Box as CheckBox
-
         var isChecked:Boolean=Box.isChecked
         when(Box.id){
             R.id.checkBox->if(isChecked){
-                if (isFrees=="1") {
                     checkFreeValue = 1
                     checkBox2.isChecked = false
                     discountAmount.text.clear()
@@ -444,12 +448,6 @@ class SalesPersonProductAdapterClass(
                     discountAmount.setBackgroundColor(Color.parseColor("#E5E5E5"))
                     discountPercent.setBackgroundColor(Color.parseColor("#E5E5E5"))
                     Price.setText("0.00")
-                }
-                else
-                {
-                    checkBox.setEnabled(false)
-                   // checkBox.isChecked=false
-                }
 //                discountAmount.setText("%.2f".format(0.00))
 //                discountPercent.setText("%.2f".format(0.00))
             }
