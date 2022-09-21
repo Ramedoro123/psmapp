@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.text.Editable
@@ -13,6 +14,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -21,6 +23,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.load.resource.drawable.DrawableResource
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
@@ -39,13 +42,17 @@ class SalesPersonProductAdapterClass(
 {
     var responseResultData = JSONArray()
     lateinit var spineer: Spinner
-    lateinit var Price: TextView
+    lateinit var Price: EditText
     lateinit var checkBox :CheckBox
     lateinit var checkBox2:CheckBox
+    lateinit var discountAmount:EditText
+    lateinit var discountPercent:EditText
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
     var minPriceslist = ArrayList<String>()
+    var isFreelist = ArrayList<String>()
     var isdefault = ArrayList<Int>()
+
     var minPrice:String?=null
     var checkFreeValue:Int=0
     var checkExchangeValue:Int=0
@@ -57,6 +64,14 @@ class SalesPersonProductAdapterClass(
     var price: String? = null
     var pricess: String? = null
     var minPrices: String? = null
+    var isFree: String? = null
+    var isFrees: String? = null
+    var priceValue: Double? = null
+    var uah:Float=0.0F
+    var usd:Float= 0.0F
+    var uahEdited = false
+    var usdEdited = false
+
     var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView){
@@ -170,9 +185,12 @@ class SalesPersonProductAdapterClass(
                             mylist1.clear()
                             isdefault.clear()
                             minPriceslist.clear()
+                            isFreelist.clear()
                             for (n in 0..getcartDetailsdata.size - 1) {
                                 pricess = getcartDetailsdata[n].getprice()
                                 minPrices = getcartDetailsdata[n].getMinPric()
+                                isFree = getcartDetailsdata[n].getfrees().toString()
+                                isFreelist.add(isFree.toString())
                                 mylist1.add(pricess.toString())
                                 minPriceslist.add(minPrices.toString())
                                 var isdefault1 = getcartDetailsdata[n].getisdefault()
@@ -206,7 +224,8 @@ class SalesPersonProductAdapterClass(
                                     ) {
                                         val item2: String = mylist1[position]
                                          minPrice=minPriceslist[position]
-                                        var priceValue=item2.toDouble()
+                                        isFrees=isFreelist[position]
+                                        priceValue=item2.toDouble()
                                         Price.setText("%.2f".format(priceValue))
                                     }
                                 }
@@ -257,21 +276,14 @@ class SalesPersonProductAdapterClass(
             var s_ProductName = dilog.findViewById<TextView>(R.id.text_ProductName)
             var stockProductS = dilog.findViewById<TextView>(R.id.stockProductS)
 
-           var discountAmount =dilog.findViewById<EditText>(R.id.TaxAmount);
-           var discountPercent =dilog.findViewById<EditText>(R.id.AmountP);
+            discountAmount =dilog.findViewById<EditText>(R.id.TaxAmount);
+            discountPercent =dilog.findViewById<EditText>(R.id.AmountP);
             Price = dilog.findViewById<EditText>(R.id.Price)
-             checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
-             checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
+            checkBox = dilog.findViewById<CheckBox>(R.id.checkBox)
+            checkBox2 = dilog.findViewById<CheckBox>(R.id.checkBox2)
             var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
             spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
-            Price.filters = arrayOf(DecimalDigitsInputFilter(5, 2))
 
-            var uahEdited = false
-            var usdEdited = false
-            var uah:Float
-            var usd:Float
-                 checkBox.setOnClickListener(this)
-                 checkBox2.setOnClickListener(this)
             discountAmount.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence,
@@ -281,16 +293,18 @@ class SalesPersonProductAdapterClass(
                 ) {
                     if (!usdEdited) {
                         uahEdited = true
+
                     }
                 }
 
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     val tmp = discountAmount.text.toString()
-
-                    if (!tmp.isEmpty() && uahEdited && tmp!=".") {
+                    val tmps = minPrice.toString()
+                    val temsprie=Price.text.toString()
+                    if (!tmp.isEmpty() && uahEdited  && tmp!="." &&tmps!=null && tmps!="." &&temsprie!="" &&temsprie!=null) {
                         uah = tmp.toFloat()
-                        val price = Price.text.toString().toFloat()
-                        val minprice= minPrice.toString().toFloat()
+                        val price =temsprie.toFloat()
+                        val minprice=tmps.toFloat()
                         var Amountdiscount:Float=price-uah
                         if (uah>price){
                             discountAmount.text.replace(0,discountAmount.text.length,"0.00")
@@ -313,8 +327,9 @@ class SalesPersonProductAdapterClass(
                             var btnOk=dilog.findViewById<TextView>(R.id.btnOk)
                             customername.setText("Price can not be below min price.")
                             btnOk.setOnClickListener(View.OnClickListener {
-                                dilog.dismiss()
+//                                discountAmount.text.replace(0,discountPercent.text.length,"0.00")
                                 discountAmount.text.clear()
+                                dilog.dismiss()
                             })
                             dilog.show()
                             dilog.getWindow()!!.setAttributes(lp);
@@ -327,9 +342,9 @@ class SalesPersonProductAdapterClass(
 
                 override fun afterTextChanged(s: Editable) {
                     uahEdited = false
+
                 }
             })
-
             discountPercent.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence,
@@ -339,14 +354,17 @@ class SalesPersonProductAdapterClass(
                 ) {
                     if (!uahEdited) {
                         usdEdited = true
+
                     }
                 }
 
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     val tmp = discountPercent.text.toString()
-                    if (!tmp.isEmpty() && usdEdited && tmp!=".") {
+                    val tmps = Price.text.toString()
+                    if (!tmp.isEmpty() && usdEdited  && tmp!="." && tmps!=null &&tmps!="" && tmps!=".") {
+
                          usd =tmp.toFloat()
-                        val price = Price.text.toString().toFloat()
+                        val price =tmps.toFloat()
                         val minprice= minPrice.toString().toFloat()
                         var Amountdiscount:Float=price-usd*100/100
                         if (usd>100){
@@ -370,10 +388,11 @@ class SalesPersonProductAdapterClass(
                             var Title=dilog.findViewById<TextView>(R.id.Title)
                                Title.visibility=View.GONE
                             var btnOk=dilog.findViewById<TextView>(R.id.btnOk)
-                            customername.setText("Price can not be below min price.")
+                            customername.setText("Price can not be below min price2.")
                             btnOk.setOnClickListener(View.OnClickListener {
-                                dilog.dismiss()
+//                                discountPercent.text.replace(0,discountPercent.text.length,"0.00")
                                 discountPercent.text.clear()
+                                dilog.dismiss()
                             })
                             dilog.show()
                             dilog.getWindow()!!.setAttributes(lp);
@@ -389,11 +408,13 @@ class SalesPersonProductAdapterClass(
                 }
             })
 
+            checkBox.setOnClickListener(this)
+            checkBox2.setOnClickListener(this)
+
             SProductID.setText(ProductItem.getPId())
             s_ProductName.setText(ProductItem.getPName())
             stockProductS.setText("Stock : " + ProductItem.getCStock().toString())
-            Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic)
-                .into(imageView13);
+            Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(imageView13);
 
             var btnCancle = dilog.findViewById<TextView>(R.id.textView33)
             btnCancle.setOnClickListener(View.OnClickListener {
@@ -406,26 +427,58 @@ class SalesPersonProductAdapterClass(
     }
  override fun onClick(Box: View?) {
         Box as CheckBox
+
         var isChecked:Boolean=Box.isChecked
         when(Box.id){
             R.id.checkBox->if(isChecked){
-                checkFreeValue=1
-                checkBox2.isChecked=false
-                Toast.makeText(data,checkFreeValue.toString(),Toast.LENGTH_LONG);
-            }else{
+                if (isFrees=="1") {
+                    checkFreeValue = 1
+                    checkBox2.isChecked = false
+                    discountAmount.text.clear()
+                    discountPercent.text.clear()
+                    Log.e("checkFreeValue", checkFreeValue.toString())
+                    Price.isEnabled = false
+                    discountAmount.isEnabled = false
+                    discountPercent.isEnabled = false
+                    Price.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                    discountAmount.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                    discountPercent.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                    Price.setText("0.00")
+                }
+                else
+                {
+                    checkBox.setEnabled(false)
+                   // checkBox.isChecked=false
+                }
+//                discountAmount.setText("%.2f".format(0.00))
+//                discountPercent.setText("%.2f".format(0.00))
+            }
+            else{
                 checkFreeValue=0
+                Price.isEnabled=true
+                discountAmount.isEnabled=true
+                discountPercent.isEnabled=true
+                Price.setBackgroundResource(R.drawable.borderline)
+                discountAmount.setBackgroundResource(R.drawable.borderline)
+                discountPercent.setBackgroundResource(R.drawable.borderline)
+                Price.setText("%.2f".format(priceValue))
+                discountAmount.setText("%.2f".format(0.00))
+                discountPercent.setText("%.2f".format(0.00))
+                Log.e("checkFreeValue",checkFreeValue.toString())
             }
             R.id.checkBox2->if(isChecked){
                 checkExchangeValue=1
-                checkBox.isChecked=false
-                Toast.makeText(data,checkExchangeValue.toString(),Toast.LENGTH_LONG);
+             Log.e("checkExchangeValue",checkExchangeValue.toString())
             }else{
                 checkExchangeValue=0
+                Log.e("checkExchangeValue",checkExchangeValue.toString())
             }
 
         }
 
     }
+
+
     private fun listDropdown(spineer: Spinner) {
         val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
         popup.isAccessible = true
@@ -473,3 +526,6 @@ class SalesPersonProductAdapterClass(
     }
 
 }
+
+
+
