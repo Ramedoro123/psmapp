@@ -193,7 +193,7 @@ else {
                        var PId=responseResultData.getJSONObject(i).getString("PId")
                        var PName=responseResultData.getJSONObject(i).getString("PName")
                        var ImageUrl=responseResultData.getJSONObject(i).getString("ImageUrl")
-                       var CStock=responseResultData.getJSONObject(i).getInt("CStock")
+                       var CStock=responseResultData.getJSONObject(i).getString("CStock")
                        var balencePrice=responseResultData.getJSONObject(i).getDouble("BP")
                        var UnitType=responseResultData.getJSONObject(i).getString("UnitType")
                        var BP:Float=balencePrice.toFloat()
@@ -236,7 +236,7 @@ try {
     }
 
 
-    private fun addProductdataModelClass(PId:String,PName:String,ImageUrl:String,CStock:Int,BP:Float,UnitType:String) {
+    private fun addProductdataModelClass(PId:String,PName:String,ImageUrl:String,CStock:String,BP:Float,UnitType:String) {
         var productModelClass = SalesPersonProductModel(PId,PName, ImageUrl,CStock,BP,UnitType)
         productListModelClass.add(productModelClass)
         val recyclerview = findViewById<RecyclerView>(R.id.ProductListRecyclerView)

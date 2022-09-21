@@ -95,8 +95,8 @@ class SalesPersonProductAdapterClass(
         var priceProduct = ProductItem.getBP()!!.toFloat()
         var UnitType = ProductItem.getUnitType().toString()
         holder.ProductPrice.setText("$" + "%.2f".format(priceProduct) + "(" + UnitType + ")")
-        var productStoct = ProductItem.getCStock()!!.toInt()
-        if (productStoct == 0) {
+        var productStoct = ProductItem.getCStock()
+        if (productStoct=="0") {
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
         } else {

@@ -3,345 +3,358 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:id="@+id/productIdSalse"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="3dp"
-                android:text="212101"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/text_ProductName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="RAW Classic Connoisseur 1-1/4+Tips 24ct/Bx gsdjh"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/productIdSalse" />
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:background="#B8BAB9"
-                app:layout_constraintTop_toBottomOf="@+id/text_ProductName"
-                tools:layout_editor_absoluteX="0dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_ProductName">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView6"
-                    android:layout_width="113dp"
-                    android:layout_height="183dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView13"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/default_pic" />
-                </androidx.cardview.widget.CardView>
-
-                <FrameLayout
-                    android:id="@+id/frameLayout3"
-                    android:layout_width="0dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/borderline"
-                    android:outlineAmbientShadowColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toBottomOf="@+id/frameLayout">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/text"
-                            android:layout_width="25dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/borderline"
-                            android:gravity="center"
-                            android:text="$"
-                            android:textColor="@color/black"
-                            android:textSize="19dp" />
-
-                        <EditText
-                            android:id="@+id/Price"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/text"
-                            android:background="@drawable/borderline"
-                            android:gravity="end"
-                            android:hint="Unit Price"
-                            android:inputType="numberDecimal"
-                            android:lines="1"
-                            android:maxLength="8"
-                            android:padding="7dp"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textSize="15dp" />
-                    </RelativeLayout>
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/textView42"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:text="PWD"
-                    android:textColor="@color/black"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
-
-
-                <CheckBox
-                    android:id="@+id/isFreeCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="is Free"
-                    app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
-
-                <CheckBox
-                    android:id="@+id/isExchangeCheckBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="is Exchange"
-                    app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toBottomOf="@+id/isFreeCheckBox" />
-
-                <TextView
-                    android:id="@+id/stockProductS"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="25dp"
-                    android:text="Stock : 100(Piece)"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toStartOf="@+id/tableLayout"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tableLayout" />
-
-                <FrameLayout
-                    android:id="@+id/tableLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/borderline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/stockProductS"
-                    app:layout_constraintTop_toBottomOf="@+id/isExchangeCheckBox">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <Button
-                            android:id="@+id/textView8"
-                            android:layout_width="35dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/borderline"
-                            android:gravity="center"
-                            android:text="-"
-                            android:textColor="@color/black"
-                            android:textSize="19dp" />
-
-                        <EditText
-                            android:id="@+id/textView9"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:background="@drawable/borderline"
-                            android:gravity="center"
-                            android:padding="3dp"
-                            android:text="1"
-                            android:textAlignment="center"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/textView10"
-                            android:layout_width="35dp"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentRight="true"
-                            android:background="@drawable/borderline"
-                            android:gravity="center"
-                            android:text="+"
-                            android:textSize="18sp" />
-                    </RelativeLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/frameLayout2"
-                    android:layout_width="0dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/borderline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView42">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/textView43"
-                            android:layout_width="23dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/borderline"
-                            android:gravity="center"
-                            android:text="%"
-                            android:textColor="@color/black"
-                            android:textSize="16dp" />
-
-                        <EditText
-                            android:id="@+id/AmountP"
-                            android:layout_width="60dp"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/textView43"
-                            android:background="@drawable/transparent"
-                            android:gravity="center_vertical"
-                            android:hint="0.00"
-                            android:inputType="numberDecimal"
-                            android:lines="1"
-                            android:maxLength="6"
-                            android:padding="3dp"
-                            android:text="0.00"
-                            android:textSize="15dp" />
-
-                        <EditText
-                            android:id="@+id/textView45"
-                            android:layout_width="23dp"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/AmountP"
-                            android:background="@drawable/borderline"
-                            android:gravity="center"
-                            android:text="$"
-                            android:textSize="16sp" />
-
-                        <EditText
-                            android:id="@+id/TaxAmount"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/textView45"
-                            android:background="@drawable/transparent"
-                            android:gravity="fill_vertical"
-                            android:hint="0.00"
-                            android:inputType="numberDecimal"
-                            android:lines="1"
-                            android:maxLength="8"
-                            android:text="0.00"
-                            android:textSize="15sp" />
-                    </RelativeLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/frameLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="34dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/borderline"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/cardView6"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <Spinner
-                        android:id="@+id/spineer"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </FrameLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="3dp"
-                android:background="@drawable/borderline"
-                android:backgroundTint="@color/colorPrimary"
-                android:backgroundTintMode="add"
-                android:drawableTint="@color/Kelly_Green"
-                android:gravity="center"
-                android:text="Add / Update"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/textView33"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-            <TextView
-                android:id="@+id/textView33"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="3dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:background="@drawable/borderline"
-                android:backgroundTint="#DC3545"
-                android:gravity="center"
-                android:text="Close"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView23"
-                app:layout_constraintTop_toTopOf="@+id/textView23" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/productIdSalse"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="3dp"
+                        android:text="212101"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text_ProductName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="RAW Classic Connoisseur 1-1/4+Tips 24ct/Bx gsdjh"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/productIdSalse" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#B8BAB9"
+                        app:layout_constraintTop_toBottomOf="@+id/text_ProductName"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_ProductName">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView6"
+                            android:layout_width="113dp"
+                            android:layout_height="183dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/imageView13"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:srcCompat="@drawable/default_pic" />
+                        </androidx.cardview.widget.CardView>
+
+                        <FrameLayout
+                            android:id="@+id/frameLayout3"
+                            android:layout_width="0dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/borderline"
+                            android:outlineAmbientShadowColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/cardView6"
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/text"
+                                    android:layout_width="25dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/borderline"
+                                    android:gravity="center"
+                                    android:text="$"
+                                    android:textColor="@color/black"
+                                    android:textSize="19dp" />
+
+                                <EditText
+                                    android:id="@+id/Price"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_toRightOf="@id/text"
+                                    android:background="@drawable/borderline"
+                                    android:gravity="end"
+                                    android:hint="Unit Price"
+                                    android:inputType="numberDecimal"
+                                    android:lines="1"
+                                    android:maxLength="8"
+                                    android:padding="7dp"
+                                    android:text=""
+                                    android:textColor="@color/black"
+                                    android:textSize="15dp" />
+                            </RelativeLayout>
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="PWD"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/cardView6"
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
+
+
+                        <CheckBox
+                            android:id="@+id/isFreeCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="is Free"
+                            app:layout_constraintStart_toEndOf="@+id/cardView6"
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+
+                        <CheckBox
+                            android:id="@+id/isExchangeCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="is Exchange"
+                            app:layout_constraintStart_toEndOf="@+id/cardView6"
+                            app:layout_constraintTop_toBottomOf="@+id/isFreeCheckBox" />
+
+                        <TextView
+                            android:id="@+id/stockProductS"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="25dp"
+                            android:text="Stock : 100(Piece)"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toStartOf="@+id/tableLayout"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/tableLayout" />
+
+                        <FrameLayout
+                            android:id="@+id/tableLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/borderline"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/stockProductS"
+                            app:layout_constraintTop_toBottomOf="@+id/isExchangeCheckBox">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <Button
+                                    android:id="@+id/decrementBtn"
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/borderline"
+                                    android:gravity="center"
+                                    android:text="-"
+                                    android:textColor="@color/black"
+                                    android:textSize="19dp" />
+
+                                <EditText
+                                    android:id="@+id/textView9"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerInParent="true"
+                                    android:background="@drawable/borderline"
+                                    android:gravity="center"
+                                    android:padding="3dp"
+                                    android:text="1"
+                                    android:textAlignment="center"
+                                    android:textSize="16sp" />
+
+                                <Button
+                                    android:id="@+id/incrementBtn"
+                                    android:layout_width="35dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_alignParentRight="true"
+                                    android:background="@drawable/borderline"
+                                    android:gravity="center"
+                                    android:text="+"
+                                    android:textSize="18sp" />
+                            </RelativeLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/frameLayout2"
+                            android:layout_width="0dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/borderline"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/cardView6"
+                            app:layout_constraintTop_toBottomOf="@+id/textView42">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/textView43"
+                                    android:layout_width="23dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/borderline"
+                                    android:gravity="center"
+                                    android:text="%"
+                                    android:textColor="@color/black"
+                                    android:textSize="16dp" />
+
+                                <EditText
+                                    android:id="@+id/AmountP"
+                                    android:layout_width="60dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_toRightOf="@id/textView43"
+                                    android:background="@drawable/transparent"
+                                    android:gravity="center_vertical"
+                                    android:hint="0.00"
+                                    android:inputType="numberDecimal"
+                                    android:lines="1"
+                                    android:maxLength="6"
+                                    android:padding="3dp"
+                                    android:text="0.00"
+                                    android:textSize="15dp" />
+
+                                <EditText
+                                    android:id="@+id/textView45"
+                                    android:layout_width="23dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_toRightOf="@id/AmountP"
+                                    android:background="@drawable/borderline"
+                                    android:gravity="center"
+                                    android:text="$"
+                                    android:textSize="16sp" />
+
+                                <EditText
+                                    android:id="@+id/TaxAmount"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_toRightOf="@id/textView45"
+                                    android:background="@drawable/transparent"
+                                    android:gravity="fill_vertical"
+                                    android:hint="0.00"
+                                    android:inputType="numberDecimal"
+                                    android:lines="1"
+                                    android:maxLength="8"
+                                    android:text="0.00"
+                                    android:textSize="15sp" />
+                            </RelativeLayout>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/frameLayout"
+                            android:layout_width="0dp"
+                            android:layout_height="34dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/borderline"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/cardView6"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <Spinner
+                                android:id="@+id/spineer"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                        </FrameLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="3dp"
+                        android:background="@drawable/borderline"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:backgroundTintMode="add"
+                        android:drawableTint="@color/Kelly_Green"
+                        android:gravity="center"
+                        android:text="Add / Update"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/textView33"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/borderline"
+                        android:backgroundTint="#DC3545"
+                        android:gravity="center"
+                        android:text="Close"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView23"
+                        app:layout_constraintTop_toTopOf="@+id/textView23" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

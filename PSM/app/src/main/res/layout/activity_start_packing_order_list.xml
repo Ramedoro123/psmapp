@@ -174,7 +174,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/ProductImage"
-                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                    app:layout_constraintTop_toBottomOf="@+id/incrementBtn" />
 
                 <TextView
                     android:id="@+id/Product_Id"
@@ -299,7 +299,7 @@
                     app:layout_constraintTop_toTopOf="@+id/EdtTextBox" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/incrementBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -344,8 +344,8 @@
                     android:text="12"
                     android:textColor="@color/black"
                     android:textSize="16dp"
-                    app:layout_constraintStart_toEndOf="@+id/textView10"
-                    app:layout_constraintTop_toTopOf="@+id/textView10" />
+                    app:layout_constraintStart_toEndOf="@+id/incrementBtn"
+                    app:layout_constraintTop_toTopOf="@+id/incrementBtn" />
 
                 <TextView
                     android:id="@+id/BarcodeTextview"
