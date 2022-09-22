@@ -36,7 +36,7 @@ class SalesPersonProductList : AppCompatActivity() {
     var empautoid:String?=null
     var customerName:String?=null
     var customerId:String?=null
-    var username:String?=null
+   public var username:String?=null
     var ProductItemList:String?=null
     lateinit var productTitle:TextView
     lateinit var cart_badge:TextView
@@ -61,6 +61,7 @@ class SalesPersonProductList : AppCompatActivity() {
         customerId = preferences.getString("customerId", "")
         ProductItemList = preferences.getString("ProductItemList", "")
         cart_badge.setText(username)
+
         val lbm = LocalBroadcastManager.getInstance(this)
         lbm.registerReceiver(br, IntentFilter("USER_NAME_CHANGED_ACTION"))
 
@@ -168,7 +169,7 @@ else {
     class MyBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context:Context, intent: Intent) {
             if (intent != null) {
-                 username = intent.getStringExtra("username");
+                var username = intent.getStringExtra("username");
             }
         }
     }
