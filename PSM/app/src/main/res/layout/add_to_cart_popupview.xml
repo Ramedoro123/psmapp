@@ -208,12 +208,14 @@
                                     android:textSize="19dp" />
 
                                 <EditText
-                                    android:id="@+id/textView9"
+                                    android:id="@+id/valueIncrementDecrement"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_centerInParent="true"
                                     android:background="@drawable/borderline"
                                     android:gravity="center"
+                                    android:maxLength="6"
+                                    android:inputType="number"
                                     android:padding="3dp"
                                     android:text="1"
                                     android:textAlignment="center"
@@ -318,8 +320,8 @@
                         </FrameLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:id="@+id/textView23"
+                    <Button
+                        android:id="@+id/btnAddToCart"
                         android:layout_width="0dp"
                         android:layout_height="35dp"
                         android:layout_marginStart="5dp"
@@ -330,15 +332,16 @@
                         android:backgroundTintMode="add"
                         android:drawableTint="@color/Kelly_Green"
                         android:gravity="center"
-                        android:text="Add / Update"
+                        android:textAllCaps="false"
+                        android:text="Add"
                         android:textColor="@color/white"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/textView33"
+                        app:layout_constraintEnd_toStartOf="@+id/btnCloseCart"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-                    <TextView
-                        android:id="@+id/textView33"
+                    <Button
+                        android:id="@+id/btnCloseCart"
                         android:layout_width="0dp"
                         android:layout_height="35dp"
                         android:layout_marginStart="3dp"
@@ -347,11 +350,12 @@
                         android:backgroundTint="#DC3545"
                         android:gravity="center"
                         android:text="Close"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView23"
-                        app:layout_constraintTop_toTopOf="@+id/textView23" />
+                        app:layout_constraintStart_toEndOf="@+id/btnAddToCart"
+                        app:layout_constraintTop_toTopOf="@+id/btnAddToCart" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

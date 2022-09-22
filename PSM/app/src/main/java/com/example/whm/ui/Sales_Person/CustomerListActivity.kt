@@ -151,7 +151,7 @@ public class CustomerListActivity : AppCompatActivity() {
                       for (i in 0 until responseData.length())
                       {
                       var CustomerType=responseData.getJSONObject(i).getString("CustomerType")
-                       autoId=responseData.getJSONObject(i).getInt("autoId")
+                          autoId=responseData.getJSONObject(i).getInt("autoId")
                         CustomerTypeFunction(CustomerType, autoId!!)
                       }
                       SpinnerValue()

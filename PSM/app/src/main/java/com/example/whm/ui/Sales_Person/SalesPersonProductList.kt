@@ -1,15 +1,20 @@
 package com.example.whm.ui.Sales_Person
 
 import android.app.Dialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -23,7 +28,6 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalesPersonProductAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
-import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getCartdetailsModle
 import org.json.JSONObject
 
 
@@ -32,10 +36,13 @@ class SalesPersonProductList : AppCompatActivity() {
     var empautoid:String?=null
     var customerName:String?=null
     var customerId:String?=null
+    var username:String?=null
     var ProductItemList:String?=null
     lateinit var productTitle:TextView
+    lateinit var cart_badge:TextView
     var responseMessage:String?=null
     var pDialog:SweetAlertDialog?=null
+    val br: BroadcastReceiver = MyBroadcastReceiver()
     var productListModelClass: ArrayList<SalesPersonProductModel> = arrayListOf()
     lateinit var productAdapterClass: SalesPersonProductAdapterClass
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +50,7 @@ class SalesPersonProductList : AppCompatActivity() {
         setContentView(R.layout.activity_sales_person_product_list)
         var userInformation=findViewById<TextView>(R.id.information)
         var ScanBarcode=findViewById<EditText>(R.id.ScanBarcodeEditeTextView)
+         cart_badge=findViewById<TextView>(R.id.cart_badge)
           productTitle=findViewById<TextView>(R.id.productTitle)
         var syncProduct=findViewById<TextView>(R.id.syncProduct)
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -52,6 +60,9 @@ class SalesPersonProductList : AppCompatActivity() {
         customerName = preferences.getString("CustomerName", "")
         customerId = preferences.getString("customerId", "")
         ProductItemList = preferences.getString("ProductItemList", "")
+        cart_badge.setText(username)
+        val lbm = LocalBroadcastManager.getInstance(this)
+        lbm.registerReceiver(br, IntentFilter("USER_NAME_CHANGED_ACTION"))
 
         userInformation.setOnClickListener(View.OnClickListener {
             var dilog=Dialog(this@SalesPersonProductList)
@@ -153,8 +164,15 @@ else {
     }
     dialog?.show()
 }
-
     }
+    class MyBroadcastReceiver : BroadcastReceiver() {
+        override fun onReceive(context:Context, intent: Intent) {
+            if (intent != null) {
+                 username = intent.getStringExtra("username");
+            }
+        }
+    }
+
     private fun productListApiCall(productId: String, productName: String,barcode:String){
         pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
@@ -234,8 +252,6 @@ try {
     Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
 }
     }
-
-
     private fun addProductdataModelClass(PId:String,PName:String,ImageUrl:String,CStock:String,BP:Float,UnitType:String) {
         var productModelClass = SalesPersonProductModel(PId,PName, ImageUrl,CStock,BP,UnitType)
         productListModelClass.add(productModelClass)

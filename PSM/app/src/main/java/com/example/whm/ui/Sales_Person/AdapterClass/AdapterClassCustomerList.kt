@@ -53,6 +53,7 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
             val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
             sharedLoadOrderPage.putString("CustomerName", CustomerList.getCN().toString())
             sharedLoadOrderPage.putString("customerId", CustomerList.getCId().toString())
+            sharedLoadOrderPage.putString("customerAutoId", CustomerList.getAI().toString())
             //sharedLoadOrderPage.putString("UpdateLocation",ValueUpdate.toString())
 
             sharedLoadOrderPage.apply()
@@ -80,11 +81,7 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
             //Toast.makeText(UpdateLocation,UpdateLocationList.getAId().toString(),Toast.LENGTH_LONG).show()
         }
     override fun getItemCount(): Int {
-        var CustomerlistSize=CustomerList.size.toString()
-        val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(Listdata)
-        val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
-        sharedLoadOrderPage.putString("CustomerlistSize", CustomerlistSize)
-        sharedLoadOrderPage.apply()
+
 
         return CustomerList.size
     }
