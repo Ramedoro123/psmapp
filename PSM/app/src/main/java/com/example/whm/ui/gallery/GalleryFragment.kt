@@ -37,6 +37,7 @@ import android.view.inputmethod.InputMethodManager
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.app.Dialog
+import android.content.Intent
 import android.text.SpannableString
 import cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener
 import com.example.myapplication.com.example.whm.MainActivity
@@ -48,6 +49,7 @@ import android.text.style.StyleSpan
 import android.util.TypedValue
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.UpdateLocation.setCanceledOnTouchOutside
 import com.example.myapplication.com.example.whm.ui.inventoryreceive.ReceivePOAdapter1
 import org.json.JSONArray
@@ -93,6 +95,7 @@ class GalleryFragment : Fragment() {
     var UnitChengeP: EditText?=null
     var UnitChengease: EditText?=null
     var  barcodeenter:String?=""
+    var  responseResultData:String?=null
     var DUnit:Int=0
     var txtunitP: TextView?=null
     var txtunitB: TextView?=null
@@ -265,6 +268,7 @@ class GalleryFragment : Fragment() {
         return root
     }
     val APIURL: String = AppPreferences.apiurl + "WPackerProductList.asmx/getProductsList"
+
     fun bindproductdetails(barcoded: String) {
         val pDialog = SweetAlertDialog(this.context, SweetAlertDialog.PROGRESS_TYPE)
         pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
@@ -281,6 +285,7 @@ class GalleryFragment : Fragment() {
         val category: TextView = binding.txtCategory
         val sub_category: TextView = binding.txtSubCategory
         val locationval: TextView = binding.txtLocation
+        val updateProductLocation: ImageView = binding.updateProductLocation
         val barcode = binding.txtBarScanned
         val reordermark: TextView = binding.txtreordmark
         stockfeild2.visibility=View.GONE
@@ -361,6 +366,41 @@ class GalleryFragment : Fragment() {
                     }
                     stock.text = "${DefaultStock}"
                     barcode.text = "" + bc
+
+                    updateProductLocation.setOnClickListener(View.OnClickListener {
+                        var dilog = Dialog(it.context)
+                        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        dilog.setCancelable(false)
+                        dilog.setContentView(com.example.myapplication.R.layout.update_product_location_popup)
+                        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dilog.window!!.setGravity(Gravity.CENTER)
+                        val lp = WindowManager.LayoutParams()
+                        lp.copyFrom(dilog.getWindow()!!.getAttributes())
+                        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+                        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+                        var btnCloseLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnCloseLocation)
+                        var btnUpdateLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnUpdateLocation)
+                        var oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
+                        var productIdEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
+                        var productNameEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
+                        var Rack = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL1)
+                        var Section = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL2)
+                        var Row = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL3)
+                        var BoxNo = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL4)
+                        oldLocation.setText(location)
+                        productIdEditLocation.setText("$ProductId")
+                        productNameEditLocation.setText("$pname")
+                        btnUpdateLocation.setOnClickListener(View.OnClickListener {
+                            updateProductLocationFunction(productId=productIdEditLocation.text.toString(),Rack=Rack.text.toString(),Section="",Row=0,BoxNo=0)
+                            dilog.dismiss()
+                        })
+                        btnCloseLocation.setOnClickListener(View.OnClickListener {
+                            dilog.dismiss()
+                        })
+                        dilog.show()
+                        dilog.getWindow()!!.setAttributes(lp);
+                    })
+
                     Glide.with(this)
                         .load(imagesurl)
                         .into(imagur)
@@ -805,6 +845,7 @@ class GalleryFragment : Fragment() {
              CheckInterNetDailog()
          }
     }
+
     private fun updatestock(_ProductID: TextView?, StrockQty: EditText, Remark: EditText){
         if (AppPreferences.internetConnectionCheck(this.context)) {
 
@@ -818,10 +859,8 @@ class GalleryFragment : Fragment() {
             var accessToken = preferences.getString("accessToken", "")
             var empautoid = preferences.getString("EmpAutoId", "")
             var remark = Remark.text.toString()
-
                 if (UnitChengeP!!.text.toString() != "" && UnitChengeP!!.text.toString() != "0") {
-                    remark =
-                        remark + "</br>" + txtunitP!!.text + ": " + UnitChengeP!!.text.toString()
+                    remark = remark + "</br>" + txtunitP!!.text + ": " + UnitChengeP!!.text.toString()
                 }
                 if (UnitChengeBox!!.text.toString() != "" && UnitChengeBox!!.text.toString() != "0") {
                     remark =
@@ -903,6 +942,7 @@ class GalleryFragment : Fragment() {
             CheckInterNetDailog()
         }
     }
+
     fun RemarkMessage() {
         var Remarkalert=   SweetAlertDialog(this.context,SweetAlertDialog.ERROR_TYPE)
         Remarkalert.contentText = "Remark length should be 10 character"
@@ -1016,6 +1056,7 @@ class GalleryFragment : Fragment() {
             dialog?.dismiss()
         }
     }
+
     fun manualbindproductdetails(sproductid: String) {
 
         val pDialog = SweetAlertDialog(this.context, SweetAlertDialog.PROGRESS_TYPE)
@@ -1033,6 +1074,7 @@ class GalleryFragment : Fragment() {
         val category: TextView = binding.txtCategory
         val sub_category: TextView = binding.txtSubCategory
         val locationval: TextView = binding.txtLocation
+        val updateProductLocation: ImageView = binding.updateProductLocation
         val barcode = binding.txtBarScanned
         val reordermark: TextView = binding.txtreordmark
         stockfeild2.visibility=View.GONE
@@ -1112,6 +1154,38 @@ class GalleryFragment : Fragment() {
                     }
                     stock.text = "${DefaultStock}"
                     barcode.text = "" + bc
+                    updateProductLocation.setOnClickListener(View.OnClickListener {
+                        var dilog = Dialog(it.context)
+                        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        dilog.setCancelable(false)
+                        dilog.setContentView(com.example.myapplication.R.layout.update_product_location_popup)
+                        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dilog.window!!.setGravity(Gravity.CENTER)
+                        val lp = WindowManager.LayoutParams()
+                        lp.copyFrom(dilog.getWindow()!!.getAttributes())
+                        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+                        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+                        var btnCloseLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnCloseLocation)
+                        var oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
+                        var productIdEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
+                        var productNameEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
+                        var Rack = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL1)
+                        var Section = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL2)
+                        var Row = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL3)
+                        var BoxNo = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL4)
+                        oldLocation.setText(location)
+                        productIdEditLocation.setText("$ProductId")
+                        productNameEditLocation.setText("$pname")
+
+                                updateProductLocationFunction(productId=productIdEditLocation.text.toString(),Rack="",Section="",Row=0,BoxNo=0)
+
+
+                        btnCloseLocation.setOnClickListener(View.OnClickListener {
+                            dilog.dismiss()
+                        })
+                        dilog.show()
+                        dilog.getWindow()!!.setAttributes(lp);
+                    })
                     Glide.with(this)
                         .load(imagesurl)
                         .into(imagur)
@@ -1140,6 +1214,78 @@ class GalleryFragment : Fragment() {
         queues.add(reqPRODUCTDETAILS)
     }
 
+    private fun updateProductLocationFunction(productId:String ,Rack:String,Section:String,Row:Int,BoxNo:Int) {
+        if (AppPreferences.internetConnectionCheck(this.context)) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(this.context)
+            var accessToken = preferences.getString("accessToken", "")
+            var empautoid = preferences.getString("EmpAutoId", "")
+            var customerId = preferences.getString("customerId", "")
+            var pDialog = SweetAlertDialog(this.context, SweetAlertDialog.PROGRESS_TYPE)
+            pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+            pDialog!!.titleText = "Fetching ..."
+            pDialog!!.setCancelable(false)
+            pDialog!!.show()
+            val sendRequestObject = JSONObject()
+            val requestContainer = JSONObject()
+            val pObj = JSONObject()
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("appVersion", AppPreferences.AppVersion)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put(
+                    "deviceID",
+                    Settings.Secure.getString(this.context!!.contentResolver, Settings.Secure.ANDROID_ID)
+                )
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceName", AppPreferences.DeviceName)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("accessToken", accessToken)
+            )
+            sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
+            sendRequestObject.put("pObj", pObj.put("productId", productId))
+            sendRequestObject.put("pObj", pObj.put("Rack", Rack))
+            sendRequestObject.put("pObj", pObj.put("Section", Section))
+            sendRequestObject.put("pObj", pObj.put("Row", Row))
+            sendRequestObject.put("pObj", pObj.put("BoxNo", BoxNo))
+
+            val queue = Volley.newRequestQueue(this.context)
+            val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                AppPreferences.getpackingdetails, sendRequestObject,
+                { response ->
+                    val responseResult = JSONObject(response.toString())
+                    val responsedData = JSONObject(responseResult.getString("d"))
+                    var responseMessage = responsedData.getString("responseMessage")
+                    val responseCode = responsedData.getString("responseCode")
+                    if (responseCode == "200") {
+                       responseResultData = responsedData.getString("responseData")
+
+                    }
+                },  Response.ErrorListener { pDialog!!.dismiss() })
+            JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                10000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+            try {
+                queue.add(JsonObjectRequest)
+            } catch (e: Exception) {
+                Toast.makeText(this.context, e.toString(), Toast.LENGTH_LONG).show()
+            }
+        }
+        else{
+           CheckInterNetDailog()
+        }
+        }
 
     fun CheckInterNetDailog(){
         val dialog = context?.let { Dialog(it) }

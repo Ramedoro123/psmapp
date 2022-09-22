@@ -346,6 +346,7 @@ class SalesPersonProductAdapterClass(
             lp.copyFrom(dilog.getWindow()!!.getAttributes())
             lp.width = WindowManager.LayoutParams.MATCH_PARENT
             lp.height = WindowManager.LayoutParams.MATCH_PARENT
+
             var SProductID = dilog.findViewById<TextView>(R.id.productIdSalse)
             var s_ProductName = dilog.findViewById<TextView>(R.id.text_ProductName)
             var stockProductS = dilog.findViewById<TextView>(R.id.stockProductS)
@@ -506,12 +507,13 @@ class SalesPersonProductAdapterClass(
 
             isFreeCheckBox.setOnClickListener(this)
             isExchangeCheckBox.setOnClickListener(this)
+
             SProductID.setText(ProductItem.getPId())
             s_ProductName.setText(ProductItem.getPName())
             stockProductS.setText("Stock : " + ProductItem.getCStock().toString())
             Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(imageView13);
-            var btnAddToCart = dilog.findViewById<Button>(R.id.btnAddToCart)
-            var btnCloseCart = dilog.findViewById<Button>(R.id.btnCloseCart)
+            var btnAddToCart = dilog.findViewById<Button>(R.id.btnUpdateLocation)
+            var btnCloseCart = dilog.findViewById<Button>(R.id.btnCloseLocation)
             btnAddToCart.setOnClickListener(View.OnClickListener {
                 if (AppPreferences.internetConnectionCheck(it.context)) {
                     val preferences = PreferenceManager.getDefaultSharedPreferences(data)
