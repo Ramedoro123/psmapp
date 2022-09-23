@@ -366,7 +366,9 @@ class GalleryFragment : Fragment() {
                     }
                     stock.text = "${DefaultStock}"
                     barcode.text = "" + bc
-
+                    if (responseResultData!=null && responseResultData!="") {
+                        locationval.setText(responseResultData)
+                    }
                     updateProductLocation.setOnClickListener(View.OnClickListener {
                         var dilog = Dialog(it.context)
                         dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -383,16 +385,39 @@ class GalleryFragment : Fragment() {
                         var oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
                         var productIdEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
                         var productNameEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
-                        var Rack = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL1)
-                        var Section = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL2)
-                        var Row = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL3)
-                        var BoxNo = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL4)
+                        var Rack = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL1)
+                        var Section = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL2)
+                        var Row = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL3)
+                        var BoxNo = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL4)
                         oldLocation.setText(location)
                         productIdEditLocation.setText("$ProductId")
                         productNameEditLocation.setText("$pname")
                         btnUpdateLocation.setOnClickListener(View.OnClickListener {
-                            updateProductLocationFunction(productId=productIdEditLocation.text.toString(),Rack=Rack.text.toString(),Section="",Row=0,BoxNo=0)
-                            dilog.dismiss()
+                            if (Rack.text.toString().trim()!=null && Rack.text.toString().trim()!=""
+                                && Section.text.toString().trim()!=null && Section.text.toString().trim()!="" &&Row.text.toString()!=null &&Row.text.toString().trim()!=""
+                                &&BoxNo.text.toString()!=null &&BoxNo.text.toString()!="") {
+                                var row=Row.text.toString().trim().toInt()
+                                var boxNo=BoxNo.text.toString().trim().toInt()
+                                updateProductLocationFunction(
+                                    productId = productIdEditLocation.text.toString(),
+                                    Rack = Rack.text.toString(),
+                                    Section =Section.text.toString(),
+                                    Row = row,
+                                    BoxNo = boxNo
+                                )
+                                dilog.dismiss()
+                            }else{
+                                var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
+                                popUp.setContentText("All fields required.")
+                                popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                                popUp.setConfirmClickListener()
+                                { sDialog ->
+                                    sDialog.dismissWithAnimation()
+                                    popUp.dismiss()
+                                }
+                                popUp.show()
+                                popUp.setCanceledOnTouchOutside(false)
+                            }
                         })
                         btnCloseLocation.setOnClickListener(View.OnClickListener {
                             dilog.dismiss()
@@ -1154,6 +1179,9 @@ class GalleryFragment : Fragment() {
                     }
                     stock.text = "${DefaultStock}"
                     barcode.text = "" + bc
+                    if (responseResultData!=null&&responseResultData!="") {
+                        locationval.setText(responseResultData)
+                    }
                     updateProductLocation.setOnClickListener(View.OnClickListener {
                         var dilog = Dialog(it.context)
                         dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -1166,18 +1194,44 @@ class GalleryFragment : Fragment() {
                         lp.width = WindowManager.LayoutParams.MATCH_PARENT
                         lp.height = WindowManager.LayoutParams.MATCH_PARENT
                         var btnCloseLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnCloseLocation)
+                        var btnUpdateLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnUpdateLocation)
                         var oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
                         var productIdEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
                         var productNameEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
-                        var Rack = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL1)
-                        var Section = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL2)
-                        var Row = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL3)
-                        var BoxNo = dilog.findViewById<TextView>(com.example.myapplication.R.id.textL4)
+                        var Rack = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL1)
+                        var Section = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL2)
+                        var Row = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL3)
+                        var BoxNo = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL4)
                         oldLocation.setText(location)
                         productIdEditLocation.setText("$ProductId")
                         productNameEditLocation.setText("$pname")
-
-                                updateProductLocationFunction(productId=productIdEditLocation.text.toString(),Rack="",Section="",Row=0,BoxNo=0)
+                        btnUpdateLocation.setOnClickListener(View.OnClickListener {
+                            if (Rack.text.toString().trim()!=null && Rack.text.toString().trim()!=""
+                                && Section.text.toString().trim()!=null && Section.text.toString().trim()!="" &&Row.text.toString()!=null &&Row.text.toString().trim()!=""
+                                &&BoxNo.text.toString()!=null &&BoxNo.text.toString()!="") {
+                                var row=Row.text.toString().trim().toInt()
+                                var boxNo=BoxNo.text.toString().trim().toInt()
+                                updateProductLocationFunction(
+                                    productId = productIdEditLocation.text.toString(),
+                                    Rack = Rack.text.toString(),
+                                    Section =Section.text.toString(),
+                                    Row = row,
+                                    BoxNo = boxNo
+                                )
+                                dilog.dismiss()
+                            }else{
+                                var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
+                                popUp.setContentText("All fields required.")
+                                popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                                popUp.setConfirmClickListener()
+                                { sDialog ->
+                                    sDialog.dismissWithAnimation()
+                                    popUp.dismiss()
+                                }
+                                popUp.show()
+                                popUp.setCanceledOnTouchOutside(false)
+                            }
+                        })
 
 
                         btnCloseLocation.setOnClickListener(View.OnClickListener {
@@ -1257,19 +1311,42 @@ class GalleryFragment : Fragment() {
             sendRequestObject.put("pObj", pObj.put("Section", Section))
             sendRequestObject.put("pObj", pObj.put("Row", Row))
             sendRequestObject.put("pObj", pObj.put("BoxNo", BoxNo))
+            Log.e("responseMessage",productId.toString())
+            Log.e("responseMessage",Rack.toString())
+            Log.e("responseMessage",Section.toString())
+            Log.e("responseMessage",Row.toString())
+            Log.e("responseMessage",BoxNo.toString())
+            Log.e("responseMessage",empautoid.toString())
 
             val queue = Volley.newRequestQueue(this.context)
             val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-                AppPreferences.getpackingdetails, sendRequestObject,
+                AppPreferences.updateProductLocationApi, sendRequestObject,
                 { response ->
                     val responseResult = JSONObject(response.toString())
                     val responsedData = JSONObject(responseResult.getString("d"))
                     var responseMessage = responsedData.getString("responseMessage")
                     val responseCode = responsedData.getString("responseCode")
-                    if (responseCode == "200") {
+                    if (responseCode == "200"){
                        responseResultData = responsedData.getString("responseData")
+                        Log.e("responseMessage",responseMessage.toString())
+                        pDialog.dismiss()
 
                     }
+                    else{
+                        var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
+                        popUp.setContentText(responseMessage)
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            popUp.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                        pDialog!!.dismiss()
+                    }
+                        pDialog.dismiss()
+
                 },  Response.ErrorListener { pDialog!!.dismiss() })
             JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
                 10000000,

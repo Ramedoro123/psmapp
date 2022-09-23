@@ -53,6 +53,7 @@ object AppPreferences {
     const val PACKED_ORDER_PICKERPACKER= PackerUrl+"WPackerOrder.asmx/PackOrder"
     const val UpdateLocation_Url=apiurl+"WPackerOrder.asmx/getorderlocation"
     const val updateOrderLocation=apiurl+"WPackerOrder.asmx/updateOrderLocation"
+    const val updateProductLocationApi=apiurl+"WPackerProductList.asmx/updateproductlocation"
     const val ChangeBillNo_And_Date=BASEURL+"WPOReceive.asmx/updatebillno"
     const val Customer_ListUrl=salesPersonUrl+"WLiveCustomer.asmx/getCustomerList"
     const val getCustomerType=salesPersonUrl+"WCustomerList.asmx/getCustomerType"
