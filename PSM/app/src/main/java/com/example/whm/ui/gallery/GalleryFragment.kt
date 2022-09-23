@@ -267,8 +267,8 @@ class GalleryFragment : Fragment() {
         }
         return root
     }
-    val APIURL: String = AppPreferences.apiurl + "WPackerProductList.asmx/getProductsList"
 
+    val APIURL: String = AppPreferences.apiurl + "WPackerProductList.asmx/getProductsList"
     fun bindproductdetails(barcoded: String) {
         val pDialog = SweetAlertDialog(this.context, SweetAlertDialog.PROGRESS_TYPE)
         pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
@@ -284,7 +284,7 @@ class GalleryFragment : Fragment() {
         val stockfeild2: TextView = binding.txtStockfeild2
         val category: TextView = binding.txtCategory
         val sub_category: TextView = binding.txtSubCategory
-        val locationval: TextView = binding.txtLocation
+        val locationval: TextView=binding.txtLocation
         val updateProductLocation: ImageView = binding.updateProductLocation
         val barcode = binding.txtBarScanned
         val reordermark: TextView = binding.txtreordmark
@@ -1332,6 +1332,7 @@ class GalleryFragment : Fragment() {
                             sDialog.dismissWithAnimation()
                             popUp.dismiss()
                             pDialog!!.dismiss()
+                            sproductid?.let { manualbindproductdetails(it) }
                         }
                         popUp.show()
                         popUp.setCanceledOnTouchOutside(false)
