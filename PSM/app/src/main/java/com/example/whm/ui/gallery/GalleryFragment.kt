@@ -95,7 +95,7 @@ class GalleryFragment : Fragment() {
     var UnitChengeP: EditText?=null
     var UnitChengease: EditText?=null
     var  barcodeenter:String?=""
-    var  responseResultData:String?=null
+    public var responseResultData:String?=null
     var DUnit:Int=0
     var txtunitP: TextView?=null
     var txtunitB: TextView?=null
@@ -366,9 +366,7 @@ class GalleryFragment : Fragment() {
                     }
                     stock.text = "${DefaultStock}"
                     barcode.text = "" + bc
-                    if (responseResultData!=null && responseResultData!="") {
-                        locationval.setText(responseResultData)
-                    }
+
                     updateProductLocation.setOnClickListener(View.OnClickListener {
                         var dilog = Dialog(it.context)
                         dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -392,6 +390,7 @@ class GalleryFragment : Fragment() {
                         oldLocation.setText(location)
                         productIdEditLocation.setText("$ProductId")
                         productNameEditLocation.setText("$pname")
+
                         btnUpdateLocation.setOnClickListener(View.OnClickListener {
                             if (Rack.text.toString().trim()!=null && Rack.text.toString().trim()!=""
                                 && Section.text.toString().trim()!=null && Section.text.toString().trim()!="" &&Row.text.toString()!=null &&Row.text.toString().trim()!=""
@@ -422,10 +421,13 @@ class GalleryFragment : Fragment() {
                         btnCloseLocation.setOnClickListener(View.OnClickListener {
                             dilog.dismiss()
                         })
+
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     })
-
+                    if (responseResultData!=null && responseResultData!="") {
+                        locationval.setText(responseResultData)
+                    }
                     Glide.with(this)
                         .load(imagesurl)
                         .into(imagur)
@@ -769,7 +771,6 @@ class GalleryFragment : Fragment() {
                 var productname = autotextView!!.text.toString()
                 if (productname != "") {
                      sproductid?.let { it1 -> manualbindproductdetails(it1) }
-
                     dialog?.dismiss()
                 } else {
                     if (productname == "") {
@@ -1179,9 +1180,7 @@ class GalleryFragment : Fragment() {
                     }
                     stock.text = "${DefaultStock}"
                     barcode.text = "" + bc
-                    if (responseResultData!=null&&responseResultData!="") {
-                        locationval.setText(responseResultData)
-                    }
+
                     updateProductLocation.setOnClickListener(View.OnClickListener {
                         var dilog = Dialog(it.context)
                         dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -1240,6 +1239,10 @@ class GalleryFragment : Fragment() {
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     })
+
+                    if (responseResultData!=null&&responseResultData!="") {
+                        locationval.setText(responseResultData)
+                    }
                     Glide.with(this)
                         .load(imagesurl)
                         .into(imagur)
@@ -1311,13 +1314,6 @@ class GalleryFragment : Fragment() {
             sendRequestObject.put("pObj", pObj.put("Section", Section))
             sendRequestObject.put("pObj", pObj.put("Row", Row))
             sendRequestObject.put("pObj", pObj.put("BoxNo", BoxNo))
-            Log.e("responseMessage",productId.toString())
-            Log.e("responseMessage",Rack.toString())
-            Log.e("responseMessage",Section.toString())
-            Log.e("responseMessage",Row.toString())
-            Log.e("responseMessage",BoxNo.toString())
-            Log.e("responseMessage",empautoid.toString())
-
             val queue = Volley.newRequestQueue(this.context)
             val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
                 AppPreferences.updateProductLocationApi, sendRequestObject,
@@ -1328,9 +1324,17 @@ class GalleryFragment : Fragment() {
                     val responseCode = responsedData.getString("responseCode")
                     if (responseCode == "200"){
                        responseResultData = responsedData.getString("responseData")
-                        Log.e("responseMessage",responseMessage.toString())
-                        pDialog.dismiss()
-
+                        var popUp = SweetAlertDialog(this.context, SweetAlertDialog.SUCCESS_TYPE)
+                        popUp.setContentText(responseMessage)
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            popUp.dismiss()
+                            pDialog!!.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
                     }
                     else{
                         var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
