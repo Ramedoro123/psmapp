@@ -223,12 +223,6 @@ class Add_On_Order_Fragment : Fragment() {
         }
     }
 
-//        override fun onResume() {
-//        super.onResume()
-//        addOneList()
-//
-//    }
-
 override fun onResume() {
     super.onResume()
     if (shouldExecuteOnResume) {

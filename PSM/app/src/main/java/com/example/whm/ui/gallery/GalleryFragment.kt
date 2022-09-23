@@ -100,6 +100,7 @@ class GalleryFragment : Fragment() {
     var txtunitP: TextView?=null
     var txtunitB: TextView?=null
     var txtunitC: TextView?=null
+    var locationval: TextView?=null
     var autotextView: AutoCompleteTextView? = null
     var sproductid: String? = null
     var  DAutoid:Int=0
@@ -113,16 +114,10 @@ class GalleryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
+        galleryViewModel = ViewModelProvider(this).get(GalleryViewModel::class.java)
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val view = inflater.inflate(
-            com.example.myapplication.R.layout.fragment_gallery,
-            container,
-            false
-        )
-
+        val view = inflater.inflate(com.example.myapplication.R.layout.fragment_gallery, container, false)
         root.requestFocus()
         root.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN) {
@@ -145,6 +140,7 @@ class GalleryFragment : Fragment() {
             editlayout = binding.editlayout
             producdetails = binding.producdetails
              TxtRemark = binding.txtreamrk
+            locationval= binding.txtLocation
              TotalStockQTY = binding.txttotalqrty
              ProductID_S = binding.StxtProductid
             galleryViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -284,7 +280,7 @@ class GalleryFragment : Fragment() {
         val stockfeild2: TextView = binding.txtStockfeild2
         val category: TextView = binding.txtCategory
         val sub_category: TextView = binding.txtSubCategory
-        val locationval: TextView=binding.txtLocation
+//        val locationval: TextView=binding.txtLocation
         val updateProductLocation: ImageView = binding.updateProductLocation
         val barcode = binding.txtBarScanned
         val reordermark: TextView = binding.txtreordmark
@@ -354,9 +350,9 @@ class GalleryFragment : Fragment() {
                     reordermark.text=Reordermark.toString()
                     price.text = "${pprice}"
                     if ("$location" == "---") {
-                        locationval.text = "N/A"
+                        locationval!!.text = "N/A"
                     } else {
-                        locationval.text = "$location"
+                        locationval!!.text = "$location"
                     }
                     category.text = "$pCategory"
                     sub_category.text = "$pSubCategory"
@@ -425,9 +421,6 @@ class GalleryFragment : Fragment() {
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     })
-                    if (responseResultData!=null && responseResultData!="") {
-                        locationval.setText(responseResultData)
-                    }
                     Glide.with(this)
                         .load(imagesurl)
                         .into(imagur)
@@ -1099,7 +1092,7 @@ class GalleryFragment : Fragment() {
         val stockfeild2: TextView = binding.txtStockfeild2
         val category: TextView = binding.txtCategory
         val sub_category: TextView = binding.txtSubCategory
-        val locationval: TextView = binding.txtLocation
+//        val locationval: TextView = binding.txtLocation
         val updateProductLocation: ImageView = binding.updateProductLocation
         val barcode = binding.txtBarScanned
         val reordermark: TextView = binding.txtreordmark
@@ -1168,9 +1161,9 @@ class GalleryFragment : Fragment() {
                     reordermark.text=Reordermark.toString()
                     price.text = "${pprice}"
                     if ("$location" == "---") {
-                        locationval.text = "N/A"
+                        locationval!!.text = "N/A"
                     } else {
-                        locationval.text = "$location"
+                        locationval!!.text = "$location"
                     }
                     category.text = "$pCategory"
                     sub_category.text = "$pSubCategory"
@@ -1201,7 +1194,9 @@ class GalleryFragment : Fragment() {
                         var Section = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL2)
                         var Row = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL3)
                         var BoxNo = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL4)
-                        oldLocation.setText(location)
+                        var oldlocation=locationval!!.text.toString()
+                        oldLocation.setText(oldlocation)
+                        oldLocation.setText(responseResultData)
                         productIdEditLocation.setText("$ProductId")
                         productNameEditLocation.setText("$pname")
                         btnUpdateLocation.setOnClickListener(View.OnClickListener {
@@ -1239,10 +1234,6 @@ class GalleryFragment : Fragment() {
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     })
-
-                    if (responseResultData!=null&&responseResultData!="") {
-                        locationval.setText(responseResultData)
-                    }
                     Glide.with(this)
                         .load(imagesurl)
                         .into(imagur)
@@ -1324,6 +1315,11 @@ class GalleryFragment : Fragment() {
                     val responseCode = responsedData.getString("responseCode")
                     if (responseCode == "200"){
                        responseResultData = responsedData.getString("responseData")
+                        var location  =locationval!!.text
+                        if (responseResultData!=null && responseResultData!="" &&location!=null &&location!="") {
+
+                            locationval!!.setText(responseResultData)
+                        }
                         var popUp = SweetAlertDialog(this.context, SweetAlertDialog.SUCCESS_TYPE)
                         popUp.setContentText(responseMessage)
                         popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -1332,7 +1328,6 @@ class GalleryFragment : Fragment() {
                             sDialog.dismissWithAnimation()
                             popUp.dismiss()
                             pDialog!!.dismiss()
-                            sproductid?.let { manualbindproductdetails(it) }
                         }
                         popUp.show()
                         popUp.setCanceledOnTouchOutside(false)
