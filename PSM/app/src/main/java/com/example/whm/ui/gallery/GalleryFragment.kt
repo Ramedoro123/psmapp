@@ -101,6 +101,7 @@ class GalleryFragment : Fragment() {
     var txtunitB: TextView?=null
     var txtunitC: TextView?=null
     var locationval: TextView?=null
+    var oldLocation: TextView?=null
     var autotextView: AutoCompleteTextView? = null
     var sproductid: String? = null
     var  DAutoid:Int=0
@@ -376,17 +377,16 @@ class GalleryFragment : Fragment() {
                         lp.height = WindowManager.LayoutParams.MATCH_PARENT
                         var btnCloseLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnCloseLocation)
                         var btnUpdateLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnUpdateLocation)
-                        var oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
+                         oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
                         var productIdEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
                         var productNameEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
                         var Rack = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL1)
                         var Section = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL2)
                         var Row = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL3)
                         var BoxNo = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL4)
-                        oldLocation.setText(location)
+                         oldLocation!!.setText( locationval!!.text)
                         productIdEditLocation.setText("$ProductId")
                         productNameEditLocation.setText("$pname")
-
                         btnUpdateLocation.setOnClickListener(View.OnClickListener {
                             if (Rack.text.toString().trim()!=null && Rack.text.toString().trim()!=""
                                 && Section.text.toString().trim()!=null && Section.text.toString().trim()!="" &&Row.text.toString()!=null &&Row.text.toString().trim()!=""
@@ -403,7 +403,7 @@ class GalleryFragment : Fragment() {
                                 dilog.dismiss()
                             }else{
                                 var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
-                                popUp.setContentText("All fields required.")
+                                popUp.setContentText("All fields are required.")
                                 popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
                                 popUp.setConfirmClickListener()
                                 { sDialog ->
@@ -417,7 +417,6 @@ class GalleryFragment : Fragment() {
                         btnCloseLocation.setOnClickListener(View.OnClickListener {
                             dilog.dismiss()
                         })
-
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     })
@@ -1187,16 +1186,16 @@ class GalleryFragment : Fragment() {
                         lp.height = WindowManager.LayoutParams.MATCH_PARENT
                         var btnCloseLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnCloseLocation)
                         var btnUpdateLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnUpdateLocation)
-                        var oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
+                          oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
                         var productIdEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
                         var productNameEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
                         var Rack = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL1)
                         var Section = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL2)
                         var Row = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL3)
                         var BoxNo = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL4)
-                        var oldlocation=locationval!!.text.toString()
-                        oldLocation.setText(oldlocation)
-                        oldLocation.setText(responseResultData)
+                        //var oldlocation=locationval!!.text.toString()
+//                        oldLocation.setText("$location")
+                        oldLocation!!.setText( locationval!!.text)
                         productIdEditLocation.setText("$ProductId")
                         productNameEditLocation.setText("$pname")
                         btnUpdateLocation.setOnClickListener(View.OnClickListener {
@@ -1215,7 +1214,7 @@ class GalleryFragment : Fragment() {
                                 dilog.dismiss()
                             }else{
                                 var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
-                                popUp.setContentText("All fields required.")
+                                popUp.setContentText("All fields are required.")
                                 popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
                                 popUp.setConfirmClickListener()
                                 { sDialog ->
@@ -1226,8 +1225,6 @@ class GalleryFragment : Fragment() {
                                 popUp.setCanceledOnTouchOutside(false)
                             }
                         })
-
-
                         btnCloseLocation.setOnClickListener(View.OnClickListener {
                             dilog.dismiss()
                         })
@@ -1301,7 +1298,7 @@ class GalleryFragment : Fragment() {
             )
             sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
             sendRequestObject.put("pObj", pObj.put("productId", productId))
-            sendRequestObject.put("pObj", pObj.put("Rack", Rack))
+            sendRequestObject.put("pObj", pObj.put("Rack", Rack.toUpperCase()))
             sendRequestObject.put("pObj", pObj.put("Section", Section))
             sendRequestObject.put("pObj", pObj.put("Row", Row))
             sendRequestObject.put("pObj", pObj.put("BoxNo", BoxNo))
@@ -1319,6 +1316,7 @@ class GalleryFragment : Fragment() {
                         if (responseResultData!=null && responseResultData!="" &&location!=null &&location!="") {
 
                             locationval!!.setText(responseResultData)
+                            oldLocation!!.setText("$responseResultData")
                         }
                         var popUp = SweetAlertDialog(this.context, SweetAlertDialog.SUCCESS_TYPE)
                         popUp.setContentText(responseMessage)
