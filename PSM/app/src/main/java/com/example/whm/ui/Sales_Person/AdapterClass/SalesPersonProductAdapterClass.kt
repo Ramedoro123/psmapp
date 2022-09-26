@@ -29,7 +29,6 @@ import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.AddToCartDataModle
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getCartdetailsModle
-import com.example.whm.ui.Sales_Person.SalesPersonProductList
 import com.squareup.picasso.Picasso
 import org.json.JSONArray
 import org.json.JSONObject
@@ -59,33 +58,34 @@ class SalesPersonProductAdapterClass(
     var isFreelist = ArrayList<String>()
     var isdefault = ArrayList<Int>()
     var unitAutoIdList = ArrayList<Int>()
-
-    var minPrice:String?=null
-    var checkFreeValue:Int=0
-    var isExchangeValue:Int=0
-    var checkExchangeValue:Int=0
-    var draftAutoId:Int=0
-    var UIDs: Int? = null
-    var DraftAutoId: Int? = null
     var Total:String?=null
-    var NofItem:String?=null
-    var frees: Int? = null
-    var MinPric: String? = null
-    var isdefault1: Int? = null
     var UName: String? = null
     var price: String? = null
+    var minPrice:String?=null
+    var productId:String?=null
     var pricess: String? = null
-    var minPrices: String? = null
-    var unitAutoID:Int?=null
-    var unitAutoidValue:Int?=null
-    var isFree: String? = null
     var isFrees:String?=null
+    var isFree: String? = null
+    var MinPric: String? = null
+    var ProductName:String?=null
+    var minPrices: String? = null
+    var productStocks:String?=null
+    var productImageUrl:String?=null
+    public var NofItem:String?=null
+    var responseMessage: String? = null
+    var UIDs: Int? = null
+    var frees: Int? = null
+    var unitAutoID:Int?=null
+    var draftAutoId:Int=0
+    var checkFreeValue:Int=0
+    var isExchangeValue:Int=0
+    var isdefault1: Int? = null
+    var unitAutoidValue:Int?=null
     var priceValue: Double? = null
     var uah:Float=0.0F
     var usd:Float= 0.0F
     var uahEdited = false
     var usdEdited = false
-
     var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
     var addToCartData: MutableList<AddToCartDataModle> = ArrayList()
 
@@ -96,22 +96,21 @@ class SalesPersonProductAdapterClass(
         var ProductStock = itemView.findViewById<TextView>(R.id.ProductStock)
         var ProductImage = itemView.findViewById<ImageView>(R.id.ProductImage)
         var cardView5 = itemView.findViewById<CardView>(R.id.cardView5)
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
+
         var view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
-        //title.setText("hello")
+
         return ViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var ProductItem = ProductItemList[position]
+       var  ProductItem = ProductItemList[position]
         holder.ProductName.text = ProductItem.getPName().toString()
         holder.ProductdID.text = ProductItem.getPId().toString()
         var priceProduct = ProductItem.getBP()!!.toFloat()
         var UnitType = ProductItem.getUnitType().toString()
+
         holder.ProductPrice.setText("$" + "%.2f".format(priceProduct) + "(" + UnitType + ")")
         var productStoct = ProductItem.getCStock()
         if (productStoct=="0") {
@@ -121,204 +120,188 @@ class SalesPersonProductAdapterClass(
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#000000"))
         }
-        Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic)
-            .into(holder.ProductImage);
-
+        Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(holder.ProductImage);
+        productId=ProductItem.getPId()
+        ProductName=ProductItem.getPName()
+        productStocks=ProductItem.getCStock()
+        productImageUrl=ProductItem.getImageUrl()
+        cardfunction()
         holder.cardView5.setOnClickListener(View.OnClickListener {
             if (AppPreferences.internetConnectionCheck(it.context)){
-            val preferences = PreferenceManager.getDefaultSharedPreferences(data)
-            var accessToken = preferences.getString("accessToken", "")
-            var empautoid = preferences.getString("EmpAutoId", "")
-            var customerId = preferences.getString("customerId", "")
-            var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
-            pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
-            pDialog!!.titleText = "Fetching ..."
-            pDialog!!.setCancelable(false)
-            pDialog!!.show()
-            val sendRequestObject = JSONObject()
-            val requestContainer = JSONObject()
-            val pObj = JSONObject()
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("appVersion", AppPreferences.AppVersion)
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put(
-                    "deviceID",
-                    Settings.Secure.getString(data!!.contentResolver, Settings.Secure.ANDROID_ID)
+                val preferences = PreferenceManager.getDefaultSharedPreferences(data)
+                var accessToken = preferences.getString("accessToken", "")
+                var empautoid = preferences.getString("EmpAutoId", "")
+                var customerId = preferences.getString("customerId", "")
+                var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
+                pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+                pDialog!!.titleText = "Fetching ..."
+                pDialog!!.setCancelable(false)
+                pDialog!!.show()
+                val sendRequestObject = JSONObject()
+                val requestContainer = JSONObject()
+                val pObj = JSONObject()
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("appVersion", AppPreferences.AppVersion)
                 )
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("deviceVersion", AppPreferences.versionRelease)
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("deviceName", AppPreferences.DeviceName)
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("accessToken", accessToken)
-            )
-            sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
-            sendRequestObject.put("pObj", pObj.put("productId", ProductItem.getPId()))
-            sendRequestObject.put("pObj", pObj.put("customerId", customerId))
-            //send request queue in vally
-            val queue = Volley.newRequestQueue(data)
-            val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-                AppPreferences.getpackingdetails, sendRequestObject,
-                { response ->
-                    val responseResult = JSONObject(response.toString())
-                    val responsedData = JSONObject(responseResult.getString("d"))
-                    var responseMessage = responsedData.getString("responseMessage")
-                    val responseCode = responsedData.getString("responseCode")
-                    if (responseCode == "201") {
-                        responseResultData = responsedData.getJSONArray("responseData")
-                        // array.clear()
-                        getcartDetailsdata.clear()
-                        if (responseResultData.length() != null && responseResultData.length() > 0) {
-                            for (i in 0 until responseResultData.length()) {
-                                UIDs = responseResultData.getJSONObject(i).getInt("UID")
-                                UName = responseResultData.getJSONObject(i).getString("UName")
-                                frees = responseResultData.getJSONObject(i).getInt("Free")
-                                price = responseResultData.getJSONObject(i).getString("price")
-                                MinPric = responseResultData.getJSONObject(i).getString("MinPrice")
-                                isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
-                                var cartdata = getCartdetailsModle(
-                                    UIDs!!,
-                                    UName!!,
-                                    frees!!,
-                                    price!!,
-                                    MinPric!!,
-                                    isdefault1!!
-                                )
-                                getcartDetailsdata.add(cartdata)
-
-                            }
-                            mylist.clear()
-                            mylist1.clear()
-                            isdefault.clear()
-                            minPriceslist.clear()
-                            isFreelist.clear()
-                            unitAutoIdList.clear()
-                            for (n in 0..getcartDetailsdata.size - 1) {
-                                pricess = getcartDetailsdata[n].getprice()
-                                minPrices = getcartDetailsdata[n].getMinPric()
-                                isFree = getcartDetailsdata[n].getfrees().toString()
-                                unitAutoID=getcartDetailsdata[n].getuiDs()
-                                unitAutoID?.let { it1 -> unitAutoIdList.add(it1) }
-                                isFreelist.add(isFree.toString())
-                                mylist1.add(pricess.toString())
-                                minPriceslist.add(minPrices.toString())
-                                var isdefault1 = getcartDetailsdata[n].getisdefault()
-                                isdefault.add(isdefault1!!.toInt())
-                                var UName = getcartDetailsdata[n].getuName()
-                                mylist.add(UName.toString())
-                            }
-                            var adapter = ArrayAdapter<String>(
-                                it.context,
-                                R.layout.support_simple_spinner_dropdown_item,
-                                mylist
-                            )
-                            spineer.adapter = adapter
-                            for (i in 0..isdefault.size - 1){
-                                Log.e("isdefault", isdefault[i].toString())
-                                var number = isdefault[i]
-                                if (number == 1) {
-                                    spineer.setSelection(i);
-                                } else {
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put(
+                        "deviceID",
+                        Settings.Secure.getString(data!!.contentResolver, Settings.Secure.ANDROID_ID)
+                    )
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("deviceName", AppPreferences.DeviceName)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("accessToken", accessToken)
+                )
+                sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
+                sendRequestObject.put("pObj", pObj.put("productId", productId))
+                sendRequestObject.put("pObj", pObj.put("customerId", customerId))
+                //send request queue in vally
+                val queue = Volley.newRequestQueue(data)
+                val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                    AppPreferences.getpackingdetails, sendRequestObject,
+                    { response ->
+                        val responseResult = JSONObject(response.toString())
+                        val responsedData = JSONObject(responseResult.getString("d"))
+                        responseMessage = responsedData.getString("responseMessage")
+                        val responseCode = responsedData.getString("responseCode")
+                        if (responseCode == "201") {
+                            responseResultData = responsedData.getJSONArray("responseData")
+                            // array.clear()
+                            getcartDetailsdata.clear()
+                            if (responseResultData.length() != null && responseResultData.length() > 0) {
+                                for (i in 0 until responseResultData.length()) {
+                                    UIDs = responseResultData.getJSONObject(i).getInt("UID")
+                                    UName = responseResultData.getJSONObject(i).getString("UName")
+                                    frees = responseResultData.getJSONObject(i).getInt("Free")
+                                    price = responseResultData.getJSONObject(i).getString("price")
+                                    MinPric = responseResultData.getJSONObject(i).getString("MinPrice")
+                                    isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
+                                    var cartdata = getCartdetailsModle(
+                                        UIDs!!,
+                                        UName!!,
+                                        frees!!,
+                                        price!!,
+                                        MinPric!!,
+                                        isdefault1!!
+                                    )
+                                    getcartDetailsdata.add(cartdata)
 
                                 }
-                            }
-                            spineer.onItemSelectedListener =
-                                object : AdapterView.OnItemSelectedListener {
-                                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                                    override fun onItemSelected(
-                                        parent: AdapterView<*>?,
-                                        view: View?,
-                                        position: Int,
-                                        id: Long
-                                    ) {
-                                        val item2: String = mylist1[position]
-                                         minPrice=minPriceslist[position]
-                                         isFrees=isFreelist[position]
-                                        unitAutoidValue=unitAutoIdList[position]
-                                        Log.e("isFrees",isFrees.toString())
-                                        priceValue=item2.toDouble()
-                                        Price.setText("%.2f".format(priceValue))
-                                        Log.e("Price",Price.text.toString())
-                                        if (isFreeCheckBox.isChecked) {
-                                            isFreeCheckBox.toggle()
-                                            Price.isEnabled = true
-                                            discountAmount.isEnabled = true
-                                            discountPercent.isEnabled = true
-                                            Price.setBackgroundResource(R.drawable.borderline)
-                                            discountAmount.setBackgroundResource(R.drawable.borderline)
-                                            discountPercent.setBackgroundResource(R.drawable.borderline)
-                                        }
-                                        if(isExchangeCheckBox.isChecked){
-                                           isExchangeCheckBox.toggle()
-                                            Price.isEnabled = true
-                                            discountAmount.isEnabled = true
-                                            discountPercent.isEnabled = true
-                                            Price.setBackgroundResource(R.drawable.borderline)
-                                            discountAmount.setBackgroundResource(R.drawable.borderline)
-                                            discountPercent.setBackgroundResource(R.drawable.borderline)
-                                        }
-                                        var free=isFrees.toString().toInt()
-                                        if (free==1){
-                                            isFreeCheckBox.setEnabled(true)
-                                        }
-                                        else{
-                                            isFreeCheckBox.setEnabled(false)
-                                        }
+                                mylist.clear()
+                                mylist1.clear()
+                                isdefault.clear()
+                                minPriceslist.clear()
+                                isFreelist.clear()
+                                unitAutoIdList.clear()
+                                for (n in 0..getcartDetailsdata.size - 1) {
+                                    pricess = getcartDetailsdata[n].getprice()
+                                    minPrices = getcartDetailsdata[n].getMinPric()
+                                    isFree = getcartDetailsdata[n].getfrees().toString()
+                                    unitAutoID=getcartDetailsdata[n].getuiDs()
+                                    unitAutoID?.let { it1 -> unitAutoIdList.add(it1) }
+                                    isFreelist.add(isFree.toString())
+                                    mylist1.add(pricess.toString())
+                                    minPriceslist.add(minPrices.toString())
+                                    var isdefault1 = getcartDetailsdata[n].getisdefault()
+                                    isdefault.add(isdefault1!!.toInt())
+                                    var UName = getcartDetailsdata[n].getuName()
+                                    mylist.add(UName.toString())
+                                }
+                                var adapter = ArrayAdapter<String>(
+                                    it.context,
+                                    R.layout.support_simple_spinner_dropdown_item,
+                                    mylist
+                                )
+                                spineer.adapter = adapter
+                                for (i in 0..isdefault.size - 1){
+                                    Log.e("isdefault", isdefault[i].toString())
+                                    var number = isdefault[i]
+                                    if (number == 1) {
+                                        spineer.setSelection(i);
+                                    } else {
+
                                     }
                                 }
-                            listDropdown(spineer)
-
-                            pDialog!!.dismiss()
-                        }
-
-                        else {
-                            var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
-                            popUp.setContentText(responseMessage)
-                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                            popUp.setConfirmClickListener()
-                            { sDialog ->
-                                sDialog.dismissWithAnimation()
-                                popUp.dismiss()
+                                spineer.onItemSelectedListener =
+                                    object : AdapterView.OnItemSelectedListener {
+                                        override fun onNothingSelected(parent: AdapterView<*>?) {}
+                                        override fun onItemSelected(
+                                            parent: AdapterView<*>?,
+                                            view: View?,
+                                            position: Int,
+                                            id: Long
+                                        ) {
+                                            val item2: String = mylist1[position]
+                                            minPrice=minPriceslist[position]
+                                            isFrees=isFreelist[position]
+                                            unitAutoidValue=unitAutoIdList[position]
+                                            Log.e("isFrees",isFrees.toString())
+                                            priceValue=item2.toDouble()
+                                            Price.setText("%.2f".format(priceValue))
+                                            Log.e("Price",Price.text.toString())
+                                            if (isFreeCheckBox.isChecked) {
+                                                isFreeCheckBox.toggle()
+                                                Price.isEnabled = true
+                                                discountAmount.isEnabled = true
+                                                discountPercent.isEnabled = true
+                                                Price.setBackgroundResource(R.drawable.borderline)
+                                                discountAmount.setBackgroundResource(R.drawable.borderline)
+                                                discountPercent.setBackgroundResource(R.drawable.borderline)
+                                            }
+                                            if(isExchangeCheckBox.isChecked){
+                                                isExchangeCheckBox.toggle()
+                                                Price.isEnabled = true
+                                                discountAmount.isEnabled = true
+                                                discountPercent.isEnabled = true
+                                                Price.setBackgroundResource(R.drawable.borderline)
+                                                discountAmount.setBackgroundResource(R.drawable.borderline)
+                                                discountPercent.setBackgroundResource(R.drawable.borderline)
+                                            }
+                                            var free=isFrees.toString().toInt()
+                                            if (free==1){
+                                                isFreeCheckBox.setEnabled(true)
+                                            }
+                                            else{
+                                                isFreeCheckBox.setEnabled(false)
+                                            }
+                                        }
+                                    }
+                                listDropdown(spineer)
+                                pDialog!!.dismiss()
                             }
-                            popUp.show()
-                            popUp.setCanceledOnTouchOutside(false)
+
+                            else {
+                                warningMessage(message =responseMessage.toString() )
+                                pDialog!!.dismiss()
+                            }
+                        }
+                        else {
+                            warningMessage(responseMessage.toString())
                             pDialog!!.dismiss()
                         }
-                    }
-                    else {
-                        var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
-                        popUp.setContentText(responseMessage)
-                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                        popUp.setConfirmClickListener()
-                        { sDialog ->
-                            sDialog.dismissWithAnimation()
-                            popUp.dismiss()
-                        }
-                        popUp.show()
-                        popUp.setCanceledOnTouchOutside(false)
-                        pDialog!!.dismiss()
-                    }
-                },
-                Response.ErrorListener { pDialog!!.dismiss() })
-            JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
-                10000000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            )
-            try {
-                queue.add(JsonObjectRequest)
-            } catch (e: Exception) {
-                Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
-            }
+                    },
+                    Response.ErrorListener { pDialog!!.dismiss() })
+                JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                    10000000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
+                try {
+                    queue.add(JsonObjectRequest)
+                } catch (e: Exception) {
+                    Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
+                }
             }
             else{
                 val dialog = data?.let { Dialog(it) }
@@ -330,11 +313,12 @@ class SalesPersonProductAdapterClass(
                     dialog.dismiss()
                     val intent = Intent(data, MainActivity2::class.java)
                     data?.startActivity(intent)
-                              finish()
+                    finish()
 
                 }
                 dialog?.show()
             }
+
 
             var dilog = Dialog(it.context)
             dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -402,7 +386,7 @@ class SalesPersonProductAdapterClass(
                     val temsprie=Price.text.toString()
                     if (!tmp.isEmpty() && uahEdited  && tmp!="." &&tmps!=null && tmps!="." &&temsprie!="" &&temsprie!=null &&tmp!="0.00" ) {
                         uah = tmp.toFloat()
-                        val price =temsprie.toFloat()
+                        var price =temsprie.toFloat()
                         val minprice=tmps.toFloat()
                         var Amountdiscount:Float=price-uah
                         if (uah>price){
@@ -461,7 +445,7 @@ class SalesPersonProductAdapterClass(
                     val tmps = Price.text.toString()
                     if (!tmp.isEmpty() && usdEdited  && tmp!="." && tmps!=null &&tmps!="" && tmps!="." &&tmp!="0.00") {
 
-                         usd =tmp.toFloat()
+                        usd =tmp.toFloat()
                         val price =tmps.toFloat()
                         val minprice= minPrice.toString().toFloat()
                         var Amountdiscount:Float=price-usd*100/100
@@ -484,7 +468,7 @@ class SalesPersonProductAdapterClass(
                             lp.height = WindowManager.LayoutParams.MATCH_PARENT
                             var customername=dilog.findViewById<TextView>(R.id.messagetitle)
                             var Title=dilog.findViewById<TextView>(R.id.Title)
-                               Title.visibility=View.GONE
+                            Title.visibility=View.GONE
                             var btnOk=dilog.findViewById<TextView>(R.id.btnOk)
                             customername.setText("Price can not be below min price.")
                             btnOk.setOnClickListener(View.OnClickListener {
@@ -508,171 +492,224 @@ class SalesPersonProductAdapterClass(
             isFreeCheckBox.setOnClickListener(this)
             isExchangeCheckBox.setOnClickListener(this)
 
-            SProductID.setText(ProductItem.getPId())
-            s_ProductName.setText(ProductItem.getPName())
-            stockProductS.setText("Stock : " + ProductItem.getCStock().toString())
-            Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(imageView13);
+            SProductID.setText(productId)
+            s_ProductName.setText(ProductName)
+            stockProductS.setText("Stock : " + productStocks)
+            Picasso.get().load(productImageUrl).error(R.drawable.default_pic).into(imageView13);
             var btnAddToCart = dilog.findViewById<Button>(R.id.btnUpdateLocation)
             var btnCloseCart = dilog.findViewById<Button>(R.id.btnCloseLocation)
+
             btnAddToCart.setOnClickListener(View.OnClickListener {
-                if (AppPreferences.internetConnectionCheck(it.context)) {
-                    val preferences = PreferenceManager.getDefaultSharedPreferences(data)
-                    var accessToken = preferences.getString("accessToken", "")
-                    var empautoid = preferences.getString("EmpAutoId", "")
-                    var customerAutoId = preferences.getString("customerAutoId", "")
-                    var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
-                    pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
-                    pDialog!!.titleText = "Fetching ..."
-                    pDialog!!.setCancelable(false)
-                    pDialog!!.show()
-                    val sendRequestObject = JSONObject()
-                    val requestContainer = JSONObject()
-                    val pObj = JSONObject()
-                    sendRequestObject.put(
-                        "requestContainer",
-                        requestContainer.put("appVersion", AppPreferences.AppVersion)
-                    )
-                    sendRequestObject.put(
-                        "requestContainer", requestContainer.put(
-                            "deviceID",
-                            Settings.Secure.getString(
-                                data!!.contentResolver,
-                                Settings.Secure.ANDROID_ID
+
+                if (minPrice.toString()<=Price.text.toString())
+                {
+                    if (AppPreferences.internetConnectionCheck(it.context)) {
+                        var pricevalue= Price.text.toString()
+
+                        val preferences = PreferenceManager.getDefaultSharedPreferences(data)
+                        var accessToken = preferences.getString("accessToken", "")
+                        var empautoid = preferences.getString("EmpAutoId", "")
+                        var customerAutoId = preferences.getString("customerAutoId", "")
+                        var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
+                        pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+                        pDialog!!.titleText = "Fetching ..."
+                        pDialog!!.setCancelable(false)
+                        pDialog!!.show()
+                        val sendRequestObject = JSONObject()
+                        val requestContainer = JSONObject()
+                        val pObj = JSONObject()
+                        sendRequestObject.put(
+                            "requestContainer",
+                            requestContainer.put("appVersion", AppPreferences.AppVersion)
+                        )
+                        sendRequestObject.put(
+                            "requestContainer", requestContainer.put(
+                                "deviceID",
+                                Settings.Secure.getString(
+                                    data!!.contentResolver,
+                                    Settings.Secure.ANDROID_ID
+                                )
                             )
                         )
-                    )
-                    sendRequestObject.put(
-                        "requestContainer",
-                        requestContainer.put("deviceVersion", AppPreferences.versionRelease)
-                    )
-                    sendRequestObject.put(
-                        "requestContainer",
-                        requestContainer.put("deviceName", AppPreferences.DeviceName)
-                    )
-                    sendRequestObject.put(
-                        "requestContainer",
-                        requestContainer.put("accessToken", accessToken)
-                    )
-                    sendRequestObject.put(
-                        "requestContainer",
-                        requestContainer.put("userAutoId", empautoid)
-                    )
-                    sendRequestObject.put("pObj", pObj.put("productId", ProductItem.getPId()))
-                    sendRequestObject.put("pObj", pObj.put("CustomerAutoId", customerAutoId))
-                    sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-                    sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
-                    sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
-                    sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
-                    sendRequestObject.put("pObj", pObj.put("unitPrice", Price.text.toString()))
-                    sendRequestObject.put("pObj", pObj.put("Oim_Discount", discountPercent.text.toString()))
-                    sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount", discountAmount.text.toString()))
-                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-                    //send request queue in vally
-                    val queue = Volley.newRequestQueue(data)
-                    val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-                        AppPreferences.addToCartAPI, sendRequestObject,
-                        { response ->
-                            val responseResult = JSONObject(response.toString())
-                            val responsedData = JSONObject(responseResult.getString("d"))
-                            var responseMessage = responsedData.getString("responseMessage")
-                            val responseStatus = responsedData.getString("responseStatus")
-                            if (responseStatus == "200") {
-                                cartResponseResultData = responsedData.getJSONArray("responseData")
-                                addToCartData.clear()
-                                if (cartResponseResultData.length() != null && cartResponseResultData.length() > 0) {
-                                    for (i in 0 until cartResponseResultData.length()) {
+                        sendRequestObject.put(
+                            "requestContainer",
+                            requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+                        )
+                        sendRequestObject.put(
+                            "requestContainer",
+                            requestContainer.put("deviceName", AppPreferences.DeviceName)
+                        )
+                        sendRequestObject.put(
+                            "requestContainer",
+                            requestContainer.put("accessToken", accessToken)
+                        )
+                        sendRequestObject.put(
+                            "requestContainer",
+                            requestContainer.put("userAutoId", empautoid)
+                        )
+                        sendRequestObject.put("pObj", pObj.put("productId", productId))
+                        sendRequestObject.put("pObj", pObj.put("CustomerAutoId", customerAutoId))
+                        sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
+                        sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
+                        sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
+                        sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
+                        if (pricevalue.trim()!="" &&pricevalue!=null){
+                            var price= pricevalue.toFloat()
+                            sendRequestObject.put("pObj", pObj.put("unitPrice", price))
+                        }
 
-                                        DraftAutoId= cartResponseResultData.getJSONObject(i).getInt("DraftAutoId")
-                                        Total= cartResponseResultData.getJSONObject(i).getString("Total")
-                                        NofItem= cartResponseResultData.getJSONObject(i).getString("NooofItem")
-                                        var cartData=AddToCartDataModle(DraftAutoId!!,Total!!,NofItem!!)
-                                        addToCartData.add(cartData)
+                        sendRequestObject.put("pObj", pObj.put("Oim_Discount", discountPercent.text.toString()))
+                        sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount", discountAmount.text.toString()))
+                        if (draftAutoId==0) {
+                            sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                        }
+                        else{
+                            sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                        }
+
+                        Log.e("checkFreeValue",checkFreeValue.toString())
+                        Log.e("isExchangeValue",isExchangeValue.toString())
+                        Log.e("NofItem",valueIncrementDecrement.text.toString())
+                        Log.e("Price",Price.text.toString())
+                        Log.e("unitAutoidValue",unitAutoidValue.toString())
+                        Log.e("discountPercent.text",discountPercent.text.toString())
+                        Log.e("discountAmount.text",discountAmount.text.toString())
+                        Log.e("draftAutoId",draftAutoId.toString())
+
+                        //send request queue in vally
+                        val queue = Volley.newRequestQueue(data)
+                        val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                            AppPreferences.addToCartAPI, sendRequestObject,
+                            { response ->
+                                val responseResult = JSONObject(response.toString())
+                                val responsedData = JSONObject(responseResult.getString("d"))
+                                var  responseMessage1 = responsedData.getString("responseMessage")
+                                val responseStatus = responsedData.getInt("responseStatus")
+                                if (responseStatus == 200) {
+                                    cartResponseResultData = responsedData.getJSONArray("responseData")
+                                    if (cartResponseResultData.length() != null && cartResponseResultData.length() > 0) {
+                                        for (i in 0 until cartResponseResultData.length()) {
+                                            draftAutoId= cartResponseResultData.getJSONObject(i).getInt("DraftAutoId")
+                                            Total= cartResponseResultData.getJSONObject(i).getString("Total")
+                                            NofItem= cartResponseResultData.getJSONObject(i).getString("NooofItem")
+                                            var cartData=AddToCartDataModle(draftAutoId,Total!!,NofItem!!)
+                                            addToCartData.add(cartData)
+                                        }
+                                        Log.e("NoNofItem",NofItem.toString())
+                                        Log.e("draftAutoId",draftAutoId.toString())
+                                        val intent = Intent("USER_NAME_CHANGED_ACTION")
+                                        intent.putExtra("username", NofItem.toString())
+                                        intent.putExtra("Total", Total.toString())
+                                        // put your all data using put extra
+                                        // put your all data using put extra
+                                        LocalBroadcastManager.getInstance(it.context).sendBroadcast(intent)
+                                        var popUp = SweetAlertDialog(data, SweetAlertDialog.SUCCESS_TYPE)
+                                        popUp.setContentText(responseMessage1.toString())
+                                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                                        popUp.setConfirmClickListener()
+                                        { sDialog ->
+                                            sDialog.dismissWithAnimation()
+                                            popUp.dismiss()
+                                        }
+                                        popUp.show()
+                                        popUp.setCanceledOnTouchOutside(false)
+                                        pDialog!!.dismiss()
+                                        pDialog.dismiss()
+                                        dilog.dismiss()
+                                        finish()
+                                        checkFreeValue = 0
+                                        isExchangeValue = 0
                                     }
-                                            Log.e("DraftAutoId",DraftAutoId.toString())
-                                            Log.e("Total",Total.toString())
-                                            Log.e("NofItem",NofItem.toString())
-                                    val intent1 = Intent("USER_NAME_CHANGED_ACTION")
-                                    intent1.putExtra("NofItem",NofItem)
-                                     // put your all data using put extra
-                                     // put your all data using put extra
-                                    LocalBroadcastManager.getInstance(it.context).sendBroadcast(intent1)
-
-                                    pDialog.dismiss()
-                                    val intent = Intent(data, SalesPersonProductList::class.java)
-                                    data?.startActivity(intent)
-                                    dilog.dismiss()
-                                    finish()
-                                    checkFreeValue = 0
-                                    isExchangeValue = 0
+                                    else{
+                                        warningMessage(message = responseMessage1.toString())
+                                        pDialog!!.dismiss()
+                                    }
                                 }
                                 else{
                                     var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
-                                    popUp.setContentText(responseMessage)
+                                    popUp.setContentText(responseMessage1.toString())
                                     popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
                                     popUp.setConfirmClickListener()
                                     { sDialog ->
                                         sDialog.dismissWithAnimation()
                                         popUp.dismiss()
+                                        pDialog.dismiss()
                                     }
                                     popUp.show()
                                     popUp.setCanceledOnTouchOutside(false)
-                                    pDialog!!.dismiss()
+//                                        warningMessage(message = responseMessage1.toString())
+//                                        Log.e("message",responseMessage1.toString())
+                                    //  pDialog!!.dismiss()
                                 }
-                            }
-                            else{
-                                var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
-                                popUp.setContentText(responseMessage)
-                                popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                                popUp.setConfirmClickListener()
-                                { sDialog ->
-                                    sDialog.dismissWithAnimation()
-                                    popUp.dismiss()
-                                }
-                                popUp.show()
-                                popUp.setCanceledOnTouchOutside(false)
-                                pDialog!!.dismiss()
-                            }
-                        },
-                        Response.ErrorListener { pDialog!!.dismiss() })
-                    JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
-                        10000000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                    )
-                    try {
-                        queue.add(JsonObjectRequest)
-                    } catch (e: Exception) {
-                        Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
+                            },
+                            Response.ErrorListener { pDialog!!.dismiss() })
+                        JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                            10000000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                        )
+                        try {
+                            queue.add(JsonObjectRequest)
+                        } catch (e: Exception) {
+                            Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
+                        }
                     }
-                }
-                else{
-                    val dialog = data?.let { Dialog(it) }
-                    dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                    dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
-                    val btDismiss =
-                        dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
-                    btDismiss?.setOnClickListener {
-                        dialog.dismiss()
-                        val intent = Intent(data, MainActivity2::class.java)
-                        data?.startActivity(intent)
-                        finish()
+                    else{
+                        val dialog = data?.let { Dialog(it) }
+                        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+                        val btDismiss =
+                            dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+                        btDismiss?.setOnClickListener {
+                            dialog.dismiss()
+                            val intent = Intent(data, MainActivity2::class.java)
+                            data?.startActivity(intent)
+                            finish()
 
+                        }
+                        dialog?.show()
                     }
-                    dialog?.show()
+                } else{
+                    var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
+                    popUp.setContentText("Price can not be below min price.")
+                    popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                    popUp.setConfirmClickListener()
+                    { sDialog ->
+                        sDialog.dismissWithAnimation()
+                        popUp.dismiss()
+                    }
+                    popUp.show()
+                    popUp.setCanceledOnTouchOutside(false)
                 }
+
             })
+
             btnCloseCart.setOnClickListener(View.OnClickListener {
                 dilog.dismiss()
             })
             dilog.show()
             dilog.getWindow()!!.setAttributes(lp);
         })
+    }
+
+    private fun cardfunction() {
 
     }
 
+    private fun warningMessage(message:String) {
+        var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
+        popUp.setContentText(message)
+        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+        popUp.setConfirmClickListener()
+        { sDialog ->
+            sDialog.dismissWithAnimation()
+            popUp.dismiss()
+        }
+        popUp.show()
+        popUp.setCanceledOnTouchOutside(false)
+    }
     private fun finish() {
     }
-
     override fun onClick(Box: View?) {
         Box as CheckBox
         var isChecked:Boolean=Box.isChecked
@@ -715,7 +752,6 @@ class SalesPersonProductAdapterClass(
         discountAmount.setText("0.00")
         discountPercent.setText("0.00")
     }
-
     private fun isFreeUnCheckedFunction() {
         checkFreeValue = 0
         isExchangeValue = 0
@@ -729,14 +765,12 @@ class SalesPersonProductAdapterClass(
         discountAmount.setText("%.2f".format(0.00))
         discountPercent.setText("%.2f".format(0.00))
     }
-
     private fun listDropdown(spineer: Spinner) {
         val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
         popup.isAccessible = true
         val popupWindow: ListPopupWindow = popup.get(spineer) as ListPopupWindow
         popupWindow.height = (200).toInt()
     }
-
     class DecimalDigitsInputFilter(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
         //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
         private val pattern = Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")

@@ -40,9 +40,10 @@ class SalesPersonProductList : AppCompatActivity() {
     var ProductItemList:String?=null
     lateinit var productTitle:TextView
     lateinit var cart_badge:TextView
+    lateinit var orderTotalValue:TextView
     var responseMessage:String?=null
     var pDialog:SweetAlertDialog?=null
-    val br: BroadcastReceiver = MyBroadcastReceiver()
+
     var productListModelClass: ArrayList<SalesPersonProductModel> = arrayListOf()
     lateinit var productAdapterClass: SalesPersonProductAdapterClass
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +52,8 @@ class SalesPersonProductList : AppCompatActivity() {
         var userInformation=findViewById<TextView>(R.id.information)
         var ScanBarcode=findViewById<EditText>(R.id.ScanBarcodeEditeTextView)
          cart_badge=findViewById<TextView>(R.id.cart_badge)
+         orderTotalValue=findViewById<TextView>(R.id.cart2)
+
           productTitle=findViewById<TextView>(R.id.productTitle)
         var syncProduct=findViewById<TextView>(R.id.syncProduct)
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -60,11 +63,8 @@ class SalesPersonProductList : AppCompatActivity() {
         customerName = preferences.getString("CustomerName", "")
         customerId = preferences.getString("customerId", "")
         ProductItemList = preferences.getString("ProductItemList", "")
-        cart_badge.setText(username)
-
-        val lbm = LocalBroadcastManager.getInstance(this)
-        lbm.registerReceiver(br, IntentFilter("USER_NAME_CHANGED_ACTION"))
-
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(broadCastReceiver, IntentFilter("USER_NAME_CHANGED_ACTION"))
         userInformation.setOnClickListener(View.OnClickListener {
             var dilog=Dialog(this@SalesPersonProductList)
             dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -166,14 +166,18 @@ else {
     dialog?.show()
 }
     }
-    class MyBroadcastReceiver : BroadcastReceiver() {
-        override fun onReceive(context:Context, intent: Intent) {
-            if (intent != null) {
-                var username = intent.getStringExtra("username");
+
+    val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            if (intent!=null) {
+                username = intent.getStringExtra("username");
+               var total = intent.getStringExtra("Total");
+                var totalValue=total.toString().toDouble()
+                cart_badge.setText(username)
+                orderTotalValue.setText("Order Total : %.2f".format(totalValue))
             }
         }
     }
-
     private fun productListApiCall(productId: String, productName: String,barcode:String){
         pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
@@ -219,7 +223,7 @@ else {
                        addProductdataModelClass(PId,PName,ImageUrl,CStock,BP,UnitType)
                    }
                         var totalSize=productListModelClass.size
-                        productTitle.setText("Product("+totalSize+")").toString()
+                         productTitle.setText("Product("+totalSize+")").toString()
                          pDialog!!.dismiss()
                     }
                     else
