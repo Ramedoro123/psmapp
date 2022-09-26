@@ -97,7 +97,6 @@ class SalesPersonProductAdapterClass(
         var ProductImage = itemView.findViewById<ImageView>(R.id.ProductImage)
         var cardView5 = itemView.findViewById<CardView>(R.id.cardView5)
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
 
         var view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
