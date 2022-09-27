@@ -399,11 +399,13 @@ class StartPackingOrderList : AppCompatActivity() {
                                         changeStatusProduct.visibility = View.GONE
                                         Yeschange.visibility = View.GONE
                                     }
-
-                                    if (PImg=="") {
-                                        Picasso.get().load(PImg).error(R.drawable.default_pic)
-                                            .into(ProductImage);
-
+                                     var PImg1=""
+                                    if (PImg1!=""&&PImg1!=null) {
+                                        Picasso.get().load(PImg).error(R.drawable.default_pic).into(ProductImage);
+                                    }
+                                    else
+                                    {
+                                        ProductImage.setImageResource(R.drawable.default_pic)
                                     }
 
                                     // Picasso.get().load(PImg).error(R.drawable.picturesimg).into(holder.imageOrderDetails);
@@ -955,11 +957,14 @@ class StartPackingOrderList : AppCompatActivity() {
                                 RemainingQtyText.setText(remainingQty.toString())
                                 textViewBarcode.setText(Barcode.toString())
                                 et.setText(ShipingQty.toString())
-
-                                if (ProductImage2 != "") {
+                                    var ProductImage3=null
+                                if (ProductImage3!="" &&ProductImage3!=null) {
                                     //Picasso.get().load(ProductImage2).into(ProductImage)
                                     Picasso.get().load(ProductImage2).error(R.drawable.default_pic)
                                         .into(ProductImage);
+                                }
+                                else{
+                                    ProductImage.setImageResource(R.drawable.default_pic)
                                 }
                             }
 

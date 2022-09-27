@@ -204,8 +204,8 @@ class ReceivePO : AppCompatActivity() {
                     ReceiverpoList.clear()
                     true
                 } else {
-                    //   Itemlist()
-                    SubmitPoList(2)
+                    Itemlist()
+//                    SubmitPoList(2)
                     false
                 }
 
@@ -216,8 +216,8 @@ class ReceivePO : AppCompatActivity() {
                     ReceiverpoList.clear()
                     true
                 } else {
-                    //  Itemlist()
-                    SubmitPoList(1)
+                    Itemlist()
+//                    SubmitPoList(1)
                     false
                 }
             }
@@ -408,10 +408,16 @@ class ReceivePO : AppCompatActivity() {
     }
 
     fun Itemlist() {
-        SweetAlertDialog(
-            this,
-            SweetAlertDialog.ERROR_TYPE
-        ).setContentText("Atleast One Item Required").show()
+        var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        popUp.setContentText("Atleast One Item Required")
+        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+        popUp.setConfirmClickListener()
+        { sDialog ->
+            sDialog.dismissWithAnimation()
+            popUp.dismiss()
+        }
+        popUp.show()
+        popUp.setCanceledOnTouchOutside(false)
     }
 
     fun Addproductlist() {

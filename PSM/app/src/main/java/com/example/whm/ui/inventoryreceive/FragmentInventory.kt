@@ -60,34 +60,7 @@ class FragmentInventory  : Fragment(R.layout.fragment_inventory_fragment){
         spvendorText = mView.findViewById(R.id.ddlvenderlist)
         btnNext = mView.findViewById(R.id.btnnext)
         edtbillNo!!.requestFocus()
-//        txtbildate!!.requestFocus()
-//        spvendor!!.requestFocus()
         if (AppPreferences.internetConnectionCheck(context)) {
-
-
-//            spvendor!!.addTextChangedListener(object : TextWatcher {
-//                override fun beforeTextChanged(
-//                    s: CharSequence,
-//                    start: Int,
-//                    count: Int,
-//                    after: Int
-//                ) {
-//                    bindvenderlist()
-//                }
-//
-//                override fun onTextChanged(
-//                    s: CharSequence,
-//                    start: Int,
-//                    before: Int,
-//                    count: Int
-//                ) {
-//                   // bindvenderlist()
-//                }
-//
-//                override fun afterTextChanged(s: Editable) {
-//                 //    bindvenderlist()
-//                }
-//            })
             spvendorText!!.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence,
