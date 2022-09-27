@@ -27,7 +27,7 @@
             <ImageView
                 android:id="@+id/ProductImage"
                 android:layout_width="80dp"
-                android:layout_height="95dp"
+                android:layout_height="100dp"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="5dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="5dp"
                 android:text="20105"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -64,7 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="2dp"
                 android:text="$183801 / Box"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -76,13 +76,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="5dp"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/ProductImage"
                 app:layout_constraintTop_toBottomOf="@+id/ProductdID" />
 
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/ic_baseline_delete_24"
+                android:backgroundTint="@android:color/holo_red_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ProductPrice" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="3dp"
+                android:text="Order Qty : 9999"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/ProductImage"
+                app:layout_constraintTop_toBottomOf="@+id/ProductStock" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

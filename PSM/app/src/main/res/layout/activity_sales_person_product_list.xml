@@ -6,131 +6,164 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.example.whm.ui.Sales_Person.SalesPersonProductList">
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorAccent"
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/btnBackarrow"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="4dp"
-            android:background="@drawable/ic_baseline_arrow_back_24"
-            android:backgroundTint="@color/white" />
 
-        <TextView
-            android:id="@+id/productTitle"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@id/btnBackarrow"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/SearchProduct"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_baseline_search_24"
-            android:backgroundTint="@color/white" />
+            <TextView
+                android:id="@+id/btnBackarrow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:background="@drawable/ic_baseline_arrow_back_24"
+                android:backgroundTint="@color/white" />
 
-        <TextView
-            android:id="@+id/syncProduct"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@id/SearchProduct"
-            android:background="@drawable/ic_baseline_sync_24"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-    </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ProductListRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="3dp"
+            <TextView
+                android:id="@+id/productTitle"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@id/btnBackarrow"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/SearchProduct"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_baseline_search_24"
+                android:backgroundTint="@color/white" />
+
+            <TextView
+                android:id="@+id/syncProduct"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@id/SearchProduct"
+                android:background="@drawable/ic_baseline_sync_24"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/teal_700"
-        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScanBarcodeEditeTextView"
-        tools:listitem="@layout/product_list" />
+        app:layout_constraintTop_toBottomOf="@+id/ScanBarcodeEditeTextView">
 
-    <RelativeLayout
-        android:id="@+id/layout1"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ProductListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="68dp"
+            android:background="@color/teal_700"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.363"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ScanBarcodeEditeTextView"
+            tools:listitem="@layout/product_list" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout2"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/colorAccent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/cart2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/white"
-            android:text="Order Total :0.00"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+        <RelativeLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/information"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/framelayout"
-            android:background="@drawable/ic_baseline_info_24"
-            android:backgroundTint="@color/white" />
+            <TextView
+                android:id="@+id/cart2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/white"
+                android:text="Order Total :0.00"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-        <FrameLayout
-            style="?attr/actionButtonStyle"
-            android:id="@+id/framelayout"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:clipToPadding="false"
-            android:focusable="true">
-            <ImageView
-                android:id="@+id/cartview"
+            <TextView
+                android:id="@+id/information"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_shopping_cart_24"/>
-            <TextView
-                android:id="@+id/cart_badge"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="right|end|top"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="-5dp"
-                android:layout_marginRight="-5dp"
-                android:background="@drawable/badge_background"
-                android:gravity="center"
-                android:padding="3dp"
-                android:text="0"
-                android:textColor="@android:color/white"
-                android:textSize="10sp" />
-        </FrameLayout>
-    </RelativeLayout>
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/framelayout"
+                android:background="@drawable/ic_baseline_info_24"
+                android:backgroundTint="@color/white" />
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/framelayout"
+                style="?attr/actionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:clipToPadding="false"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/cartview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_shopping_cart_24" />
+
+                <TextView
+                    android:id="@+id/cart_badge"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="right|end|top"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="-5dp"
+                    android:layout_marginRight="-5dp"
+                    android:background="@drawable/badge_background"
+                    android:gravity="center"
+                    android:padding="3dp"
+                    android:text="0"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp" />
+            </FrameLayout>
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <EditText
         android:id="@+id/ScanBarcodeEditeTextView"
@@ -145,8 +178,7 @@
         android:maxLines="1"
         android:hint="Scan Barcode"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/ProductListRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

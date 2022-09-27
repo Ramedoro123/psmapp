@@ -28,10 +28,55 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_toRightOf="@id/btnBackarrow"
+            android:text="Cart(9999)"
+            android:textColor="@color/white"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/CustomerInformation"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerInParent="true"
-            android:text="Cart"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@id/OrderSummary"
+            android:background="@drawable/ic_baseline_info_24"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/OrderSummary"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/bg_edittext"
+            android:backgroundTint="@color/white"
+            android:text="Summary"
+            android:textAlignment="center"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp" />
     </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cartDetailsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+        tools:listitem="@layout/cartlist_viewdetails" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

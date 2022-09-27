@@ -1,6 +1,5 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,11 @@ import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModleClass
 
 class CartListAdapterClass(
-    private val CartList: List<CartListModleClass>,
-    var cartContext: Context?
+    private val CartList: List<CartListModleClass>
 ) : RecyclerView.Adapter<CartListAdapterClass.ViewHolder>() {
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
-        val cartPname=itemView.findViewById<TextView>(R.id.cartPname)
+        var cartPname=itemView.findViewById<TextView>(R.id.cartPname)
         val cartPid=itemView.findViewById<TextView>(R.id.cartPid)
         val cartPpiece=itemView.findViewById<TextView>(R.id.cartPpiece)
         val cartTotalAmount=itemView.findViewById<TextView>(R.id.cartTotalAmount)
@@ -29,6 +27,11 @@ class CartListAdapterClass(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        var cartListData=CartList[position]
+        holder.cartPname.text=cartListData.getPName()
+        holder.cartPid.text=cartListData.getPID()
+        holder.cartPpiece.text=cartListData.getpPrice()
+        holder.cartTotalAmount.text=cartListData.getTotalAmount()
 
     }
 
