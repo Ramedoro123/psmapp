@@ -47,6 +47,7 @@ import android.provider.Settings
 
 import android.text.style.StyleSpan
 import android.util.TypedValue
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.com.example.whm.MainActivity2
@@ -761,14 +762,12 @@ class GalleryFragment : Fragment() {
         btnpoqty.setOnClickListener(View.OnClickListener {
             if (AppPreferences.internetConnectionCheck(this.context)) {
                 var productname = autotextView!!.text.toString()
-                if (productname != "") {
-                     sproductid?.let { it1 -> manualbindproductdetails(it1) }
+                if (productname == "" || sproductid?.toIntOrNull()?.let{it}==null ||sproductid=="") {
+                    Select_product()
+                }
+                else {
+                    sproductid?.let { it1 -> manualbindproductdetails(it1) }
                     dialog?.dismiss()
-                } else {
-                    if (productname == "") {
-                        Select_product()
-                    }
-
                 }
             }
             else{
@@ -1027,6 +1026,7 @@ class GalleryFragment : Fragment() {
                     )
                 )
             )
+            Log.e("EmpAutoId",EmpAutoId.toString())
             JSONObj.put("cObj", Jsonarraplist.put("search", autotextView!!.text))
             val BINDPRODUCTLISTm = JsonObjectRequest(
                 Request.Method.POST, AppPreferences.BIND_PRODUCT_IDNAME_BY_SEARCH, JSONObj,
@@ -1036,7 +1036,7 @@ class GalleryFragment : Fragment() {
                     val resultobj = JSONObject(responsemsg.getString("d"))
                     val responseCode = resultobj.getString("responseCode")
                     val responseMessage = resultobj.getString("responseMessage")
-                    if (responseCode == "201") {
+                    if (responseCode == "201"){
                         val ProductList: JSONArray = resultobj.getJSONArray("responseData")
                         val n = ProductList.length()
                         val productArray = arrayOfNulls<String>(n)
@@ -1062,6 +1062,19 @@ class GalleryFragment : Fragment() {
 
                             }
                     }
+//                    else{
+//                        var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
+//                        popUp.setContentText(responseMessage)
+//                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+//                        popUp.setConfirmClickListener()
+//                        { sDialog ->
+//                            sDialog.dismissWithAnimation()
+//                               finish()
+//                            popUp.dismiss()
+//                        }
+//                        popUp.show()
+//                        popUp.setCanceledOnTouchOutside(false)
+//                       }
                 }, { response ->
 
                     Log.e("onError", error(response.toString()))
@@ -1075,8 +1088,11 @@ class GalleryFragment : Fragment() {
         }
     }
 
-    fun manualbindproductdetails(sproductid: String) {
+    private fun finish() {
 
+    }
+
+    fun manualbindproductdetails(sproductid: String) {
         val pDialog = SweetAlertDialog(this.context, SweetAlertDialog.PROGRESS_TYPE)
         pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
         pDialog.titleText = "Fetching ..."
@@ -1106,12 +1122,9 @@ class GalleryFragment : Fragment() {
         JSONObj.put("requestContainer",Jsonarra.put("deviceID", Settings.Secure.getString(context?.contentResolver, Settings.Secure.ANDROID_ID)))
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         var accessToken = preferences.getString("accessToken", "")
-
-        JSONObj.put(
-            "requestContainer",
-            Jsonarra.put("accessToken", accessToken)
-        )
+        JSONObj.put("requestContainer", Jsonarra.put("accessToken", accessToken))
         JSONObj.put("pObj", details.put("productId", sproductid))
+        Log.e("accessToken",accessToken.toString())
         val reqPRODUCTDETAILS = JsonObjectRequest(
             Request.Method.POST, AppPreferences.PRODUCT_MANAUL_DETAILS, JSONObj,
             Response.Listener { response ->
@@ -1126,116 +1139,149 @@ class GalleryFragment : Fragment() {
                    // Toast.makeText(context, presponsmsg, Toast.LENGTH_SHORT).show()
                     menu?.isVisible = true
                     val jsondata = resultobj.getString("responseData")
-                    val jsonrepd = JSONObject(jsondata.toString())
-                    val ProductId = jsonrepd.getString("PId")
-                    val pname = jsonrepd.getString("PName")
-                    val pCategory = jsonrepd.getString("Cat")
-                    val pSubCategory = jsonrepd.getString("SCat")
-                    val punitypa = jsonrepd.getString("Unit")
-                    val Reordermark = jsonrepd.getString("ROM")
-                    val bc = jsonrepd.getString("bc")
-                    val pprice = ("%.2f".format(jsonrepd.getDouble("Price")))
-                    val DefaultStock = jsonrepd.getString("stock")
-                    val DefaultStock2 = jsonrepd.getString("SPiece")
-                    DUnit = jsonrepd.getInt("Dunit")
-                    var imagesurl = ""
-                    if (jsonrepd.getString("OPath") == null) {
-                        imagesurl = jsonrepd.getString("ImageUrl")
-                    } else {
-                        imagesurl = jsonrepd.getString("OPath")
-                    }
-                    val location = jsonrepd.getString("Location")
-                    produname.text = "$pname"
-                    productId!!.text = "$ProductId"
+                    if (jsondata!=null &&jsondata!="") {
+                        val jsonrepd = JSONObject(jsondata.toString())
+                        val ProductId = jsonrepd.getString("PId")
+                        val pname = jsonrepd.getString("PName")
+                        val pCategory = jsonrepd.getString("Cat")
+                        val pSubCategory = jsonrepd.getString("SCat")
+                        val punitypa = jsonrepd.getString("Unit")
+                        val Reordermark = jsonrepd.getString("ROM")
+                        val bc = jsonrepd.getString("bc")
+                        val pprice = ("%.2f".format(jsonrepd.getDouble("Price")))
+                        val DefaultStock = jsonrepd.getString("stock")
+                        val DefaultStock2 = jsonrepd.getString("SPiece")
+                        DUnit = jsonrepd.getInt("Dunit")
+                        var imagesurl = ""
+                        if (jsonrepd.getString("OPath") == null) {
+                            imagesurl = jsonrepd.getString("ImageUrl")
+                        } else {
+                            imagesurl = jsonrepd.getString("OPath")
+                        }
+                        val location = jsonrepd.getString("Location")
+                        produname.text = "$pname"
+                        productId!!.text = "$ProductId"
 
-                    val unitypycolor =   punitypa.trim().split("(").toMutableList()
-                    val spannableString1 = SpannableString( punitypa.trim())
-                    val red1 = ForegroundColorSpan(Color.parseColor("#E60606"))
-                    val boldSpan = StyleSpan(Typeface.BOLD)
-                    spannableString1.setSpan(boldSpan, 0, unitypycolor[0].trim().length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    spannableString1.setSpan(
-                        red1, 0,  unitypycolor[0].trim().length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    unitype.text = spannableString1
-                    reordermark.text=Reordermark.toString()
-                    price.text = "${pprice}"
-                    if ("$location" == "---") {
-                        locationval!!.text = "N/A"
-                    } else {
-                        locationval!!.text = "$location"
-                    }
-                    category.text = "$pCategory"
-                    sub_category.text = "$pSubCategory"
-                    if(DUnit !=3){
-                        stockfeild2.text = "(${DefaultStock2})"
-                        stockfeild2.visibility=View.VISIBLE
-                    }
-                    stock.text = "${DefaultStock}"
-                    barcode.text = "" + bc
+                        val unitypycolor = punitypa.trim().split("(").toMutableList()
+                        val spannableString1 = SpannableString(punitypa.trim())
+                        val red1 = ForegroundColorSpan(Color.parseColor("#E60606"))
+                        val boldSpan = StyleSpan(Typeface.BOLD)
+                        spannableString1.setSpan(
+                            boldSpan,
+                            0,
+                            unitypycolor[0].trim().length,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        spannableString1.setSpan(
+                            red1, 0, unitypycolor[0].trim().length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        unitype.text = spannableString1
+                        reordermark.text = Reordermark.toString()
+                        price.text = "${pprice}"
+                        if ("$location" == "---") {
+                            locationval!!.text = "N/A"
+                        } else {
+                            locationval!!.text = "$location"
+                        }
+                        category.text = "$pCategory"
+                        sub_category.text = "$pSubCategory"
+                        if (DUnit != 3) {
+                            stockfeild2.text = "(${DefaultStock2})"
+                            stockfeild2.visibility = View.VISIBLE
+                        }
+                        stock.text = "${DefaultStock}"
+                        barcode.text = "" + bc
 
-                    updateProductLocation.setOnClickListener(View.OnClickListener {
-                        var dilog = Dialog(it.context)
-                        dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                        dilog.setCancelable(false)
-                        dilog.setContentView(com.example.myapplication.R.layout.update_product_location_popup)
-                        dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                        dilog.window!!.setGravity(Gravity.CENTER)
-                        val lp = WindowManager.LayoutParams()
-                        lp.copyFrom(dilog.getWindow()!!.getAttributes())
-                        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-                        lp.height = WindowManager.LayoutParams.MATCH_PARENT
-                        var btnCloseLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnCloseLocation)
-                        var btnUpdateLocation = dilog.findViewById<Button>(com.example.myapplication.R.id.btnUpdateLocation)
-                          oldLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
-                        var productIdEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
-                        var productNameEditLocation = dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
-                        var Rack = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL1)
-                        var Section = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL2)
-                        var Row = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL3)
-                        var BoxNo = dilog.findViewById<EditText>(com.example.myapplication.R.id.textL4)
-                        //var oldlocation=locationval!!.text.toString()
+                        updateProductLocation.setOnClickListener(View.OnClickListener {
+                            var dilog = Dialog(it.context)
+                            dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                            dilog.setCancelable(false)
+                            dilog.setContentView(com.example.myapplication.R.layout.update_product_location_popup)
+                            dilog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            dilog.window!!.setGravity(Gravity.CENTER)
+                            val lp = WindowManager.LayoutParams()
+                            lp.copyFrom(dilog.getWindow()!!.getAttributes())
+                            lp.width = WindowManager.LayoutParams.MATCH_PARENT
+                            lp.height = WindowManager.LayoutParams.MATCH_PARENT
+                            var btnCloseLocation =
+                                dilog.findViewById<Button>(com.example.myapplication.R.id.btnCloseLocation)
+                            var btnUpdateLocation =
+                                dilog.findViewById<Button>(com.example.myapplication.R.id.btnUpdateLocation)
+                            oldLocation =
+                                dilog.findViewById<TextView>(com.example.myapplication.R.id.oldLocation)
+                            var productIdEditLocation =
+                                dilog.findViewById<TextView>(com.example.myapplication.R.id.productIdEditLocation)
+                            var productNameEditLocation =
+                                dilog.findViewById<TextView>(com.example.myapplication.R.id.productNameEditLocation)
+                            var Rack =
+                                dilog.findViewById<EditText>(com.example.myapplication.R.id.textL1)
+                            var Section =
+                                dilog.findViewById<EditText>(com.example.myapplication.R.id.textL2)
+                            var Row =
+                                dilog.findViewById<EditText>(com.example.myapplication.R.id.textL3)
+                            var BoxNo =
+                                dilog.findViewById<EditText>(com.example.myapplication.R.id.textL4)
+                            //var oldlocation=locationval!!.text.toString()
 //                        oldLocation.setText("$location")
-                        oldLocation!!.setText( locationval!!.text)
-                        productIdEditLocation.setText("$ProductId")
-                        productNameEditLocation.setText("$pname")
-                        btnUpdateLocation.setOnClickListener(View.OnClickListener {
-                            if (Rack.text.toString().trim()!=null && Rack.text.toString().trim()!=""
-                                && Section.text.toString().trim()!=null && Section.text.toString().trim()!="" &&Row.text.toString()!=null &&Row.text.toString().trim()!=""
-                                &&BoxNo.text.toString()!=null &&BoxNo.text.toString()!="") {
-                                var row=Row.text.toString().trim().toInt()
-                                var boxNo=BoxNo.text.toString().trim().toInt()
-                                updateProductLocationFunction(
-                                    productId = productIdEditLocation.text.toString(),
-                                    Rack = Rack.text.toString(),
-                                    Section =Section.text.toString(),
-                                    Row = row,
-                                    BoxNo = boxNo
-                                )
-                                dilog.dismiss()
-                            }else{
-                                var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
-                                popUp.setContentText("All fields are required.")
-                                popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                                popUp.setConfirmClickListener()
-                                { sDialog ->
-                                    sDialog.dismissWithAnimation()
-                                    popUp.dismiss()
+                            oldLocation!!.setText(locationval!!.text)
+                            productIdEditLocation.setText("$ProductId")
+                            productNameEditLocation.setText("$pname")
+                            btnUpdateLocation.setOnClickListener(View.OnClickListener {
+                                if (Rack.text.toString().trim() != null && Rack.text.toString()
+                                        .trim() != ""
+                                    && Section.text.toString()
+                                        .trim() != null && Section.text.toString()
+                                        .trim() != "" && Row.text.toString() != null && Row.text.toString()
+                                        .trim() != ""
+                                    && BoxNo.text.toString() != null && BoxNo.text.toString() != ""
+                                ) {
+                                    var row = Row.text.toString().trim().toInt()
+                                    var boxNo = BoxNo.text.toString().trim().toInt()
+                                    updateProductLocationFunction(
+                                        productId = productIdEditLocation.text.toString(),
+                                        Rack = Rack.text.toString(),
+                                        Section = Section.text.toString(),
+                                        Row = row,
+                                        BoxNo = boxNo
+                                    )
+                                    dilog.dismiss()
+                                } else {
+                                    var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
+                                    popUp.setContentText("All fields are required.")
+                                    popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                                    popUp.setConfirmClickListener()
+                                    { sDialog ->
+                                        sDialog.dismissWithAnimation()
+                                        popUp.dismiss()
+                                    }
+                                    popUp.show()
+                                    popUp.setCanceledOnTouchOutside(false)
                                 }
-                                popUp.show()
-                                popUp.setCanceledOnTouchOutside(false)
-                            }
+                            })
+                            btnCloseLocation.setOnClickListener(View.OnClickListener {
+                                dilog.dismiss()
+                            })
+                            dilog.show()
+                            dilog.getWindow()!!.setAttributes(lp);
                         })
-                        btnCloseLocation.setOnClickListener(View.OnClickListener {
-                            dilog.dismiss()
-                        })
-                        dilog.show()
-                        dilog.getWindow()!!.setAttributes(lp);
-                    })
-                    Glide.with(this)
-                        .load(imagesurl)
-                        .into(imagur)
-                    pDialog.dismiss()
-                } else {
+
+                        Glide.with(this)
+                            .load(imagesurl)
+                            .into(imagur)
+                        pDialog.dismiss()
+                    }else{
+                        var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
+                        popUp.setContentText(presponsmsg)
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            popUp.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                    }
+                    } else {
                     showproductdetails?.visibility = View.GONE
                     pDialog.dismiss()
                     val dialog = SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)

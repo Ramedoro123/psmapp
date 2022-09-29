@@ -115,12 +115,15 @@ class FragmentInventory  : Fragment(R.layout.fragment_inventory_fragment){
                 val Bill_Date: CharSequence? = txtbildate?.text
                 if (TextUtils.isEmpty(Bill_No?.text.toString())) {
                     EnertBill_No()
-                } else if (TextUtils.isEmpty(Bill_Date.toString())) {
+                }
+                else if (TextUtils.isEmpty(Bill_Date.toString())) {
                     EnertBill_Date()
 
-                } else if (vendorname.trim()==""||  spvendorid?.toIntOrNull()?.let{it}==null) {
+                }
+                else if (vendorname.trim()==""||  spvendorid?.toIntOrNull()?.let{it}==null) {
                     Select_Vendor()
-                } else {
+                }
+                else {
                     val preferences = PreferenceManager.getDefaultSharedPreferences(context)
                     val editor = preferences.edit()
                     editor.putString("Bill_No", Bill_No?.text.toString())
@@ -225,7 +228,8 @@ class FragmentInventory  : Fragment(R.layout.fragment_inventory_fragment){
 ////                    spvendorText!!.text.clear()
 //                }
 
-            }, { response ->
+            },
+            { response ->
 
                 Log.e("onError", error(response.toString()))
             })

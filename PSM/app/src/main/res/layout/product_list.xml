@@ -83,30 +83,45 @@
                 app:layout_constraintStart_toEndOf="@+id/ProductImage"
                 app:layout_constraintTop_toBottomOf="@+id/ProductdID" />
 
-            <TextView
-                android:id="@+id/textView3"
+            <Button
+                android:id="@+id/btnDeleteItem"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="3dp"
+                android:visibility="gone"
                 android:background="@drawable/ic_baseline_delete_24"
                 android:backgroundTint="@android:color/holo_red_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ProductPrice" />
+                app:layout_constraintTop_toBottomOf="@+id/ProductPrice"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/orderQtyText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="3dp"
-                android:text="Order Qty : 9999"
+                android:text="Order Qty :"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/ProductImage"
                 app:layout_constraintTop_toBottomOf="@+id/ProductStock" />
+
+            <TextView
+                android:id="@+id/OrderQtyValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/orderQtyText"
+                app:layout_constraintTop_toTopOf="@+id/orderQtyText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -52,4 +52,8 @@ class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:Str
         this.UnitType=UnitType!!
     }
 
+    fun removeAt(position: Int) {
+
+    }
+
 }
