@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.whm.ui.Sales_Person.CartViewActicity">
+
     <RelativeLayout
-        android:id="@+id/relativeLayout2"
+        android:id="@+id/cartLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorAccent"
@@ -15,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/btnBackarrow"
+            android:id="@+id/btnBackCart"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
@@ -31,8 +32,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="30dp"
-            android:layout_toRightOf="@id/btnBackarrow"
-            android:text="Cart(9999)"
+            android:layout_toRightOf="@id/btnBackCart"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="19sp" />
 
@@ -68,15 +69,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartDetailsRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/cartLayout"
         tools:listitem="@layout/cartlist_viewdetails" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

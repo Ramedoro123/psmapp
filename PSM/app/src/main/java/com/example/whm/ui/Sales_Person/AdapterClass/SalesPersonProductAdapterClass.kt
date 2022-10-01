@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.view.get
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -92,6 +93,7 @@ class SalesPersonProductAdapterClass(
     var usdEdited = false
     var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
     var addToCartData: MutableList<AddToCartDataModle> = ArrayList()
+    var productListModelClass: ArrayList<SalesPersonProductModel> = arrayListOf()
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView){
         var ProductName = itemView.findViewById<TextView>(R.id.productIdSalse)
         var ProductdID = itemView.findViewById<TextView>(R.id.ProductdID)
@@ -104,12 +106,7 @@ class SalesPersonProductAdapterClass(
         var cardView5 = itemView.findViewById<CardView>(R.id.cardView5)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
-
         var view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
-            OrderQtyValue = view.findViewById<TextView>(R.id.OrderQtyValue)
-            orderQtyProduct = view.findViewById<TextView>(R.id.orderQtyText)
-            btnDeleteItem = view.findViewById<Button>(R.id.btnDeleteItem)
-            ProductPrice = view.findViewById<TextView>(R.id.ProductPrice)
         return ViewHolder(view)
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -127,153 +124,153 @@ class SalesPersonProductAdapterClass(
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#000000"))
         }
-        holder.btnDeleteItem.setOnClickListener {
-            val current = ProductItemList.toList()
-            ProductItemList.remove(current[position])
-//            removedPosition = position
-            //deleteItemFunction()
-            if (AppPreferences.internetConnectionCheck(it.context)) {
-                val preferences = PreferenceManager.getDefaultSharedPreferences(it.context)
-                var accessToken = preferences.getString("accessToken", "")
-                var empautoid = preferences.getString("EmpAutoId", "")
-                var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
-                pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
-                pDialog!!.titleText = "Fetching ..."
-                pDialog!!.setCancelable(false)
-                pDialog!!.show()
-                val sendRequestObject = JSONObject()
-                val requestContainer = JSONObject()
-                val pObj = JSONObject()
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("appVersion", AppPreferences.AppVersion)
-                )
-                sendRequestObject.put(
-                    "requestContainer", requestContainer.put(
-                        "deviceID",
-                        Settings.Secure.getString(
-                            data!!.contentResolver,
-                            Settings.Secure.ANDROID_ID
-                        )
-                    )
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("deviceVersion", AppPreferences.versionRelease)
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("deviceName", AppPreferences.DeviceName)
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("accessToken", accessToken)
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("userAutoId", empautoid)
-                )
-                sendRequestObject.put("pObj", pObj.put("productId", ProductItem.getPId()))
-                sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
-                sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
-                if (draftAutoId==0) {
-                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-                }
-                else{
-                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-                }
-
-              //  Log.e("productId",productId.toString())
-                Log.e("checkFreeValue",checkFreeValue.toString())
-                Log.e("isExchangeValue",isExchangeValue.toString())
-                Log.e("unitAutoidValue",unitAutoidValue.toString())
-                Log.e("draftAutoId",draftAutoId.toString())
-
-                //send request queue in vally
-                val queue = Volley.newRequestQueue(data)
-                val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-                    AppPreferences.deleteItemApi, sendRequestObject,
-                    { response ->
-                        val responseResult = JSONObject(response.toString())
-                        val responsedData = JSONObject(responseResult.getString("d"))
-                        var  responseMessage2 = responsedData.getString("responseMessage")
-                        val responseStatus = responsedData.getInt("responseStatus")
-                        if (responseStatus == 200) {
-                            var responsDataObject= JSONObject(responsedData.getString("responseData"))
-                            var Cstock=responsDataObject.getString("CStock")
-                            var BP=responsDataObject.getDouble("BP")
-                            var UnitType=responsDataObject.getString("UnitType")
-                            holder.ProductPrice.setText("$" + "%.2f".format(BP) + "(" + UnitType + ")")
-                            var productStoct =Cstock
-                            if (productStoct=="0") {
-                                holder.ProductStock.setText("Stock : " + productStoct.toString())
-                                holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
-                            } else {
-                                holder.ProductStock.setText("Stock : " + productStoct.toString())
-                                holder.ProductStock.setTextColor(Color.parseColor("#000000"))
-                            }
-                            Log.e("Cstock",Cstock)
-                            Log.e("BP",BP.toString())
-                            Log.e("UnitType",UnitType)
-                            var popUp = SweetAlertDialog(data, SweetAlertDialog.SUCCESS_TYPE)
-                            popUp.setContentText(responseMessage2.toString())
-                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                            popUp.setConfirmClickListener()
-                            { sDialog ->
-                                sDialog.dismissWithAnimation()
-                                popUp.dismiss()
-                                pDialog.dismiss()
-                            }
-                            popUp.show()
-                            popUp.setCanceledOnTouchOutside(false)
-                        }
-                        else{
-                            var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
-                            popUp.setContentText(responseMessage2.toString())
-                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                            popUp.setConfirmClickListener()
-                            { sDialog ->
-                                sDialog.dismissWithAnimation()
-                                popUp.dismiss()
-                                pDialog.dismiss()
-                            }
-                            popUp.show()
-                            popUp.setCanceledOnTouchOutside(false)
-//                                        warningMessage(message = responseMessage1.toString())
-//                                        Log.e("message",responseMessage1.toString())
-                            //  pDialog!!.dismiss()
-                        }
-                    },
-                    Response.ErrorListener { pDialog!!.dismiss() })
-                JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
-                    10000000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                )
-                try {
-                    queue.add(JsonObjectRequest)
-                } catch (e: Exception) {
-                    Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
-                }
-            }
-            else{
-                val dialog = data?.let { Dialog(it) }
-                dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
-                val btDismiss =
-                    dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
-                btDismiss?.setOnClickListener {
-                    dialog.dismiss()
-                    val intent = Intent(data, MainActivity2::class.java)
-                    data?.startActivity(intent)
-                    finish()
-
-                }
-                dialog?.show()
-            }
-            notifyDataSetChanged()
-        }
+//        holder.btnDeleteItem.setOnClickListener {
+//            val current = ProductItemList.toList()
+//            ProductItemList.remove(current[position])
+////            removedPosition = position
+//            //deleteItemFunction()
+//            if (AppPreferences.internetConnectionCheck(it.context)) {
+//                val preferences = PreferenceManager.getDefaultSharedPreferences(it.context)
+//                var accessToken = preferences.getString("accessToken", "")
+//                var empautoid = preferences.getString("EmpAutoId", "")
+//                var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
+//                pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+//                pDialog!!.titleText = "Fetching ..."
+//                pDialog!!.setCancelable(false)
+//                pDialog!!.show()
+//                val sendRequestObject = JSONObject()
+//                val requestContainer = JSONObject()
+//                val pObj = JSONObject()
+//                sendRequestObject.put(
+//                    "requestContainer",
+//                    requestContainer.put("appVersion", AppPreferences.AppVersion)
+//                )
+//                sendRequestObject.put(
+//                    "requestContainer", requestContainer.put(
+//                        "deviceID",
+//                        Settings.Secure.getString(
+//                            data!!.contentResolver,
+//                            Settings.Secure.ANDROID_ID
+//                        )
+//                    )
+//                )
+//                sendRequestObject.put(
+//                    "requestContainer",
+//                    requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+//                )
+//                sendRequestObject.put(
+//                    "requestContainer",
+//                    requestContainer.put("deviceName", AppPreferences.DeviceName)
+//                )
+//                sendRequestObject.put(
+//                    "requestContainer",
+//                    requestContainer.put("accessToken", accessToken)
+//                )
+//                sendRequestObject.put(
+//                    "requestContainer",
+//                    requestContainer.put("userAutoId", empautoid)
+//                )
+//                sendRequestObject.put("pObj", pObj.put("productId", ProductItem.getPId()))
+//                sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
+//                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
+//                sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
+//                if (draftAutoId==0) {
+//                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+//                }
+//                else{
+//                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+//                }
+//
+//              //  Log.e("productId",productId.toString())
+//                Log.e("checkFreeValue",checkFreeValue.toString())
+//                Log.e("isExchangeValue",isExchangeValue.toString())
+//                Log.e("unitAutoidValue",unitAutoidValue.toString())
+//                Log.e("draftAutoId",draftAutoId.toString())
+//
+//                //send request queue in vally
+//                val queue = Volley.newRequestQueue(data)
+//                val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+//                    AppPreferences.deleteItemApi, sendRequestObject,
+//                    { response ->
+//                        val responseResult = JSONObject(response.toString())
+//                        val responsedData = JSONObject(responseResult.getString("d"))
+//                        var  responseMessage2 = responsedData.getString("responseMessage")
+//                        val responseStatus = responsedData.getInt("responseStatus")
+//                        if (responseStatus == 200) {
+//                            var responsDataObject= JSONObject(responsedData.getString("responseData"))
+//                            var Cstock=responsDataObject.getString("CStock")
+//                            var BP=responsDataObject.getDouble("BP")
+//                            var UnitType=responsDataObject.getString("UnitType")
+//                            holder.ProductPrice.setText("$" + "%.2f".format(BP) + "(" + UnitType + ")")
+//                            var productStoct =Cstock
+//                            if (productStoct=="0") {
+//                                holder.ProductStock.setText("Stock : " + productStoct.toString())
+//                                holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
+//                            } else {
+//                                holder.ProductStock.setText("Stock : " + productStoct.toString())
+//                                holder.ProductStock.setTextColor(Color.parseColor("#000000"))
+//                            }
+//                            Log.e("Cstock",Cstock)
+//                            Log.e("BP",BP.toString())
+//                            Log.e("UnitType",UnitType)
+//                            var popUp = SweetAlertDialog(data, SweetAlertDialog.SUCCESS_TYPE)
+//                            popUp.setContentText(responseMessage2.toString())
+//                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+//                            popUp.setConfirmClickListener()
+//                            { sDialog ->
+//                                sDialog.dismissWithAnimation()
+//                                popUp.dismiss()
+//                                pDialog.dismiss()
+//                            }
+//                            popUp.show()
+//                            popUp.setCanceledOnTouchOutside(false)
+//                        }
+//                        else{
+//                            var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
+//                            popUp.setContentText(responseMessage2.toString())
+//                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+//                            popUp.setConfirmClickListener()
+//                            { sDialog ->
+//                                sDialog.dismissWithAnimation()
+//                                popUp.dismiss()
+//                                pDialog.dismiss()
+//                            }
+//                            popUp.show()
+//                            popUp.setCanceledOnTouchOutside(false)
+////                                        warningMessage(message = responseMessage1.toString())
+////                                        Log.e("message",responseMessage1.toString())
+//                            //  pDialog!!.dismiss()
+//                        }
+//                    },
+//                    Response.ErrorListener { pDialog!!.dismiss() })
+//                JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+//                    10000000,
+//                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+//                )
+//                try {
+//                    queue.add(JsonObjectRequest)
+//                } catch (e: Exception) {
+//                    Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
+//                }
+//            }
+//            else{
+//                val dialog = data?.let { Dialog(it) }
+//                dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//                dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+//                val btDismiss =
+//                    dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+//                btDismiss?.setOnClickListener {
+//                    dialog.dismiss()
+//                    val intent = Intent(data, MainActivity2::class.java)
+//                    data?.startActivity(intent)
+//                    finish()
+//
+//                }
+//                dialog?.show()
+//            }
+//            notifyDataSetChanged()
+//        }
 
         Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(holder.ProductImage);
 
@@ -754,13 +751,29 @@ class SalesPersonProductAdapterClass(
                                             UnitPrice= cartResponseResultData.getJSONObject(i).getString("UnitPrice")
                                             UnitType= cartResponseResultData.getJSONObject(i).getString("UnitType")
                                             var cartData=AddToCartDataModle(draftAutoId,Total!!,NofItem!!,OQty!!,UnitPrice!!,UnitType)
+                                            var productModelClass = SalesPersonProductModel("","", "","",0.0f,UnitType,0,UnitPrice!!,Total!!,NofItem!!,draftAutoId!!)
+                                            productListModelClass.add(productModelClass)
                                             addToCartData.add(cartData)
                                         }
-                                        Log.e("NoNofItem",NofItem.toString())
+                                           Adapter.NO_SELECTION
+                                        if (OQty!=null&&OQty!=0 &&UnitPrice!="" &&UnitPrice!=null){
+                                            var unitPrice=UnitPrice.toString().toFloat()
+                                            holder.OrderQtyValue.setText(OQty.toString())
+                                            holder.orderQtyProduct.visibility=View.VISIBLE
+                                            holder.OrderQtyValue.visibility=View.VISIBLE
+                                            holder.btnDeleteItem.visibility=View.VISIBLE
+                                            holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitType + ")")
+                                        }
+                                        else{
+                                            holder.orderQtyProduct.visibility=View.GONE
+                                            holder.btnDeleteItem.visibility=View.GONE
+                                            holder.OrderQtyValue.visibility=View.GONE
+                                        }
                                         Log.e("draftAutoId",draftAutoId.toString())
                                         val intent = Intent("USER_NAME_CHANGED_ACTION")
                                         intent.putExtra("username", NofItem.toString())
                                         intent.putExtra("Total", Total.toString())
+                                        intent.putExtra("draftAutoId", draftAutoId)
                                         // put your all data using put extra
                                         // put your all data using put extra
                                         LocalBroadcastManager.getInstance(it.context).sendBroadcast(intent)
@@ -830,22 +843,6 @@ class SalesPersonProductAdapterClass(
                         }
                         dialog?.show()
                     }
-
-                if (OQty!=null&&OQty!=0 &&UnitPrice!="" &&UnitPrice!=null){
-                    var unitPrice=UnitPrice.toString().toFloat()
-
-                    holder.OrderQtyValue.setText(OQty.toString())
-                    holder.orderQtyProduct.visibility=View.VISIBLE
-                    holder.OrderQtyValue.visibility=View.VISIBLE
-                    holder.btnDeleteItem.visibility=View.VISIBLE
-
-                    holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitType + ")")
-                }
-                else{
-                    holder.orderQtyProduct.visibility=View.GONE
-                    holder.btnDeleteItem.visibility=View.GONE
-                    holder.OrderQtyValue.visibility=View.GONE
-                }
             })
             btnCloseCart.setOnClickListener(View.OnClickListener {
                 dilog.dismiss()
@@ -857,6 +854,7 @@ class SalesPersonProductAdapterClass(
 
 
     }
+
     private fun warningMessage(message:String) {
         var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
         popUp.setContentText(message)
@@ -893,6 +891,7 @@ class SalesPersonProductAdapterClass(
         }
 
     }
+
     private fun isFreeCheckedfunction(isFreeChecked: Boolean) {
         if(isFreeChecked) {
             isExchangeCheckBox.isChecked = false
@@ -970,9 +969,11 @@ class SalesPersonProductAdapterClass(
     }
 }
 
-private fun <E> List<E>.remove(e: E) {
+private fun <E> MutableList<E>.add(element: SalesPersonProductModel) {
 
 }
+
+
 
 
 

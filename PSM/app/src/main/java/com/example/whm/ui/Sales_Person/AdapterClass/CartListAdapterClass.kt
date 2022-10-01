@@ -3,13 +3,17 @@ package com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModleClass
+import com.example.whm.ui.Sales_Person.CartViewActicity
+import com.squareup.picasso.Picasso
 
 class CartListAdapterClass(
-    private val CartList: List<CartListModleClass>
+    private val CartList: List<CartListModleClass>,
+    cartViewActicity: CartViewActicity
 ) : RecyclerView.Adapter<CartListAdapterClass.ViewHolder>() {
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
@@ -17,6 +21,7 @@ class CartListAdapterClass(
         val cartPid=itemView.findViewById<TextView>(R.id.cartPid)
         val cartPpiece=itemView.findViewById<TextView>(R.id.cartPpiece)
         val cartTotalAmount=itemView.findViewById<TextView>(R.id.cartTotalAmount)
+        val ProductImageCart=itemView.findViewById<ImageView>(R.id.ProductImageCart)
 
     }
 
@@ -29,10 +34,14 @@ class CartListAdapterClass(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var cartListData=CartList[position]
         holder.cartPname.text=cartListData.getPName()
-        holder.cartPid.text=cartListData.getPID()
-        holder.cartPpiece.text=cartListData.getpPrice()
-        holder.cartTotalAmount.text=cartListData.getTotalAmount()
-
+        holder.cartPid.text=cartListData.getPId().toString()
+        var priceProduct = cartListData.getpUnitPrice()!!.toFloat()
+        var UnitType = cartListData.getUnitType().toString()
+        var ReqQty = cartListData.getReqQty().toString()
+        var NetPrice = cartListData.getNetPrice()!!.toFloat()
+        holder.cartTotalAmount.setText("$" + "%.2f".format(NetPrice))
+        holder.cartPpiece.setText("$" + "%.2f".format(priceProduct)+"/" +UnitType+ "x" +ReqQty)
+        Picasso.get().load(cartListData.getImgPath()).error(R.drawable.default_pic).into(holder.ProductImageCart);
     }
 
     override fun getItemCount(): Int {

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.example.whm.ui.UpdateLocation.UpdateLocation">
     <RelativeLayout
-        android:id="@+id/relativeLayout2"
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorAccent"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/btnBackarrow"
+            android:id="@+id/btnBackOrderSummary"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
-            android:layout_toRightOf="@id/btnBackarrow"
+            android:layout_toRightOf="@id/btnBackOrderSummary"
             android:gravity="center"
             android:text="@string/Update_Location"
             android:textColor="@color/white"
@@ -55,7 +55,7 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Update_Location_recyclerView"

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.Settings
@@ -36,7 +35,8 @@ class SalesPersonProductList : AppCompatActivity() {
     var empautoid:String?=null
     var customerName:String?=null
     var customerId:String?=null
-   public var username:String?=null
+    var username:String?=null
+    var draftAutoId:Int?=null
     var ProductItemList:String?=null
     lateinit var productTitle:TextView
     lateinit var cart_badge:TextView
@@ -111,17 +111,20 @@ class SalesPersonProductList : AppCompatActivity() {
             dialog?.show()
         }
         })
-        var btnBackarrow=findViewById<TextView>(R.id.btnBackarrow)
+        var btnBackarrow1=findViewById<TextView>(R.id.btnSalesPersonBack)
         var SearchProduct=findViewById<TextView>(R.id.SearchProduct)
         var cartview=findViewById<ImageView>(R.id.cartview)
-        btnBackarrow.setOnClickListener(View.OnClickListener {
+         btnBackarrow1.setOnClickListener(View.OnClickListener {
             finish();
         })
-        SearchProduct.setOnClickListener(View.OnClickListener {
+         SearchProduct.setOnClickListener(View.OnClickListener {
             dialogCustom()
         })
         cartview.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(this,CartViewActicity::class.java))
+            var intent=Intent(this,CartViewActicity::class.java)
+               intent.putExtra("draftAutoId",draftAutoId)
+               startActivity(intent)
+               finish()
         })
         if (AppPreferences.internetConnectionCheck(this)) {
             ScanBarcode!!.requestFocus()
@@ -171,7 +174,8 @@ else {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             if (intent!=null) {
                 username = intent.getStringExtra("username");
-               var total = intent.getStringExtra("Total");
+                var total = intent.getStringExtra("Total");
+                draftAutoId = intent.getIntExtra("draftAutoId",0);
                 var totalValue=total.toString().toDouble()
                 cart_badge.setText(username)
                 orderTotalValue.setText("Order Total : %.2f".format(totalValue))
@@ -258,7 +262,7 @@ try {
 }
     }
     private fun addProductdataModelClass(PId:String,PName:String,ImageUrl:String,CStock:String,BP:Float,UnitType:String) {
-        var productModelClass = SalesPersonProductModel(PId,PName, ImageUrl,CStock,BP,UnitType)
+        var productModelClass = SalesPersonProductModel(PId,PName, ImageUrl,CStock,BP,UnitType,0,"","","",0)
         productListModelClass.add(productModelClass)
         val recyclerview = findViewById<RecyclerView>(R.id.ProductListRecyclerView)
         productAdapterClass = SalesPersonProductAdapterClass(productListModelClass, this)

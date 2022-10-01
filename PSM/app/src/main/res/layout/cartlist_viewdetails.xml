@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView14"
+                android:id="@+id/ProductImageCart"
                 android:layout_width="80dp"
                 android:layout_height="95dp"
                 android:layout_marginStart="5dp"
@@ -31,7 +31,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/default_pic" />
+                 />
 
             <TextView
                 android:id="@+id/cartPname"
@@ -44,8 +44,8 @@
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/textView8"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
-                app:layout_constraintTop_toTopOf="@+id/imageView14" />
+                app:layout_constraintStart_toEndOf="@+id/ProductImageCart"
+                app:layout_constraintTop_toTopOf="@+id/ProductImageCart" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -65,7 +65,7 @@
                 android:layout_marginTop="7dp"
                 android:text="91003"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
+                app:layout_constraintStart_toEndOf="@+id/ProductImageCart"
                 app:layout_constraintTop_toBottomOf="@+id/cartPname" />
 
             <TextView

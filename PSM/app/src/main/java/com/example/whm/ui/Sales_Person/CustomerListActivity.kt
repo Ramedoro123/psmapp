@@ -49,7 +49,7 @@ public class CustomerListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_list)
-        var backbtn=findViewById<TextView>(R.id.btnBackarrow)
+        var backbtn=findViewById<TextView>(R.id.btnBackOrderSummary)
            SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
         CustomerTitle=findViewById<TextView>(R.id.customerHeader)
         backbtn.setOnClickListener(View.OnClickListener {
