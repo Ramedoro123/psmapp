@@ -18,6 +18,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import android.R
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -41,9 +42,9 @@ class MainActivity2 : AppCompatActivity() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         var EmpAutoId = preferences.getString("EmpAutoId", "")
         var EmpTypeNo = preferences.getString("EmpTypeNo", "")
-        var Empname = preferences.getString("Empname", "")
+        var LName = preferences.getString("LName", "")
         var Username = preferences.getString("Username", "")
-
+        Log.e("LName",LName.toString())
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarMain.toolbar)
@@ -85,6 +86,13 @@ class MainActivity2 : AppCompatActivity() {
             nav_Menu.findItem(com.example.myapplication.R.id.nav_Add_On_order_list_Picker).isVisible = true
             nav_Menu.findItem(com.example.myapplication.R.id.nav_Add_OnPacked_order_list_Picker).isVisible = true
             nav_Menu.findItem(com.example.myapplication.R.id.nav_Update_Location).isVisible = true
+        }
+        if (LName=="Test PDL"){
+            nav_Menu.findItem(com.example.myapplication.R.id.nav_internalpos).isVisible =false
+        }
+        if (LName=="PDL")
+        {
+            nav_Menu.findItem(com.example.myapplication.R.id.nav_internalpos).isVisible =false
         }
         val navController =findNavController(com.example.myapplication.R.id.nav_host_fragment_content_main)
         val hview = navView.getHeaderView(0)

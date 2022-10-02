@@ -418,6 +418,7 @@ class ReceivePO : AppCompatActivity() {
         }
         popUp.show()
         popUp.setCanceledOnTouchOutside(false)
+        popUp.setCancelable(false)
     }
 
     fun Addproductlist() {
@@ -619,6 +620,7 @@ class ReceivePO : AppCompatActivity() {
                     }
                     alertbox.setCanceledOnTouchOutside(false)
                     alertbox.show()
+                    alertbox.setCancelable(false)
 
                 } else {
                     var alertbox = SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)

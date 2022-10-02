@@ -2,6 +2,7 @@ package com.example.myapplication.com.example.whm.ui.home
 
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,12 @@ class HomeFragment : Fragment() {
          val Update_Location=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Update_Location)
          val Customer_List=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Customer_List)
         var Usertype = preferences.getString("EmpTypeNo", "")
+        var Empname = preferences.getString("Empname", "")
+        var LName = preferences.getString("LName", "")
+        var accessToken = preferences.getString("accessToken", "")
+        Log.e("Empname",Empname.toString())
+        Log.e("EmpTypeNo",LName.toString())
+        Log.e("accessToken",accessToken.toString())
         val editor = preferences.edit()
         if (Usertype.toString()=="2") {
             btnInvCheck.visibility = View.GONE
@@ -113,6 +120,14 @@ class HomeFragment : Fragment() {
             btnAddOnPacked_order.visibility= View.VISIBLE
             Update_Location.visibility= View.VISIBLE
 
+        }
+        if (LName=="Test PDL")
+        {
+            btnpointernallist.visibility = View.GONE
+        }
+        if (LName=="PDL")
+        {
+            btnpointernallist.visibility = View.GONE
         }
         btnInvCheck.setOnClickListener {
 

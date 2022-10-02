@@ -74,9 +74,9 @@
                         android:id="@+id/constraintLayout2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintTop_toBottomOf="@+id/view4"
-                        tools:layout_editor_absoluteX="-1dp">
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view4">
 
 
                         <TextView
@@ -84,33 +84,39 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:text="Old Location"
+                            android:layout_marginEnd="2dp"
+                            android:text="Old :"
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/oldLocation"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/oldLocation" />
+                            app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
                         <TextView
                             android:id="@+id/productNewLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:text="New Location"
+                            android:layout_marginTop="34dp"
+                            android:layout_marginEnd="2dp"
+                            android:text="New :"
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/frameLayout4"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/oldLocation" />
+                            app:layout_constraintTop_toBottomOf="@+id/productOldLocation" />
 
                         <FrameLayout
+                            android:id="@+id/frameLayout4"
                             android:layout_width="0dp"
-                            android:layout_height="30dp"
+                            android:layout_height="65dp"
                             android:layout_marginStart="2dp"
+                            android:layout_marginEnd="3dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/productNewLocation"
-                            app:layout_constraintTop_toTopOf="@+id/productNewLocation">
+                            app:layout_constraintTop_toBottomOf="@+id/oldLocation">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
@@ -119,7 +125,7 @@
                                 <EditText
                                     android:id="@+id/textL1"
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="35dp"
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/borderline"
                                     android:ems="10"
@@ -130,14 +136,15 @@
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textAllCaps="true"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/textL2"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
                                 <EditText
                                     android:id="@+id/textL2"
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="35dp"
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/borderline"
                                     android:ems="10"
@@ -147,15 +154,16 @@
                                     android:padding="3dp"
                                     android:text=""
                                     android:textAlignment="center"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/textL3"
                                     app:layout_constraintStart_toEndOf="@+id/textL1"
-                                    tools:ignore="MissingConstraints"
-                                    tools:layout_editor_absoluteY="-1dp" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView14"
+                                    tools:ignore="MissingConstraints" />
 
                                 <EditText
                                     android:id="@+id/textL3"
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="35dp"
                                     android:layout_marginEnd="3dp"
                                     android:background="@drawable/borderline"
                                     android:ems="10"
@@ -165,15 +173,15 @@
                                     android:padding="3dp"
                                     android:text=""
                                     android:textAlignment="center"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/textL4"
                                     app:layout_constraintStart_toEndOf="@+id/textL2"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
                                 <EditText
                                     android:id="@+id/textL4"
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="3dp"
+                                    android:layout_height="35dp"
                                     android:background="@drawable/borderline"
                                     android:ems="10"
                                     android:inputType="number"
@@ -182,39 +190,98 @@
                                     android:padding="3dp"
                                     android:text=""
                                     android:textAlignment="center"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/textL3"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+                                <TextView
+                                    android:id="@+id/textView10"
+                                    android:layout_width="0dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:gravity="center"
+                                    android:text="Rack"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toTopOf="@+id/textL1"
+                                    app:layout_constraintEnd_toStartOf="@+id/textView14"
+                                    app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/textView14"
+                                    android:layout_width="0dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginEnd="3dp"
+
+                                    android:gravity="center"
+                                    android:text="Section"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toTopOf="@+id/textL2"
+                                    app:layout_constraintEnd_toStartOf="@+id/textView30"
+                                    app:layout_constraintStart_toEndOf="@+id/textView10"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.2" />
+
+                                <TextView
+                                    android:id="@+id/textView30"
+                                    android:layout_width="0dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:gravity="center"
+                                    android:text="Row"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toTopOf="@+id/textL3"
+                                    app:layout_constraintEnd_toStartOf="@+id/textView31"
+                                    app:layout_constraintStart_toEndOf="@+id/textView14"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/textView31"
+                                    android:layout_width="0dp"
+                                    android:layout_height="30dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:gravity="center"
+                                    android:text="Box No"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/black"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toTopOf="@+id/textL4"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/textView30"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </FrameLayout>
-
-                        <TextView
-                            android:id="@+id/textView38"
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="100dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:gravity="center"
-                            android:text="[Rack-Section-Row-Box No]"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:textAlignment="center" />
 
                         <TextView
                             android:id="@+id/oldLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="8dp"
                             android:text="N/A"
                             android:textSize="18dp"
                             app:layout_constraintStart_toEndOf="@+id/productOldLocation"
-                            app:layout_constraintTop_toBottomOf="@+id/textView38" />
+                            app:layout_constraintTop_toTopOf="@+id/productOldLocation" />
+
+                        <TextView
+                            android:id="@+id/textView33"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="Location"
+                            android:textColor="#DC651B04"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <Button

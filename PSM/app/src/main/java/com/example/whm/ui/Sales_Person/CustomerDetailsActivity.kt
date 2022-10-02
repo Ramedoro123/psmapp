@@ -38,7 +38,6 @@ class CustomerDetailsActivity : AppCompatActivity() {
         val preferences= PreferenceManager.getDefaultSharedPreferences(this@CustomerDetailsActivity)
               var CustomerNames=preferences.getString("CustomerName","")
               var customerId=preferences.getString("customerId","")
-
         var Intent1: Intent
         Intent1= getIntent()
         contectPerson.setText(Intent1.getStringExtra("ContectPerson"))
