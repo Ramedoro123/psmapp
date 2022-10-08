@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/btnBackOrderSummary"
+            android:id="@+id/btnBackOrderUpdate"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
-            android:layout_toRightOf="@id/btnBackOrderSummary"
+            android:layout_toRightOf="@id/btnBackOrderUpdate"
             android:gravity="center"
             android:text="@string/Update_Location"
             android:textColor="@color/white"

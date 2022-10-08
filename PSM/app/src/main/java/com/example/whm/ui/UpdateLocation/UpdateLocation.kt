@@ -242,6 +242,6 @@ class UpdateLocation : AppCompatActivity() {
     }
     private  fun findbyid(){
         ScanOrderBarcode=findViewById(R.id.Scan_OrderBarcode)
-        btnBackArrow=findViewById(R.id.btnBackOrderSummary)
+        btnBackArrow=findViewById(R.id.btnBackOrderUpdate)
     }
 }

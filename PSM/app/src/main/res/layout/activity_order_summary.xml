@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     tools:context="com.example.whm.ui.Sales_Person.OrderSummaryActivity">
+
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
@@ -16,8 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/btnBackOrderSummary"
+        <Button
+            android:id="@+id/btnBackOrderSummaryDetails"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
@@ -46,20 +47,26 @@
     </RelativeLayout>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="57dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -68,10 +75,11 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView8"
                     android:layout_width="0dp"
-                    android:layout_height="110dp"
+                    android:layout_height="0dp"
                     android:layout_marginStart="3dp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView9"
                     app:layout_constraintEnd_toStartOf="@+id/cardView7"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -83,10 +91,10 @@
 
                         <FrameLayout
                             android:id="@+id/frameLayout6"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:background="#F4C097"
-                            app:layout_constraintBottom_toTopOf="@+id/bellingAddressValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="#f6ab90"
+                            app:layout_constraintBottom_toTopOf="@+id/textView47"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -95,42 +103,43 @@
                                 android:id="@+id/billingAddress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
+                                android:layout_gravity="center"
                                 android:padding="5dp"
                                 android:text="Billing Address"
+                                android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                         </FrameLayout>
 
-                        <FrameLayout
-                            android:id="@+id/bellingAddressValue"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                        <TextView
+                            android:id="@+id/textView47"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:text="941 Atlantic City Blvd, Bayville, NJ - 08721"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/frameLayout6">
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout6" />
 
-                            <TextView
-                                android:id="@+id/billingAddressValue"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:padding="5dp"
-                                android:text="Billing Address" />
-                        </FrameLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView7"
                     android:layout_width="0dp"
-                    android:layout_height="110dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="9dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView9"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cardView8"
-                    app:layout_constraintTop_toTopOf="@+id/cardView8">
+                    app:layout_constraintTop_toTopOf="parent">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -140,53 +149,54 @@
                         <FrameLayout
                             android:id="@+id/frameLayout7"
                             android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginBottom="1dp"
-                            android:background="#F4C097"
-                            app:layout_constraintBottom_toTopOf="@+id/frameLayout8"
+                            android:layout_height="wrap_content"
+                            android:background="#f6ab90"
+                            app:layout_constraintBottom_toTopOf="@+id/textView48"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
                                 android:id="@+id/ShippingAddressText"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
+                                android:layout_gravity="center"
                                 android:padding="5dp"
                                 android:text="Shipping Address"
+                                android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                         </FrameLayout>
 
-                        <FrameLayout
-                            android:id="@+id/frameLayout8"
+                        <TextView
+                            android:id="@+id/textView48"
                             android:layout_width="0dp"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:text="941 Atlantic City Blvd, Bayville, NJ - 08721"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/frameLayout7">
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout7" />
 
-                            <TextView
-                                android:id="@+id/ShippingAddressValue"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:padding="5dp"
-                                android:text="TextView" />
-                        </FrameLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView9"
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView10"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView8">
@@ -195,42 +205,66 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <EditText
-                            android:id="@+id/editTextDate2"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:ems="10"
-                            android:inputType="date"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
                         <TextView
                             android:id="@+id/textView3"
                             android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginBottom="5dp"
-                            android:text="Delivery Date"
-                            android:textColor="@color/black"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="4dp"
                             android:gravity="center_vertical"
-                            android:padding="5dp"
+                            android:paddingLeft="5dp"
+                            android:text="Delivery Date "
+                            android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/editTextDate2"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
+
+                        <View
+                            android:id="@+id/view5"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="#D6D6D6"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView3"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/deliveryDate"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="6dp"
+                            android:background="@color/white"
+                            android:drawableRight="@drawable/clendericon"
+                            android:drawableTint="#000000"
+                            android:hint="MM/DD/YYYY"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:singleLine="true"
+                            android:keyboardNavigationCluster="false"
+                            app:counterEnabled="true"
+                            android:focusable="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/view5"
+                            app:layout_constraintTop_toTopOf="@+id/textView3"
+                            app:layout_constraintVertical_bias="0.0" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView10"
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView11"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView9">
@@ -239,43 +273,337 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <Spinner
-                            android:id="@+id/spinner"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.4"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
                         <TextView
                             android:id="@+id/textView9"
                             android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginBottom="5dp"
+                            android:layout_height="match_parent"
                             android:gravity="center_vertical"
-                            android:padding="5dp"
+                            android:paddingLeft="5dp"
                             android:text="Shipping Type"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            app:layout_constraintBottom_toTopOf="@+id/spinner"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/view6"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="#D6D6D6"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView9"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Spinner
+                            android:id="@+id/spinner4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/view6"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="80dp"
+                    android:id="@+id/cardView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="3dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView10">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <FrameLayout
+                            android:id="@+id/frameLayout5"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:background="#f6ab90"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView23"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="Price Details"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/textView38"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:textAlignment="viewEnd"
+                            android:paddingRight="5dp"
+                            android:text="$13.00"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout5" />
+
+                        <TextView
+                            android:id="@+id/textView40"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Sub Total "
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/textView38"
+                            app:layout_constraintTop_toTopOf="@+id/textView38" />
+
+                        <EditText
+                            android:id="@+id/textView41"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:paddingRight="5dp"
+                            android:text="0.00"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView38" />
+
+                        <TextView
+                            android:id="@+id/textView46"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Overall Disc (%)"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/textView41"
+                            app:layout_constraintTop_toTopOf="@+id/textView41" />
+
+                        <EditText
+                            android:id="@+id/textView49"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:paddingRight="5dp"
+                            android:text="0.00"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView41" />
+
+                        <TextView
+                            android:id="@+id/textView50"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="OverAll Disc ($)"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/textView49"
+                            app:layout_constraintTop_toTopOf="@+id/textView49" />
+
+                        <EditText
+                            android:id="@+id/textView51"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:paddingRight="5dp"
+                            android:text="$0.00"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView49" />
+
+                        <TextView
+                            android:id="@+id/textView52"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Shipping Charges"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/textView51"
+                            app:layout_constraintTop_toTopOf="@+id/textView51" />
+
+                        <EditText
+                            android:id="@+id/textView57"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:paddingRight="5dp"
+                            android:text="$0.02"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+                        <TextView
+                            android:id="@+id/textView58"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Adjustment"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/textView57"
+                            app:layout_constraintTop_toTopOf="@+id/textView57" />
+
+                        <TextView
+                            android:id="@+id/textView59"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="$13.02"
+                            android:paddingRight="5dp"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textSize="17dp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView57" />
+
+                        <TextView
+                            android:id="@+id/textView60"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Payable Amount"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/textView59"
+                            app:layout_constraintTop_toTopOf="@+id/textView59" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="3dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView10" />
+                    app:layout_constraintTop_toBottomOf="@+id/cardView11">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <FrameLayout
+                            android:id="@+id/frameLayout9"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:background="#f6ab90"
+                            app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView44"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="Sales Person Remark"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                        <EditText
+                            android:id="@+id/editTextTextMultiLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:ems="10"
+                            android:gravity="start|top"
+                            android:inputType="textMultiLine"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout9" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView12">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <FrameLayout
+                            android:id="@+id/frameLayout8"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#f6ab90"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView62"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:padding="5dp"
+                                android:text="Driver Remark"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                android:textStyle="bold" />
+                        </FrameLayout>
+
+                        <EditText
+                            android:id="@+id/textView61"
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:padding="5dp"
+                            android:text=""
+                            android:ems="10"
+                            android:gravity="start|top"
+                            android:inputType="textMultiLine"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/frameLayout8" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

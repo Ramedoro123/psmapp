@@ -122,7 +122,10 @@ class SalesPersonProductList : AppCompatActivity() {
         })
         cartview.setOnClickListener(View.OnClickListener {
             var intent=Intent(this,CartViewActicity::class.java)
-               intent.putExtra("draftAutoId",draftAutoId)
+            val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+            val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
+            sharedLoadOrderPage.putString("OrderAutoid", draftAutoId?.toString())
+            sharedLoadOrderPage.apply()
                startActivity(intent)
                finish()
         })

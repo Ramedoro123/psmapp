@@ -47,8 +47,7 @@ class HomeFragment : Fragment() {
         val btnInvCheck = mView.findViewById<Button>(com.example.myapplication.R.id.btnInvCheck)
         val btnAddBar = mView.findViewById<Button>(com.example.myapplication.R.id.btnAddBar)
         val btnDriLoad = mView.findViewById<Button>(com.example.myapplication.R.id.btnDriLoad)
-        val btnUnLoadList =
-            mView.findViewById<Button>(com.example.myapplication.R.id.btnunloadOrderlist)
+        val btnUnLoadList = mView.findViewById<Button>(com.example.myapplication.R.id.btnunloadOrderlist)
         val btnOrderList = mView.findViewById<Button>(com.example.myapplication.R.id.btnOrderList)
         val btninventoryreceiv =
             mView.findViewById<Button>(com.example.myapplication.R.id.btninventoryreceiv)
@@ -88,6 +87,14 @@ class HomeFragment : Fragment() {
             btnDriLoad.visibility = View.GONE
             btnUnLoadList.visibility = View.GONE
             btnOrderList.visibility = View.GONE
+
+        }
+        if (Usertype.toString() == "5") {
+            btnInvCheck.visibility = View.GONE
+            btnAddBar.visibility = View.GONE
+            btnDriLoad.visibility = View.VISIBLE
+            btnUnLoadList.visibility = View.VISIBLE
+            btnOrderList.visibility = View.VISIBLE
 
         }
         if (Usertype.toString() == "11") {

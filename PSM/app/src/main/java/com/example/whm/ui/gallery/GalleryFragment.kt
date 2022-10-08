@@ -181,7 +181,7 @@ class GalleryFragment : Fragment() {
                     }
                     false
                 })
-
+                getActivity()!!.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
                     btnupdatestock.setOnClickListener(
                         View.OnClickListener {
 

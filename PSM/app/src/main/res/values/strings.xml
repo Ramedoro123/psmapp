@@ -37,7 +37,7 @@
     <string name="product_fragment_label">Product Fragment</string>
     <string name="product_list_fragment">Manual Load Order</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="Inventoryreceiv">New PO Receive</string>
+    <string name="Inventoryreceiv">Generate PO</string>
     <string name="btninventorypodraftlist">Draft PO List</string>
     <string name="btnsubmitpolist">Pending PO List</string>
     <string name="btnrevertpolist">Revert PO List</string>

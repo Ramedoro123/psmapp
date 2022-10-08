@@ -37,7 +37,7 @@ class CartViewActicity : AppCompatActivity() {
     var getCartListDetails: MutableList<CartListModleClass> = ArrayList()
     var  accessToken: String? = null
     var  empautoid: String? = null
-    var  draftAutoId: Int? = null
+    var  draftAutoId: Int?=null
     lateinit var CustomerName:TextView
     lateinit var cartListAdapter:CartListAdapterClass
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,21 +48,29 @@ class CartViewActicity : AppCompatActivity() {
          CustomerName=findViewById<TextView>(R.id.CustomerName)
         var CustomerInformation=findViewById<TextView>(R.id.CustomerInformation)
         btnBackCart.setOnClickListener(View.OnClickListener {
-          finish()
+            startActivity(Intent(this@CartViewActicity,SalesPersonProductList::class.java))
+            finish()
         })
         OrderSummary.setOnClickListener(View.OnClickListener {
            startActivity(Intent(this@CartViewActicity,OrderSummaryActivity::class.java))
             finish()
         })
 
-        var bundle :Bundle ?=intent.extras
-        draftAutoId= bundle!!.getInt("draftAutoId")
-        Log.e("",draftAutoId.toString())
+//        var bundle :Bundle ?=intent.extras
+//        draftAutoId= bundle!!.getInt("draftAutoId")
+//
+//        Log.e("",draftAutoId.toString())
         val preferences = PreferenceManager.getDefaultSharedPreferences(this@CartViewActicity)
        accessToken = preferences.getString("accessToken", "")
        empautoid = preferences.getString("EmpAutoId", "")
         var  customerName = preferences.getString("CustomerName", "")
         var customerId = preferences.getString("customerId", "")
+           var draft= preferences.getString("OrderAutoid", "")
+        if (draft=="" || draft==null){
+             draftAutoId=0
+        }else{
+            draftAutoId=draft.toString().toInt()
+        }
         CustomerInformation.setOnClickListener(View.OnClickListener {
             var dilog=Dialog(this@CartViewActicity)
             dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)

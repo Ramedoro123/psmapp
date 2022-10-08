@@ -120,157 +120,159 @@ class SalesPersonProductAdapterClass(
         if (productStoct=="0") {
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
-        } else {
+        }
+        else {
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#000000"))
         }
-//        holder.btnDeleteItem.setOnClickListener {
-//            val current = ProductItemList.toList()
-//            ProductItemList.remove(current[position])
-////            removedPosition = position
-//            //deleteItemFunction()
-//            if (AppPreferences.internetConnectionCheck(it.context)) {
-//                val preferences = PreferenceManager.getDefaultSharedPreferences(it.context)
-//                var accessToken = preferences.getString("accessToken", "")
-//                var empautoid = preferences.getString("EmpAutoId", "")
-//                var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
-//                pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
-//                pDialog!!.titleText = "Fetching ..."
-//                pDialog!!.setCancelable(false)
-//                pDialog!!.show()
-//                val sendRequestObject = JSONObject()
-//                val requestContainer = JSONObject()
-//                val pObj = JSONObject()
-//                sendRequestObject.put(
-//                    "requestContainer",
-//                    requestContainer.put("appVersion", AppPreferences.AppVersion)
-//                )
-//                sendRequestObject.put(
-//                    "requestContainer", requestContainer.put(
-//                        "deviceID",
-//                        Settings.Secure.getString(
-//                            data!!.contentResolver,
-//                            Settings.Secure.ANDROID_ID
-//                        )
-//                    )
-//                )
-//                sendRequestObject.put(
-//                    "requestContainer",
-//                    requestContainer.put("deviceVersion", AppPreferences.versionRelease)
-//                )
-//                sendRequestObject.put(
-//                    "requestContainer",
-//                    requestContainer.put("deviceName", AppPreferences.DeviceName)
-//                )
-//                sendRequestObject.put(
-//                    "requestContainer",
-//                    requestContainer.put("accessToken", accessToken)
-//                )
-//                sendRequestObject.put(
-//                    "requestContainer",
-//                    requestContainer.put("userAutoId", empautoid)
-//                )
-//                sendRequestObject.put("pObj", pObj.put("productId", ProductItem.getPId()))
-//                sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-//                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
-//                sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
-//                if (draftAutoId==0) {
-//                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-//                }
-//                else{
-//                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-//                }
-//
-//              //  Log.e("productId",productId.toString())
-//                Log.e("checkFreeValue",checkFreeValue.toString())
-//                Log.e("isExchangeValue",isExchangeValue.toString())
-//                Log.e("unitAutoidValue",unitAutoidValue.toString())
-//                Log.e("draftAutoId",draftAutoId.toString())
-//
-//                //send request queue in vally
-//                val queue = Volley.newRequestQueue(data)
-//                val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-//                    AppPreferences.deleteItemApi, sendRequestObject,
-//                    { response ->
-//                        val responseResult = JSONObject(response.toString())
-//                        val responsedData = JSONObject(responseResult.getString("d"))
-//                        var  responseMessage2 = responsedData.getString("responseMessage")
-//                        val responseStatus = responsedData.getInt("responseStatus")
-//                        if (responseStatus == 200) {
-//                            var responsDataObject= JSONObject(responsedData.getString("responseData"))
-//                            var Cstock=responsDataObject.getString("CStock")
-//                            var BP=responsDataObject.getDouble("BP")
-//                            var UnitType=responsDataObject.getString("UnitType")
-//                            holder.ProductPrice.setText("$" + "%.2f".format(BP) + "(" + UnitType + ")")
-//                            var productStoct =Cstock
-//                            if (productStoct=="0") {
-//                                holder.ProductStock.setText("Stock : " + productStoct.toString())
-//                                holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
-//                            } else {
-//                                holder.ProductStock.setText("Stock : " + productStoct.toString())
-//                                holder.ProductStock.setTextColor(Color.parseColor("#000000"))
-//                            }
-//                            Log.e("Cstock",Cstock)
-//                            Log.e("BP",BP.toString())
-//                            Log.e("UnitType",UnitType)
-//                            var popUp = SweetAlertDialog(data, SweetAlertDialog.SUCCESS_TYPE)
-//                            popUp.setContentText(responseMessage2.toString())
-//                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-//                            popUp.setConfirmClickListener()
-//                            { sDialog ->
-//                                sDialog.dismissWithAnimation()
-//                                popUp.dismiss()
-//                                pDialog.dismiss()
-//                            }
-//                            popUp.show()
-//                            popUp.setCanceledOnTouchOutside(false)
-//                        }
-//                        else{
-//                            var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
-//                            popUp.setContentText(responseMessage2.toString())
-//                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-//                            popUp.setConfirmClickListener()
-//                            { sDialog ->
-//                                sDialog.dismissWithAnimation()
-//                                popUp.dismiss()
-//                                pDialog.dismiss()
-//                            }
-//                            popUp.show()
-//                            popUp.setCanceledOnTouchOutside(false)
-////                                        warningMessage(message = responseMessage1.toString())
-////                                        Log.e("message",responseMessage1.toString())
-//                            //  pDialog!!.dismiss()
-//                        }
-//                    },
-//                    Response.ErrorListener { pDialog!!.dismiss() })
-//                JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
-//                    10000000,
-//                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-//                )
-//                try {
-//                    queue.add(JsonObjectRequest)
-//                } catch (e: Exception) {
-//                    Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
-//                }
-//            }
-//            else{
-//                val dialog = data?.let { Dialog(it) }
-//                dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//                dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
-//                val btDismiss =
-//                    dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
-//                btDismiss?.setOnClickListener {
-//                    dialog.dismiss()
-//                    val intent = Intent(data, MainActivity2::class.java)
-//                    data?.startActivity(intent)
-//                    finish()
-//
-//                }
-//                dialog?.show()
-//            }
-//            notifyDataSetChanged()
-//        }
+
+        holder.btnDeleteItem.setOnClickListener {
+            val current = ProductItemList.toList()
+            ProductItemList.remove(current[position])
+            removedPosition = position
+           // deleteItemFunction()
+            if (AppPreferences.internetConnectionCheck(it.context)) {
+                val preferences = PreferenceManager.getDefaultSharedPreferences(it.context)
+                var accessToken = preferences.getString("accessToken", "")
+                var empautoid = preferences.getString("EmpAutoId", "")
+                var pDialog = SweetAlertDialog(data, SweetAlertDialog.PROGRESS_TYPE)
+                pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+                pDialog!!.titleText = "Fetching ..."
+                pDialog!!.setCancelable(false)
+                pDialog!!.show()
+                val sendRequestObject = JSONObject()
+                val requestContainer = JSONObject()
+                val pObj = JSONObject()
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("appVersion", AppPreferences.AppVersion)
+                )
+                sendRequestObject.put(
+                    "requestContainer", requestContainer.put(
+                        "deviceID",
+                        Settings.Secure.getString(
+                            data!!.contentResolver,
+                            Settings.Secure.ANDROID_ID
+                        )
+                    )
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("deviceName", AppPreferences.DeviceName)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("accessToken", accessToken)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("userAutoId", empautoid)
+                )
+                sendRequestObject.put("pObj", pObj.put("productId", ProductItem.getPId()))
+                sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
+                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
+                sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
+                if (draftAutoId==0) {
+                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                }
+                else{
+                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                }
+
+              //  Log.e("productId",productId.toString())
+                Log.e("checkFreeValue",checkFreeValue.toString())
+                Log.e("isExchangeValue",isExchangeValue.toString())
+                Log.e("unitAutoidValue",unitAutoidValue.toString())
+                Log.e("draftAutoId",draftAutoId.toString())
+
+                //send request queue in vally
+                val queue = Volley.newRequestQueue(data)
+                val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                    AppPreferences.deleteItemApi, sendRequestObject,
+                    { response ->
+                        val responseResult = JSONObject(response.toString())
+                        val responsedData = JSONObject(responseResult.getString("d"))
+                        var  responseMessage2 = responsedData.getString("responseMessage")
+                        val responseStatus = responsedData.getInt("responseStatus")
+                        if (responseStatus == 200) {
+                            var responsDataObject= JSONObject(responsedData.getString("responseData"))
+                            var Cstock=responsDataObject.getString("CStock")
+                            var BP=responsDataObject.getDouble("BP")
+                            var UnitType=responsDataObject.getString("UnitType")
+                            holder.ProductPrice.setText("$" + "%.2f".format(BP) + "(" + UnitType + ")")
+                            var productStoct =Cstock
+                            if (productStoct=="0") {
+                                holder.ProductStock.setText("Stock : " + productStoct.toString())
+                                holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
+                            } else {
+                                holder.ProductStock.setText("Stock : " + productStoct.toString())
+                                holder.ProductStock.setTextColor(Color.parseColor("#000000"))
+                            }
+                            Log.e("Cstock",Cstock)
+                            Log.e("BP",BP.toString())
+                            Log.e("UnitType",UnitType)
+                            var popUp = SweetAlertDialog(data, SweetAlertDialog.SUCCESS_TYPE)
+                            popUp.setContentText(responseMessage2.toString())
+                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                            popUp.setConfirmClickListener()
+                            { sDialog ->
+                                sDialog.dismissWithAnimation()
+                                popUp.dismiss()
+                                pDialog.dismiss()
+                            }
+                            popUp.show()
+                            popUp.setCanceledOnTouchOutside(false)
+                        }
+                        else{
+                            var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
+                            popUp.setContentText(responseMessage2.toString())
+                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                            popUp.setConfirmClickListener()
+                            { sDialog ->
+                                sDialog.dismissWithAnimation()
+                                popUp.dismiss()
+                                pDialog.dismiss()
+                            }
+                            popUp.show()
+                            popUp.setCanceledOnTouchOutside(false)
+//                                        warningMessage(message = responseMessage1.toString())
+//                                        Log.e("message",responseMessage1.toString())
+                            //  pDialog!!.dismiss()
+                        }
+                    },
+                    Response.ErrorListener { pDialog!!.dismiss() })
+                JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                    10000000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
+                try {
+                    queue.add(JsonObjectRequest)
+                } catch (e: Exception) {
+                    Toast.makeText(data, e.toString(), Toast.LENGTH_LONG).show()
+                }
+            }
+            else{
+                val dialog = data?.let { Dialog(it) }
+                dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+                val btDismiss =
+                    dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+                btDismiss?.setOnClickListener {
+                    dialog.dismiss()
+                    val intent = Intent(data, MainActivity2::class.java)
+                    data?.startActivity(intent)
+                    finish()
+
+                }
+                dialog?.show()
+            }
+            notifyDataSetChanged()
+        }
 
         Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(holder.ProductImage);
 
@@ -366,11 +368,8 @@ class SalesPersonProductAdapterClass(
                                     var UName = getcartDetailsdata[n].getuName()
                                     mylist.add(UName.toString())
                                 }
-                                var adapter = ArrayAdapter<String>(
-                                    it.context,
-                                    R.layout.support_simple_spinner_dropdown_item,
-                                    mylist
-                                )
+
+                                var adapter = ArrayAdapter<String>(it.context, R.layout.support_simple_spinner_dropdown_item, mylist)
                                 spineer.adapter = adapter
                                 for (i in 0..isdefault.size - 1){
                                     Log.e("isdefault", isdefault[i].toString())
@@ -855,6 +854,8 @@ class SalesPersonProductAdapterClass(
 
     }
 
+
+
     private fun warningMessage(message:String) {
         var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
         popUp.setContentText(message)
@@ -967,6 +968,10 @@ class SalesPersonProductAdapterClass(
     override fun getItemCount(): Int {
         return ProductItemList.size
     }
+}
+
+private fun <E> List<E>.remove(e: E) {
+
 }
 
 private fun <E> MutableList<E>.add(element: SalesPersonProductModel) {

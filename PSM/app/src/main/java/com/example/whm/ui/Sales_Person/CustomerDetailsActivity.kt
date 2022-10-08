@@ -15,7 +15,7 @@ class CustomerDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_details)
-        var btnBackarrow=findViewById<TextView>(R.id.btnBackOrderSummary)
+        var btnBackarrow=findViewById<TextView>(R.id.btnBackOrderCustomer)
         var customerID=findViewById<TextView>(R.id.CSTID)
         var customerType=findViewById<TextView>(R.id.CstType)
         var customerNameCst=findViewById<TextView>(R.id.customerNameCst)
@@ -34,6 +34,7 @@ class CustomerDetailsActivity : AppCompatActivity() {
 
         btnBackarrow.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this,CustomerListActivity::class.java))
+            finish()
         })
         val preferences= PreferenceManager.getDefaultSharedPreferences(this@CustomerDetailsActivity)
               var CustomerNames=preferences.getString("CustomerName","")

@@ -104,8 +104,8 @@ class ReceivePO : AppCompatActivity() {
             editor.putString("header", "Draft PO ")
 
         } else {
-            supportActionBar?.setTitle("New PO Receive ")
-            editor.putString("header", "New PO Receive ")
+            supportActionBar?.setTitle("Generate PO ")
+            editor.putString("header", "Generate PO ")
         }
         editor.apply()
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
