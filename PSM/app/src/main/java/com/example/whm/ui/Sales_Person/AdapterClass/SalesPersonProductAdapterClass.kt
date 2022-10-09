@@ -15,7 +15,6 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.cardview.widget.CardView
-import androidx.core.view.get
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -27,7 +26,6 @@ import com.android.volley.toolbox.Volley
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
-import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.AddToCartDataModle
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getCartdetailsModle
 import com.squareup.picasso.Picasso
@@ -39,7 +37,8 @@ import java.util.regex.Pattern
 
 class SalesPersonProductAdapterClass(
     private val ProductItemList: List<SalesPersonProductModel>,
-    var data: Context?
+    var data: Context?,
+    private val listener:OnItemClickLitener
 ) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>(),View.OnClickListener
 {
     var responseResultData = JSONArray()
@@ -92,9 +91,9 @@ class SalesPersonProductAdapterClass(
     var uahEdited = false
     var usdEdited = false
     var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
-    var addToCartData: MutableList<AddToCartDataModle> = ArrayList()
     var productListModelClass: ArrayList<SalesPersonProductModel> = arrayListOf()
-    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView){
+
+    inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView),View.OnClickListener{
         var ProductName = itemView.findViewById<TextView>(R.id.productIdSalse)
         var ProductdID = itemView.findViewById<TextView>(R.id.ProductdID)
         var ProductPrice = itemView.findViewById<TextView>(R.id.ProductPrice)
@@ -104,6 +103,21 @@ class SalesPersonProductAdapterClass(
         var orderQtyProduct = itemView.findViewById<TextView>(R.id.orderQtyText)
         var OrderQtyValue = itemView.findViewById<TextView>(R.id.OrderQtyValue)
         var cardView5 = itemView.findViewById<CardView>(R.id.cardView5)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position:Int=absoluteAdapterPosition
+            if (position!=RecyclerView.NO_POSITION)
+            {
+                listener.OnItemClick(position)
+            }
+        }
+    }
+    interface OnItemClickLitener{
+        fun OnItemClick(position: Int)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
         var view = LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
@@ -125,6 +139,23 @@ class SalesPersonProductAdapterClass(
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#000000"))
         }
+        var unitPrice=ProductItem.getUnitPrice()!!.toFloat()
+        var UnitTypes=ProductItem.getUnitType().toString()
+        var Qty =ProductItem.getOQty().toString()
+        Log.e("priceProduct",priceProduct.toString())
+        if (Qty!=null&&Qty!="" && unitPrice!=0.2f &&unitPrice!=null &&UnitTypes!=null &&UnitTypes!=""){
+            holder.OrderQtyValue.setText(Qty)
+            holder.orderQtyProduct.visibility=View.VISIBLE
+            holder.OrderQtyValue.visibility=View.VISIBLE
+            holder.btnDeleteItem.visibility=View.VISIBLE
+            holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitTypes + ")")
+        }
+        else{
+            holder.orderQtyProduct.visibility=View.GONE
+            holder.btnDeleteItem.visibility=View.GONE
+            holder.OrderQtyValue.visibility=View.GONE
+        }
+
 
         holder.btnDeleteItem.setOnClickListener {
             val current = ProductItemList.toList()
@@ -658,7 +689,6 @@ class SalesPersonProductAdapterClass(
             isExchangeCheckBox.setOnClickListener(this)
 
             btnAddToCart.setOnClickListener(View.OnClickListener{
-
                     if (AppPreferences.internetConnectionCheck(it.context)) {
                         var pricevalue= Price.text.toString()
                         val preferences = PreferenceManager.getDefaultSharedPreferences(data)
@@ -747,27 +777,17 @@ class SalesPersonProductAdapterClass(
                                             Total= cartResponseResultData.getJSONObject(i).getString("Total")
                                             NofItem= cartResponseResultData.getJSONObject(i).getString("NooofItem")
                                             OQty= cartResponseResultData.getJSONObject(i).getInt("OQty")
-                                            UnitPrice= cartResponseResultData.getJSONObject(i).getString("UnitPrice")
+                                           var UnitPric= cartResponseResultData.getJSONObject(i).getDouble("UnitPrice")
                                             UnitType= cartResponseResultData.getJSONObject(i).getString("UnitType")
-                                            var cartData=AddToCartDataModle(draftAutoId,Total!!,NofItem!!,OQty!!,UnitPrice!!,UnitType)
+                                            var UnitPrice:Float=UnitPric.toFloat()
+                                           // var cartData=AddToCartDataModle(draftAutoId,Total!!,NofItem!!,OQty!!,UnitPrices,UnitType)
                                             var productModelClass = SalesPersonProductModel("","", "","",0.0f,UnitType,0,UnitPrice!!,Total!!,NofItem!!,draftAutoId!!)
                                             productListModelClass.add(productModelClass)
-                                            addToCartData.add(cartData)
+
+                                           // addToCartData.add(cartData)
                                         }
-                                           Adapter.NO_SELECTION
-                                        if (OQty!=null&&OQty!=0 &&UnitPrice!="" &&UnitPrice!=null){
-                                            var unitPrice=UnitPrice.toString().toFloat()
-                                            holder.OrderQtyValue.setText(OQty.toString())
-                                            holder.orderQtyProduct.visibility=View.VISIBLE
-                                            holder.OrderQtyValue.visibility=View.VISIBLE
-                                            holder.btnDeleteItem.visibility=View.VISIBLE
-                                            holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitType + ")")
-                                        }
-                                        else{
-                                            holder.orderQtyProduct.visibility=View.GONE
-                                            holder.btnDeleteItem.visibility=View.GONE
-                                            holder.OrderQtyValue.visibility=View.GONE
-                                        }
+                                           //Adapter.NO_SELECTION
+
                                         Log.e("draftAutoId",draftAutoId.toString())
                                         val intent = Intent("USER_NAME_CHANGED_ACTION")
                                         intent.putExtra("username", NofItem.toString())
@@ -784,6 +804,7 @@ class SalesPersonProductAdapterClass(
                                             sDialog.dismissWithAnimation()
                                             popUp.dismiss()
                                         }
+
                                         popUp.show()
                                         popUp.setCanceledOnTouchOutside(false)
                                         pDialog!!.dismiss()
@@ -797,6 +818,7 @@ class SalesPersonProductAdapterClass(
                                         warningMessage(message = responseMessage1.toString())
                                         pDialog!!.dismiss()
                                     }
+                                    holder.cardView5.setCardBackgroundColor(Color.parseColor("#F2A2E8"))
                                 }
                                 else{
                                     var popUp = SweetAlertDialog(data, SweetAlertDialog.WARNING_TYPE)
@@ -850,8 +872,6 @@ class SalesPersonProductAdapterClass(
             dilog.getWindow()!!.setAttributes(lp);
 
         })
-
-
     }
 
 
@@ -970,7 +990,12 @@ class SalesPersonProductAdapterClass(
     }
 }
 
-private fun <E> List<E>.remove(e: E) {
+
+private fun <E> List<E>.add(productModelClass: E) {
+
+}
+
+fun <E> List<E>.remove(e: E) {
 
 }
 

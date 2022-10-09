@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         val queues = Volley.newRequestQueue(this@MainActivity)
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
         val editor = preferences.edit()
+        Log.e("APIURL",APIURL.toString())
         editor.putString("email", email.trim().toString())
         editor.apply()
         JSONObj.put("userName",email)

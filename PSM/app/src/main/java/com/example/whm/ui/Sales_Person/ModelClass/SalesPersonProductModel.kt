@@ -1,7 +1,17 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
-class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:String,BP:Float,UnitType:String,OQty:Int,
-                              UnitPrice:String,Total:String,NofItem:String,draftAutoId:Int) {
+class SalesPersonProductModel(
+    PId:String,
+    PName:String,
+    ImageUrl:String,
+    CStock:String,
+    BP:Float,
+    UnitType:String,
+    OQty: Int,
+    UnitPrice: Float,
+    Total:String,
+    NofItem: String,
+    draftAutoId:Int) {
     private var PId:String
     private var PName:String
     private var ImageUrl:String
@@ -10,7 +20,7 @@ class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:Str
     private var OQty:Int
     private var draftAutoId:Int
     private var UnitType:String
-    private var UnitPrice:String
+    private var UnitPrice:Float
     private var Total:String
     private var NofItem:String
     init {
@@ -24,7 +34,7 @@ class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:Str
         this.UnitType=UnitType
         this.UnitPrice=UnitPrice
         this.Total=Total
-        this.NofItem=NofItem
+        this.NofItem= NofItem
     }
     fun getPId():String?{
         return PId
@@ -62,7 +72,7 @@ class SalesPersonProductModel(PId:String,PName:String,ImageUrl:String,CStock:Str
     }
     fun getUnitType():String?{
         return UnitType
-    }  fun getUnitPrice():String?{
+    }  fun getUnitPrice():Float?{
         return UnitPrice
     }  fun getTotal():String?{
         return Total

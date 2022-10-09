@@ -28,22 +28,23 @@ import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalesPersonProductAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
 import org.json.JSONObject
+import java.lang.reflect.Field
 
 
-class SalesPersonProductList : AppCompatActivity() {
+class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
+    SalesPersonProductAdapterClass.OnItemClickLitener {
     var accessToken:String?=null
     var empautoid:String?=null
+    var draftAutoId:Int?=null
     var customerName:String?=null
+    var ProductItemList:String?=null
     var customerId:String?=null
     var username:String?=null
-    var draftAutoId:Int?=null
-    var ProductItemList:String?=null
     lateinit var productTitle:TextView
     lateinit var cart_badge:TextView
     lateinit var orderTotalValue:TextView
     var responseMessage:String?=null
     var pDialog:SweetAlertDialog?=null
-
     var productListModelClass: ArrayList<SalesPersonProductModel> = arrayListOf()
     lateinit var productAdapterClass: SalesPersonProductAdapterClass
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -264,11 +265,25 @@ try {
     Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
 }
     }
-    private fun addProductdataModelClass(PId:String,PName:String,ImageUrl:String,CStock:String,BP:Float,UnitType:String) {
-        var productModelClass = SalesPersonProductModel(PId,PName, ImageUrl,CStock,BP,UnitType,0,"","","",0)
+    override fun OnItemClick(position: Int) {
+        Toast.makeText(this,"Item $position Clicked",Toast.LENGTH_LONG).show()
+        val ClickedItem:SalesPersonProductModel=productListModelClass[position]
+        ClickedItem.getOQty()==30
+        productAdapterClass.notifyItemChanged(position)
+    }
+    private fun addProductdataModelClass(
+        PId:String,
+        PName:String,
+        ImageUrl:String,
+        CStock:String,
+        BP:Float,
+        UnitType:String
+    )
+    {
+        var productModelClass = SalesPersonProductModel(PId,PName, ImageUrl,CStock,BP,UnitType,0,0.2f,"","",0)
         productListModelClass.add(productModelClass)
         val recyclerview = findViewById<RecyclerView>(R.id.ProductListRecyclerView)
-        productAdapterClass = SalesPersonProductAdapterClass(productListModelClass, this)
+        productAdapterClass = SalesPersonProductAdapterClass(productListModelClass, this@SalesPersonProductList,this@SalesPersonProductList)
         recyclerview.adapter = productAdapterClass
     }
     private  fun dialogCustom(){
@@ -314,5 +329,29 @@ try {
         popUp.setCanceledOnTouchOutside(false)
         pDialog!!.dismiss()
     }
+
+
+    private fun warningMessage(message:String) {
+        var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        popUp.setContentText(message)
+        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+        popUp.setConfirmClickListener()
+        { sDialog ->
+            sDialog.dismissWithAnimation()
+            popUp.dismiss()
+        }
+        popUp.show()
+        popUp.setCanceledOnTouchOutside(false)
+    }
+    private fun listDropdown(spineer: Spinner) {
+        val popup: Field = Spinner::class.java.getDeclaredField("mPopup")
+        popup.isAccessible = true
+        val popupWindow: ListPopupWindow = popup.get(spineer) as ListPopupWindow
+        popupWindow.height = (200).toInt()
+    }
+    override fun onClick(v: View?) {
+
+    }
+
 }
 
