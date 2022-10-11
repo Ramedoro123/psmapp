@@ -804,21 +804,11 @@ try {
                                             addProductdataModelClass("","","","",0.2f,UnitType!!,draftAutoId!!,Total!!,NofItem!!,UnitPrice!!,OQty!!)
                                            // addToCartData.add(cartData)
                                         }
-                                        Toast.makeText(this,"Item $position Clicked",Toast.LENGTH_LONG).show()
                                         ClickedItem.setNofItem(NofItem)
                                         ClickedItem.setOQty(OQty)
                                         ClickedItem.setUnitPrice(UnitPrice)
                                         ClickedItem.setTotal(Total)
                                         ClickedItem.setUnitType(UnitType)
-//                                        ClickedItem.setdraftAutoId(draftAutoId)
-                                           //Adapter.NO_SELECTION
-                                        val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-                                        val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
-                                        sharedLoadOrderPage.putInt("checkFreeValue",checkFreeValue)
-                                        sharedLoadOrderPage.putInt("isExchangeValue", isExchangeValue)
-                                        sharedLoadOrderPage.putInt("unitAutoidValue",unitAutoidValue!!)
-                                        sharedLoadOrderPage.putInt("draftAutoId",draftAutoId!!)
-                                        sharedLoadOrderPage.apply()
                                         Log.e("draftAutoId",draftAutoId.toString())
                                         val intent = Intent("USER_NAME_CHANGED_ACTION")
                                         intent.putExtra("username", NofItem.toString())
@@ -905,19 +895,12 @@ try {
 
     override fun OnDeleteClick(position: Int) {
         val ClickedItem:SalesPersonProductModel=productListModelClass[position]
-        ClickedItem.setNofItem("")
-            val actualPosition =position
-            getcartDetailsdata.removeAt(actualPosition)
+
 
             if (AppPreferences.internetConnectionCheck(this)) {
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                 var accessToken = preferences.getString("accessToken", "")
                 var empautoid = preferences.getString("EmpAutoId", "")
-//                unitAutoidValue = preferences.getInt("unitAutoidValue", 0)
-//                checkFreeValue = preferences.getInt("checkFreeValue", 0)
-//                isExchangeValue = preferences.getInt("isExchangeValue", 0)
-//                draftAutoId = preferences.getInt("draftAutoId", 0)
-
                 var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
                 pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
                 pDialog!!.titleText = "Fetching ..."
@@ -983,27 +966,19 @@ try {
                         val responseStatus = responsedData.getInt("responseStatus")
                         if (responseStatus == 200) {
                             var responsDataObject= JSONObject(responsedData.getString("responseData"))
-                            var Cstock=responsDataObject.getString("CStock")
-                            var BP=responsDataObject.getDouble("BP")
-                            var UnitType=responsDataObject.getString("UnitType")
+                            val actualPosition =position
+                              var Cstock=responsDataObject.getString("CStock")
+                               var bp =responsDataObject.getDouble("BP")
+                               var BP=bp.toFloat()
+                              UnitType=responsDataObject.getString("UnitType")
 
-                            ClickedItem.setBP(BP.toFloat())
+                            ClickedItem.setOQty(0)
+                            ClickedItem.setBP(BP = BP)
                             ClickedItem.setUnitType(UnitType)
                             ClickedItem.setCStock(Cstock)
+                            productAdapterClass.notifyItemChanged(actualPosition)
+                            productAdapterClass.notifyItemRangeChanged(actualPosition, getcartDetailsdata.size)
 
-//                            holder.ProductPrice.setText("$" + "%.2f".format(BP) + "(" + UnitType + ")")
-//                            var productStoct = Cstock
-//                            if (productStoct=="0") {
-//                                holder.ProductStock.setText("Stock : " + productStoct.toString())
-//                                holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
-//                            }
-//                            else {
-//                                holder.ProductStock.setText("Stock : " + productStoct.toString())
-//                                holder.ProductStock.setTextColor(Color.parseColor("#000000"))
-//                            }
-                            Log.e("Cstock",Cstock)
-                            Log.e("BP",BP.toString())
-                            Log.e("UnitType",UnitType)
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                             popUp.setContentText(responseMessage2.toString())
                             popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -1060,9 +1035,6 @@ try {
                 }
                 dialog?.show()
             }
-        productAdapterClass.notifyItemRemoved(actualPosition)
-        productAdapterClass.notifyItemRangeChanged(actualPosition, getcartDetailsdata.size)
-
     }
 
     private fun addProductdataModelClass(

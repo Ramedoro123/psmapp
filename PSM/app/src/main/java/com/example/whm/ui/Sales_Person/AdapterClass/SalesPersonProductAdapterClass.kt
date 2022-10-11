@@ -287,7 +287,7 @@ class SalesPersonProductAdapterClass(
         var unitPrice=ProductItem.getUnitPrice()!!.toFloat()
         var UnitTypes=ProductItem.getUnitType().toString()
         var Qty =ProductItem.getOQty().toString()
-        if (Qty!=null&&Qty!="" && unitPrice!=0.2f &&unitPrice!=null &&UnitTypes!=null &&UnitTypes!=""){
+        if (Qty!=null &&Qty!="" && unitPrice!=0.2f &&unitPrice!=null &&UnitTypes!=null &&UnitTypes!="" &&Qty!="0"){
             holder.OrderQtyValue.setText(Qty)
             holder.orderQtyProduct.visibility=View.VISIBLE
             holder.OrderQtyValue.visibility=View.VISIBLE
