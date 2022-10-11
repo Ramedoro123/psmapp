@@ -1,39 +1,20 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass
 
-import android.app.Dialog
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.preference.PreferenceManager
-import android.provider.Settings
-import android.util.Log
+import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import cn.pedant.SweetAlert.SweetAlertDialog
-import com.android.volley.DefaultRetryPolicy
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.example.myapplication.R
-import com.example.myapplication.com.example.whm.AppPreferences
-import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModleClass
-import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
-import com.example.whm.ui.Sales_Person.CartViewActicity
 import com.squareup.picasso.Picasso
-import org.json.JSONObject
 
 class CartListAdapterClass(
     private val CartList: List<CartListModleClass>,
-    var cartViewActicity: Context
+    var cartViewActicity: Context,
 ) : RecyclerView.Adapter<CartListAdapterClass.ViewHolder>() {
     var removedPosition : Int ? = null
     var getCartListDetails: MutableList<CartListModleClass> = ArrayList()
@@ -65,9 +46,13 @@ class CartListAdapterClass(
         holder.cartPpiece.setText("$" + "%.2f".format(priceProduct)+"/" +UnitType+ "x" +ReqQty)
         Picasso.get().load(cartListData.getImgPath()).error(R.drawable.default_pic).into(holder.ProductImageCart);
 
-        holder.btnDeleteCartList.setOnClickListener {
-           deleteItem(index = position)
-        }
+//        holder.btnDeleteCartList.setOnClickListener {
+//        //   deleteItem(index = position)
+//            val actualPosition = holder.adapterPosition
+//            CartList.remove(actualPosition)
+//            notifyItemRemoved(actualPosition)
+//            notifyItemRangeChanged(actualPosition, CartList.size)
+//        }
 
     }
     fun deleteItem(index: Int){
@@ -79,3 +64,4 @@ class CartListAdapterClass(
       return CartList.size
     }
 }
+

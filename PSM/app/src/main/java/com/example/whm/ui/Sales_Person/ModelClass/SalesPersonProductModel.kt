@@ -11,14 +11,14 @@ class SalesPersonProductModel(
     UnitPrice: Float,
     Total:String,
     NofItem: String,
-    draftAutoId:Int) {
+    draftAutoID:Int) {
     private var PId:String
     private var PName:String
     private var ImageUrl:String
     private var CStock:String
     private var BP:Float
     private var OQty:Int
-    private var draftAutoId:Int
+    private var draftAutoID:Int
     private var UnitType:String
     private var UnitPrice:Float
     private var Total:String
@@ -30,7 +30,7 @@ class SalesPersonProductModel(
         this.CStock=CStock
         this.BP=BP
         this.OQty=OQty
-        this.draftAutoId=draftAutoId
+        this.draftAutoID=draftAutoID
         this.UnitType=UnitType
         this.UnitPrice=UnitPrice
         this.Total=Total
@@ -62,29 +62,48 @@ class SalesPersonProductModel(
     }
     fun getBP():Float?{
         return BP
-    } fun getOQty():Int?{
+    }
+    fun getOQty():Int?{
         return OQty
-    } fun getdraftAutoId():Int?{
-        return draftAutoId
+    }
+    fun setOQty(OQty:Int?){
+        this.OQty=OQty!!
+    }
+    fun getdraftAutoID():Int?{
+        return draftAutoID
+    }
+    fun setdraftAutoID(draftAutoId:Int?){
+        this.draftAutoID=draftAutoID!!
     }
     fun setBP(BP:Float?){
         this.BP=BP!!
     }
     fun getUnitType():String?{
         return UnitType
-    }  fun getUnitPrice():Float?{
-        return UnitPrice
-    }  fun getTotal():String?{
-        return Total
-    }  fun getNofItem():String?{
-        return NofItem
     }
     fun setUnitType(UnitType:String?){
         this.UnitType=UnitType!!
     }
-
+    fun getUnitPrice():Float?{
+        return UnitPrice
+    }
+    fun setUnitPrice(UnitPrice:Float?){
+        this.UnitPrice=UnitPrice!!
+    }
+    fun getTotal():String?{
+        return Total
+    }
+    fun setTotal(Total:String?){
+        this.Total=Total!!
+    }
+    fun getNofItem():String?{
+        return NofItem
+    }
+    fun setNofItem(NofItem:String?){
+        this.NofItem=NofItem!!
+    }
     fun removeAt(position: Int) {
-
+    return
     }
 
 }
