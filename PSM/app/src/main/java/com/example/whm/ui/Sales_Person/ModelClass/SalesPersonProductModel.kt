@@ -7,7 +7,13 @@ class SalesPersonProductModel(
     CStock:String,
     BP:Float,
     UnitType:String,
+    NetPrice:Float,
+    IsTaxable:Int,
+    ReqQty:Int,
+    OUnitType:Int,
+    UnitPrices:Float,
     OQty: Int,
+    Tax:Int,
     UnitPrice: Float,
     Total:String,
     NofItem: String,
@@ -18,8 +24,14 @@ class SalesPersonProductModel(
     private var CStock:String
     private var BP:Float
     private var OQty:Int
+    private var Tax:Int
     private var draftAutoID:Int
     private var UnitType:String
+    private var NetPrice:Float
+    private var IsTaxable:Int
+    private var ReqQty:Int
+    private var OUnitType:Int
+    private var UnitPrices:Float
     private var UnitPrice:Float
     private var Total:String
     private var NofItem:String
@@ -30,8 +42,14 @@ class SalesPersonProductModel(
         this.CStock=CStock
         this.BP=BP
         this.OQty=OQty
+        this.Tax=Tax
         this.draftAutoID=draftAutoID
         this.UnitType=UnitType
+        this.NetPrice=NetPrice
+        this.IsTaxable=IsTaxable
+        this.ReqQty=ReqQty
+        this.OUnitType=OUnitType
+        this.UnitPrices=UnitPrices
         this.UnitPrice=UnitPrice
         this.Total=Total
         this.NofItem= NofItem
@@ -66,8 +84,14 @@ class SalesPersonProductModel(
     fun getOQty():Int?{
         return OQty
     }
+    fun getTax():Int?{
+        return Tax
+    }
     fun setOQty(OQty:Int?){
         this.OQty=OQty!!
+    }
+    fun setTax(Tax:Int?){
+        this.Tax=Tax!!
     }
     fun getdraftAutoID():Int?{
         return draftAutoID
@@ -102,8 +126,44 @@ class SalesPersonProductModel(
     fun setNofItem(NofItem:String?){
         this.NofItem=NofItem!!
     }
+fun getNetPrice():Float?{
+    return NetPrice
+}
+fun getIsTaxable():Int{
+    return IsTaxable
+
+}
+fun getReqQty():Int?{
+    return ReqQty
+}
+ fun getOUnitType():Int?{
+    return OUnitType
+}
+
+fun getUnitPrices():Float?{
+    return UnitPrices
+}
+
+
+    fun setNetPrice(NetPrice:Float?){
+        this.NetPrice= NetPrice!!
+    }
+
+    fun setIsTaxable(IsTaxable:Int?){
+        this.IsTaxable=IsTaxable!!
+    }
+
+    fun setReqQty(ReqQty:Int?){
+        this.ReqQty=ReqQty!!
+    }
+
+    fun setUnitPrices(UnitPrices:Float?){
+        this.UnitPrices=UnitPrices!!
+    }
+
     fun removeAt(position: Int) {
     return
     }
+
 
 }

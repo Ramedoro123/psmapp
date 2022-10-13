@@ -63,12 +63,12 @@
                 android:id="@+id/ProductPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="2dp"
-                android:text="$183801 / Box"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
+                android:text="$183801 / Case"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/taxableLevel"
                 app:layout_constraintTop_toBottomOf="@+id/productIdSalse" />
 
             <TextView
@@ -87,16 +87,13 @@
                 android:id="@+id/btnDeleteItem"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="2dp"
-                android:layout_marginBottom="3dp"
-                android:visibility="gone"
                 android:background="@drawable/ic_baseline_delete_24"
                 android:backgroundTint="@android:color/holo_red_dark"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ProductPrice"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/ProductPrice" />
 
             <TextView
                 android:id="@+id/orderQtyText"
@@ -105,9 +102,9 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="3dp"
                 android:text="Order Qty :"
-                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/ProductImage"
                 app:layout_constraintTop_toBottomOf="@+id/ProductStock" />
 
@@ -119,9 +116,37 @@
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/orderQtyText"
                 app:layout_constraintTop_toTopOf="@+id/orderQtyText" />
+
+            <TextView
+                android:id="@+id/taxableLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/frame2"
+                android:backgroundTint="#FF0000"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ProductPrice" />
+
+            <TextView
+                android:id="@+id/netPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="$30.00"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/btnDeleteItem"
+                app:layout_constraintTop_toTopOf="@+id/OrderQtyValue" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

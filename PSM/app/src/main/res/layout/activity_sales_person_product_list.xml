@@ -107,7 +107,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-
+        <TextView
+            android:id="@+id/OrderTotal"
+           android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Total :"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:layout_marginStart="3dp"
+            android:backgroundTint="@color/white"
+            />
             <TextView
                 android:id="@+id/cart2"
                 android:layout_width="wrap_content"
@@ -115,8 +126,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="3dp"
                 android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/OrderTotal"
                 android:backgroundTint="@color/white"
-                android:text="Order Total :0.00"
+                android:text="0.00"
                 android:textColor="@color/white"
                 android:textSize="18dp"
                 android:textStyle="bold" />
