@@ -85,7 +85,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
     var isExchangeValue: Int = 0
     var isdefault1: Int? = null
     var unitAutoidValue: Int? = null
-    var removedPosition: Int? = null
     var priceValue: Double? = null
     var uah: Float = 0.0F
     var usd: Float = 0.0F
@@ -127,6 +126,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
          var NofItems = intent.getIntExtra("totalcount",0)
         TotalPrice=Totals.toString().toFloat()
         itemCounts=NofItems.toInt()
+        Total= TotalPrice.toString()
+        NofItem= itemCounts.toString()
         cart_badge.setText(itemCounts.toString())
         orderTotalValue.setText("%.2f".format(TotalPrice))
 
@@ -194,9 +195,9 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
             val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
             sharedLoadOrderPage.putString("OrderAutoid", draftAutoId?.toString())
-            sharedLoadOrderPage.putFloat("TotalPrice", Total!!.toFloat())
-            sharedLoadOrderPage.putInt("itemCounts", NofItem!!.toInt())
-
+            sharedLoadOrderPage.putString("TotalPrice", Total?.toString())
+            sharedLoadOrderPage.putString("itemCounts", NofItem?.toString())
+             Log.e("sharedLoadOrderPage",sharedLoadOrderPage.toString())
             sharedLoadOrderPage.apply()
             startActivity(intent)
             finish()
@@ -312,8 +313,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                             var IsTaxable = responseResultData.getJSONObject(i).getInt("IsTaxable")
                             var ReqQty = responseResultData.getJSONObject(i).getInt("ReqQty")
                             var OUnitType = responseResultData.getJSONObject(i).getInt("OUnitType")
-                            var UnitPrice =
-                                responseResultData.getJSONObject(i).getDouble("UnitPrice")
+                            var added = responseResultData.getJSONObject(i).getInt("added")
+                            var UnitPrice = responseResultData.getJSONObject(i).getDouble("UnitPrice")
                             var UnitPrices: Float = UnitPrice.toFloat()
                             var NetPrice: Float = NetPrices.toFloat()
                             var BP: Float = balencePrice.toFloat()
@@ -329,6 +330,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 ReqQty,
                                 OUnitType,
                                 UnitPrices,
+                                added,
                                 0,
                                 "",
                                 "",
@@ -372,8 +374,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
 
 
     override fun OnItemClick(position: Int) {
-        val ClickedItem: SalesPersonProductModel = productListModelClass[position]
 
+        val ClickedItem: SalesPersonProductModel = productListModelClass[position]
         if (AppPreferences.internetConnectionCheck(this@SalesPersonProductList)) {
             val preferences = PreferenceManager.getDefaultSharedPreferences(this)
             var accessToken = preferences.getString("accessToken", "")
@@ -523,12 +525,15 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                     }
                                 }
                             listDropdown(spineer)
-                            pDialog!!.dismiss()
-                        } else {
+                        }
+
+                        else {
                             warningMessage(message = responseMessage.toString())
                             pDialog!!.dismiss()
                         }
-                    } else {
+                        pDialog!!.dismiss()
+                    }
+                    else {
                         warningMessage(responseMessage.toString())
                         pDialog!!.dismiss()
                     }
@@ -544,7 +549,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             } catch (e: Exception) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
             }
-        } else {
+        }
+        else {
             val dialog = this?.let { Dialog(it) }
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
@@ -569,7 +575,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         lp.copyFrom(dilog.getWindow()!!.getAttributes())
         lp.width = WindowManager.LayoutParams.MATCH_PARENT
         lp.height = WindowManager.LayoutParams.MATCH_PARENT
-
         var SProductID = dilog.findViewById<TextView>(R.id.productIdSalse)
         var s_ProductName = dilog.findViewById<TextView>(R.id.text_ProductName)
         var stockProductS = dilog.findViewById<TextView>(R.id.stockProductS)
@@ -603,7 +608,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         } catch (nfe: NumberFormatException) {
             // Handle the condition when str is not a number.
         }
-
         var countvalue = value
         incrementBtn.setOnClickListener(View.OnClickListener {
             if (value == 0 || value == null) {
@@ -637,7 +641,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
 
                 }
             }
-
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val tmp = discountAmount.text.toString()
                 val tmps = minPrice.toString()
@@ -799,16 +802,13 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
                 sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
                 sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
-                sendRequestObject.put("pObj",
-                    pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
+                sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
                 if (pricevalue.trim() != "" && pricevalue != null) {
                     var price = pricevalue.toFloat()
                     sendRequestObject.put("pObj", pObj.put("unitPrice", price))
                 }
-                sendRequestObject.put("pObj",
-                    pObj.put("Oim_Discount", discountPercent.text.toString()))
-                sendRequestObject.put("pObj",
-                    pObj.put("Oim_DiscountAmount", discountAmount.text.toString()))
+                sendRequestObject.put("pObj", pObj.put("Oim_Discount", discountPercent.text.toString()))
+                sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount", discountAmount.text.toString()))
                 if (draftAutoId == 0) {
                     sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
                 } else {
@@ -852,8 +852,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                     Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
                                     Log.e("Tax level ",Tax.toString())
                                      NetPrice=UnitPrice!!.toFloat()* OQty!!
-//                                            UnitPrice:Float=UnitPric.toFloat()
-                                    // var cartData=AddToCartDataModle(draftAutoId,Total!!,NofItem!!,OQty!!,UnitPrices,UnitType)
                                     addProductdataModelClass("",
                                         "",
                                         "",
@@ -865,6 +863,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                         0,
                                         0,
                                         0.2f,
+                                        0,
                                         draftAutoId!!,
                                         Total!!,
                                         NofItem!!,
@@ -883,7 +882,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 ClickedItem.setIsTaxable(Tax)
                                 ClickedItem.setNetPrice(NetPrice)
                                 TotalPrice=(NetPrice!!)
-                                if (ClickedItem.getNetPrice()!!>0.0f){
+                                if (ClickedItem.getadded()!!>0){
                                     itemCounts++
                                 }
 //                              ClickedItem.setdraftAutoId(draftAutoId)
@@ -1148,6 +1147,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         ReqQty: Int,
         OUnitType: Int,
         UnitPrices: Float,
+        added:Int,
         draftAutoId: Int,
         Total: String,
         NofItem: String,
@@ -1166,6 +1166,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             ReqQty,
             OUnitType,
             UnitPrices,
+            added,
             OQty,
             Tax,
             UnitPrice,

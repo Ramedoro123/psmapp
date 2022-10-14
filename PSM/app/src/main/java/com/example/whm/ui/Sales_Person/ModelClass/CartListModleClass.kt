@@ -1,19 +1,39 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
-class CartListModleClass( PId:Int,PName:String,UnitType:String,QtyPerUnit:Int,UnitPrice:Int,ReqQty:Int,NetPrice:Int,Free:Int,Exchange:Int,Tax:Int,UnitAutoId:Int,ImgPath:String){
+class CartListModleClass(
+    PId:String,
+    PName:String,
+    UnitType:String,
+    QtyPerUnit:Int,
+    UnitPrice:Float,
+    ReqQty:Int,
+    NetPrice:Float,
+    Free:Int,
+    Exchange:Int,
+    tax:Int,
+    UnitAutoId:Int,
+    ImgPath:String,
+    Total: String,
+    NofItem:String,
+    draftAutoId: Int,
+    OQty:Int){
 
     private var PName:String
-    private var PId:Int
-    private var UnitPrice:Int
-    private var NetPrice:Int
+    private var PId:String
+    private var UnitPrice:Float
+    private var NetPrice:Float
     private var UnitType:String
     private var QtyPerUnit:Int
     private var ReqQty:Int
     private var Free:Int
     private var Exchange:Int
-    private var Tax:Int
+    private var tax:Int
     private var UnitAutoId:Int
     private var ImgPath:String
+    private var Total:String
+    private var NofItem:String
+    private var draftAutoId:Int
+    private var  OQty:Int
     init {
         this.PName=PName
         this.PId=PId
@@ -24,45 +44,110 @@ class CartListModleClass( PId:Int,PName:String,UnitType:String,QtyPerUnit:Int,Un
         this.ReqQty=ReqQty
         this.Free=Free
         this.Exchange=Exchange
-        this.Tax=Tax
+        this.tax=tax
         this.UnitAutoId=UnitAutoId
         this.ImgPath=ImgPath
+        this.Total=Total
+        this.NofItem=NofItem
+        this.draftAutoId=draftAutoId
+        this.OQty=OQty
     }
     fun getPName():String?{
         return PName
-    }fun getPId():Int?{
+    }
+
+    fun getPId():String?{
         return PId
     }
-    fun getpUnitPrice():Int?{
+
+    fun getUnitPrice():Float?{
         return UnitPrice
     }
-    fun getNetPrice():Int?{
+    fun getNetPrice():Float?{
         return NetPrice
-    }fun getUnitType():String?{
+    }
+    fun setNetPrice(NetPrice:Float?){
+        this.NetPrice=NetPrice!!
+    }
+    fun getUnitType():String?{
         return UnitType
-    }fun getQtyPerUnit():Int?{
+    }
+    fun setUnitType(UnitType:String?){
+        this.UnitType=UnitType!!
+    }
+    fun getQtyPerUnit():Int?{
         return QtyPerUnit
-    }fun getReqQty():Int?{
+    }
+    fun setQtyPerUnit(QtyPerUnit:Int?){
+        this.QtyPerUnit=QtyPerUnit!!
+    }
+    fun getReqQty():Int?{
         return ReqQty
-    }fun getFree():Int?{
+    }
+    fun setReqQty(ReqQty:Int?){
+        this.ReqQty=ReqQty!!
+    }
+    fun getFree():Int?{
         return Free
-    }fun getExchange():Int?{
+    }
+    fun setFree(Free:Int?){
+        this.Free=Free!!
+    }
+    fun getExchange():Int?{
         return Exchange
     }
-    fun getTax():Int?{
-        return Tax
+    fun setExchange(Exchange:Int?){
+        this.Exchange=Exchange!!
+    }
+    fun gettax():Int?{
+        return tax
+    }
+    fun setTax(Tax:Int?){
+        this.tax=tax!!
     }
    fun getUnitAutoId():Int?{
         return UnitAutoId
     }
+    fun setUnitAutoId(UnitAutoId:Int?){
+        this.UnitAutoId=UnitAutoId!!
+    }
+
     fun getImgPath():String?{
         return ImgPath
     }
 
+    fun setImgPath(ImgPath:String?){
+        this.ImgPath=ImgPath!!
+    }
     fun setPName(PName:String?){
         this.PName=PName!!
     }
-    fun setUnitPrice(UnitPrice:Int?){
+    fun setUnitPrice(UnitPrice:Float?){
         this.UnitPrice=UnitPrice!!
+    }
+
+    fun getTotal():String?{
+        return Total
+    }
+    fun setTotal(Total:String?){
+        this.Total=Total!!
+    }
+    fun getNofItem():String?{
+        return NofItem
+    }
+    fun setNofItem(NofItem:String?){
+        this.NofItem=NofItem!!
+    }
+    fun getdraftAutoId():Int?{
+        return draftAutoId
+    }
+    fun draftAutoId(draftAutoId:Int?){
+        this.draftAutoId=draftAutoId!!
+    }
+    fun getOQty():Int?{
+        return OQty
+    }
+    fun setOQty(OQty:Int?){
+        this.OQty=OQty!!
     }
 }

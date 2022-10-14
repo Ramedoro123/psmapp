@@ -26,12 +26,7 @@ class SalesPersonProductAdapterClass(
     var data: Context?,
     private val listener: OnItemClickLitener,
 ) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>(), View.OnClickListener {
-    var Total: String? = null
-    var price: String? = null
-    var isFree: String? = null
-    var UnitType: String? = null
-    var responseMessage: String? = null
-    var draftAutoId: Int = 0
+
 
     public interface OnItemClickLitener {
         fun OnItemClick(position: Int)
@@ -111,7 +106,7 @@ class SalesPersonProductAdapterClass(
              Log.e("UnitTypes",UnitTypes.toString())
              Log.e("TaxAble value",taxValue.toString())
 
-        if (Qty != null && Qty != "" && unitPrice != 0.2f && unitPrice != null && UnitTypes != null && UnitTypes != "" && Qty != "0"&&netPrices != null && netPrices!="" &&netPrices!="0.00" ||taxValue!=0 &&taxValue!=null)
+        if (Qty != null && Qty != "" && unitPrice != 0.2f && unitPrice != null && UnitTypes != null && UnitTypes != "" && Qty != "0"&&netPrices != null && netPrices!="" &&netPrices!="0.00" ||taxValue!=0 &&taxValue!=null &&ReQty!=null &&ReQty!="" &&ReQty!="0")
         {
             var netPrice=netPrices.toFloat()
             holder.OrderQtyValue.setText(Qty.toString())
@@ -119,8 +114,10 @@ class SalesPersonProductAdapterClass(
             holder.OrderQtyValue.visibility = View.VISIBLE
             holder.netPrice.visibility = View.VISIBLE
             holder.btnDeleteItem.visibility = View.VISIBLE
-            if (taxValue!=0) {
+            if (taxValue!=0 &&ReQty!="0") {
                 holder.taxableLevel.visibility = View.VISIBLE
+                holder.OrderQtyValue.setText(ReQty.toString())
+                holder.OrderQtyValue.visibility = View.VISIBLE
                 holder.taxableLevel.setText("Taxable")
             }else{
                 holder.taxableLevel.visibility = View.GONE
@@ -161,8 +158,7 @@ class SalesPersonProductAdapterClass(
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#000000"))
         }
-        Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic)
-            .into(holder.ProductImage);
+        Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(holder.ProductImage);
 
     }
     private fun finish() {
@@ -210,6 +206,8 @@ class SalesPersonProductAdapterClass(
     override fun onClick(v: View?) {
 
     }
+
+
 }
 
 

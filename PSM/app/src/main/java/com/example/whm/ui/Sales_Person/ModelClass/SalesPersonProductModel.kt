@@ -12,6 +12,7 @@ class SalesPersonProductModel(
     ReqQty:Int,
     OUnitType:Int,
     UnitPrices:Float,
+    added:Int,
     OQty: Int,
     Tax:Int,
     UnitPrice: Float,
@@ -28,6 +29,7 @@ class SalesPersonProductModel(
     private var draftAutoID:Int
     private var UnitType:String
     private var NetPrice:Float
+    private var added:Int
     private var IsTaxable:Int
     private var ReqQty:Int
     private var OUnitType:Int
@@ -46,6 +48,7 @@ class SalesPersonProductModel(
         this.draftAutoID=draftAutoID
         this.UnitType=UnitType
         this.NetPrice=NetPrice
+        this.added=added
         this.IsTaxable=IsTaxable
         this.ReqQty=ReqQty
         this.OUnitType=OUnitType
@@ -86,6 +89,12 @@ class SalesPersonProductModel(
     }
     fun getTax():Int?{
         return Tax
+    }
+    fun getadded():Int?{
+        return added
+    }
+    fun setadded(added:Int?){
+        this.added=added!!
     }
     fun setOQty(OQty:Int?){
         this.OQty=OQty!!
