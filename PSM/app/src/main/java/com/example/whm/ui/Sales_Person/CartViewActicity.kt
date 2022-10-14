@@ -769,7 +769,6 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                         0, netPrice = NetPrice!!,0,0,0,0,"",draftAutoId!!,Total!!,NofItem!!,OQty!!)
                                     // addToCartData.add(cartData)
                                 }
-
                                 ClickedItem.setNofItem(NofItem)
                                 ClickedItem.setReqQty(OQty)
                                 ClickedItem.setUnitPrice(UnitPrice)
