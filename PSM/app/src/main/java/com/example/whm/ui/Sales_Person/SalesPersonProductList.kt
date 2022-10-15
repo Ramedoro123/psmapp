@@ -56,6 +56,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
     var pDialog: SweetAlertDialog? = null
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
+    var dispValue = ArrayList<String>()
+    var disaValue = ArrayList<String>()
     var minPriceslist = ArrayList<String>()
     var isFreelist = ArrayList<String>()
     var isdefault = ArrayList<Int>()
@@ -65,6 +67,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
     var price: String? = null
     var minPrice: String? = null
     var pricess: String? = null
+   var dispValue1:String?=null
+   var disaValue1:String?=null
     var isFrees: String? = null
     var isFree: String? = null
     var MinPric: String? = null
@@ -179,8 +183,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
             val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
             sharedLoadOrderPage.putString("OrderAutoid", draftAutoId?.toString())
-            sharedLoadOrderPage.putString("TotalPrice", Total?.toString())
-            sharedLoadOrderPage.putString("itemCounts", NofItem?.toString())
+//            sharedLoadOrderPage.putString("TotalPrice", Total?.toString())
+//            sharedLoadOrderPage.putString("itemCounts", NofItem?.toString())
             sharedLoadOrderPage.apply()
             startActivity(intent)
             finish()
@@ -413,6 +417,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
             sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
             sendRequestObject.put("pObj", pObj.put("customerId", customerId))
+            sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+            Log.e("sendRequestObject getPackingDetails",sendRequestObject.toString())
             //send request queue in vally
             val queue = Volley.newRequestQueue(this)
             val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
@@ -427,6 +433,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                         // array.clear()
                         getcartDetailsdata.clear()
                         if (responseResultData.length() != null && responseResultData.length() > 0) {
+                            Log.e("sendRequestObject getPackingDetails responseResultData",responseResultData.toString())
                             for (i in 0 until responseResultData.length()) {
                                 UIDs = responseResultData.getJSONObject(i).getInt("UID")
                                 UName = responseResultData.getJSONObject(i).getString("UName")
@@ -434,30 +441,42 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 price = responseResultData.getJSONObject(i).getString("price")
                                 MinPric = responseResultData.getJSONObject(i).getString("MinPrice")
                                 isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
+                                var dispValue= responseResultData.getJSONObject(i).getString("DisP")
+                                var disaValue= responseResultData.getJSONObject(i).getString("DisA")
+
                                 var cartdata = getCartdetailsModle(
                                     UIDs!!,
                                     UName!!,
                                     frees!!,
                                     price!!,
                                     MinPric!!,
-                                    isdefault1!!
+                                    isdefault1!!,
+                                    dispValue,
+                                    disaValue
                                 )
                                 getcartDetailsdata.add(cartdata)
 
                             }
                             mylist.clear()
                             mylist1.clear()
+                            dispValue.clear()
+                            disaValue.clear()
                             isdefault.clear()
                             minPriceslist.clear()
                             isFreelist.clear()
                             unitAutoIdList.clear()
                             for (n in 0..getcartDetailsdata.size - 1) {
                                 pricess = getcartDetailsdata[n].getprice()
+                                dispValue1=getcartDetailsdata[n].getdispValue()
+                                disaValue1=getcartDetailsdata[n].getdisaValue()
                                 minPrices = getcartDetailsdata[n].getMinPric()
                                 isFree = getcartDetailsdata[n].getfrees().toString()
                                 unitAutoID = getcartDetailsdata[n].getuiDs()
                                 unitAutoID?.let { it1 -> unitAutoIdList.add(it1) }
                                 isFreelist.add(isFree.toString())
+                                dispValue.add(dispValue1.toString())
+                                disaValue.add(disaValue1.toString())
+                                disaValue
                                 mylist1.add(pricess.toString())
                                 minPriceslist.add(minPrices.toString())
                                 var isdefault1 = getcartDetailsdata[n].getisdefault()
@@ -489,12 +508,18 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                         id: Long,
                                     ) {
                                         val item2: String = mylist1[position]
+                                        val dispValue: String = dispValue[position]
+                                        val disaValue: String = disaValue[position]
                                         minPrice = minPriceslist[position]
                                         isFrees = isFreelist[position]
                                         unitAutoidValue = unitAutoIdList[position]
                                         Log.e("isFrees", isFrees.toString())
                                         priceValue = item2.toDouble()
                                         Price.setText("%.2f".format(priceValue))
+                                        discountAmount.setText("%.2f".format(dispValue.toDouble()))
+                                        discountPercent.setText("%.2f".format(disaValue.toDouble()))
+
+
                                         Log.e("Price", Price.text.toString())
                                         if (isFreeCheckBox.isChecked) {
                                             isFreeCheckBox.toggle()
@@ -576,7 +601,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         var SProductID = dilog.findViewById<TextView>(R.id.productIdSalse)
         var s_ProductName = dilog.findViewById<TextView>(R.id.text_ProductName)
         var stockProductS = dilog.findViewById<TextView>(R.id.stockProductS)
-        discountAmount = dilog.findViewById<EditText>(R.id.TaxAmount);
+        discountAmount  = dilog.findViewById<EditText>(R.id.TaxAmount);
         discountPercent = dilog.findViewById<EditText>(R.id.AmountP);
         discountPercent = dilog.findViewById<EditText>(R.id.AmountP);
         valueIncrementDecrement = dilog.findViewById<EditText>(R.id.valueIncrementDecrement);
@@ -826,7 +851,9 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                         val responseStatus = responsedData.getInt("responseStatus")
                         if (responseStatus == 200) {
                             cartResponseResultData = responsedData.getJSONArray("responseData")
+                            Log.e("sendRequestObjectProduct list",cartResponseResultData.toString())
                             if (cartResponseResultData.length() != null && cartResponseResultData.length() > 0) {
+
                                 var NetPrice:Float?=null
                                 for (i in 0 until cartResponseResultData.length()) {
                                     draftAutoId = cartResponseResultData.getJSONObject(i)
@@ -838,9 +865,9 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                     OQty = cartResponseResultData.getJSONObject(i).getInt("OQty")
                                     UnitPrice = cartResponseResultData.getJSONObject(i)
                                         .getDouble("UnitPrice").toFloat()
-                                    UnitType = cartResponseResultData.getJSONObject(i)
-                                        .getString("UnitType")
+                                    UnitType = cartResponseResultData.getJSONObject(i).getString("UnitType")
                                     Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
+
                                     Log.e("Tax level ",Tax.toString())
                                      NetPrice=UnitPrice!!.toFloat()*OQty!!
                                 }
@@ -941,6 +968,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 }
                 dialog?.show()
             }
+            productAdapterClass.notifyItemChanged(position)
         })
 
         btnCloseCart.setOnClickListener(View.OnClickListener {

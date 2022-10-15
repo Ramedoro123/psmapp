@@ -52,6 +52,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     var pDialog: SweetAlertDialog? = null
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
+    var dispValue = ArrayList<String>()
+    var disaValue = ArrayList<String>()
     var minPriceslist = ArrayList<String>()
     var isFreelist = ArrayList<String>()
     var isdefault = ArrayList<Int>()
@@ -65,6 +67,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     var isFree: String? = null
     var MinPric: String? = null
     var minPrices: String? = null
+    var dispValue1:String?=null
+    var disaValue1:String?=null
     var OQty: Int? = null
     var UnitPrice: Float? = null
     var UnitType: String? = null
@@ -83,7 +87,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     var usd: Float = 0.0F
     var uahEdited = false
     var usdEdited = false
-    var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
+    var getcartDetailsdata:MutableList<getCartdetailsModle> =ArrayList()
     var cartResponseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var valueIncrementDecrement: EditText
@@ -120,11 +124,11 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         var  customerName = preferences.getString("CustomerName", "")
         var customerId = preferences.getString("customerId", "")
            var draft= preferences.getString("OrderAutoid", "")
-           var TotalAmounts =preferences.getString("TotalPrice","0.00")
-           var totalcounts = preferences.getString("itemCounts", "")
-        if (draft=="" || draft==null  ||TotalAmounts==null||TotalAmounts==" " ||totalcounts==null || totalcounts==""){
+//           var TotalAmounts =preferences.getString("TotalPrice","0.00")
+//           var totalcounts = preferences.getString("itemCounts", "")
+        if (draft=="" || draft==null){
              draftAutoId=0
-        }else if (draft!="" || draft!=null  ||TotalAmounts!=null||TotalAmounts!=" " ||totalcounts!=null || totalcounts!=""){
+        }else if (draft!="" || draft!=null){
             draftAutoId=draft.toString().toInt()
 //            TotalAmount=TotalAmounts.toString().toFloat()
 //            totalcount=totalcounts.toString().toInt()
@@ -342,8 +346,10 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 requestContainer.put("accessToken", accessToken)
             )
             sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
-            sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
+            sendRequestObject.put("pObj", pObj.put("productId",ClickedItem.getPId()))
             sendRequestObject.put("pObj", pObj.put("customerId", customerId))
+            sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+            Log.e("sendRequestObject,getpackingdetails cart ",sendRequestObject.toString())
             //send request queue in vally
             val queue = Volley.newRequestQueue(this)
             val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
@@ -356,6 +362,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                     if (responseCode == "201") {
                         var responseResultData = responsedData.getJSONArray("responseData")
                         // array.clear()
+                        Log.e("responseResultData",responseResultData.toString())
                         getcartDetailsdata.clear()
                         if (responseResultData.length() != null && responseResultData.length() > 0) {
                             for (i in 0 until responseResultData.length()) {
@@ -365,25 +372,34 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                 price = responseResultData.getJSONObject(i).getString("price")
                                 MinPric = responseResultData.getJSONObject(i).getString("MinPrice")
                                 isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
+                                var dispValue= responseResultData.getJSONObject(i).getString("DisP")
+                                var disaValue= responseResultData.getJSONObject(i).getString("DisA")
                                 var cartdata = getCartdetailsModle(
                                     UIDs!!,
                                     UName!!,
                                     frees!!,
                                     price!!,
                                     MinPric!!,
-                                    isdefault1!!
+                                    isdefault1!!,
+                                    dispValue,
+                                    disaValue
                                 )
                                 getcartDetailsdata.add(cartdata)
 
                             }
                             mylist.clear()
                             mylist1.clear()
+                            dispValue.clear()
+                            disaValue.clear()
                             isdefault.clear()
                             minPriceslist.clear()
                             isFreelist.clear()
                             unitAutoIdList.clear()
+
                             for (n in 0..getcartDetailsdata.size - 1) {
                                 pricess = getcartDetailsdata[n].getprice()
+                                dispValue1=getcartDetailsdata[n].getdispValue()
+                                disaValue1=getcartDetailsdata[n].getdisaValue()
                                 minPrices = getcartDetailsdata[n].getMinPric()
                                 isFree = getcartDetailsdata[n].getfrees().toString()
                                 unitAutoID = getcartDetailsdata[n].getuiDs()
@@ -404,7 +420,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                             for (i in 0..isdefault.size - 1) {
                                 Log.e("isdefault", isdefault[i].toString())
                                 var number = isdefault[i]
-                                if (number == 1) {
+                                if (number==1) {
                                     spineer.setSelection(i);
                                 } else {
 
@@ -420,11 +436,15 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                         id: Long,
                                     ) {
                                         val item2: String = mylist1[position]
+                                        val dispValue: String = dispValue[position]
+                                        val disaValue: String = disaValue[position]
                                         minPrice = minPriceslist[position]
                                         isFrees = isFreelist[position]
                                         unitAutoidValue = unitAutoIdList[position]
                                         Log.e("isFrees", isFrees.toString())
                                         priceValue = item2.toDouble()
+                                        discountAmount.setText("%.2f".format(dispValue.toDouble()))
+                                        discountPercent.setText("%.2f".format(disaValue.toDouble()))
                                         Price.setText("%.2f".format(priceValue))
                                         Log.e("Price", Price.text.toString())
                                         if (isFreeCheckBox.isChecked) {
@@ -445,6 +465,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                             discountAmount.setBackgroundResource(R.drawable.borderline)
                                             discountPercent.setBackgroundResource(R.drawable.borderline)
                                         }
+
                                         var free = isFrees.toString().toInt()
                                         if (free == 1) {
                                             isFreeCheckBox.setEnabled(true)
@@ -452,6 +473,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                             isFreeCheckBox.setEnabled(false)
                                         }
                                     }
+
                                 }
                             listDropdown(spineer)
                         }
@@ -520,8 +542,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         isExchangeCheckBox = dilog.findViewById<CheckBox>(R.id.isExchangeCheckBox)
         var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
         spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
-        isFreeCheckBox.visibility=View.GONE
-        isExchangeCheckBox.visibility=View.GONE
+//        isFreeCheckBox.visibility=View.GONE
+//        isExchangeCheckBox.visibility=View.GONE
         SProductID.setText(ClickedItem.getPId())
         s_ProductName.setText(ClickedItem.getPName())
 //        stockProductS.setText("Stock : " + ClickedItem.getCStock())
@@ -732,15 +754,15 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
                 sendRequestObject.put("pObj", pObj.put("CustomerAutoId", customerAutoId))
                 sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-                sendRequestObject.put("pObj", pObj.put("isFree", ClickedItem.getFree()))
-                sendRequestObject.put("pObj", pObj.put("isExchange", ClickedItem.getExchange()))
+                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
+                sendRequestObject.put("pObj", pObj.put("isExchange",isExchangeValue))
                 sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
                 if (pricevalue.trim() != "" && pricevalue != null) {
                     var price = pricevalue.toFloat()
-                    sendRequestObject.put("pObj", pObj.put("unitPrice", price))
+                    sendRequestObject.put("pObj", pObj.put("unitPrice", "0"))
                 }
-                sendRequestObject.put("pObj", pObj.put("Oim_Discount", discountPercent.text.toString()))
-                sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount", discountAmount.text.toString()))
+                sendRequestObject.put("pObj", pObj.put("Oim_Discount","0"))
+                sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount","0"))
                 if (draftAutoId!=0) {
                     sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
                 }
