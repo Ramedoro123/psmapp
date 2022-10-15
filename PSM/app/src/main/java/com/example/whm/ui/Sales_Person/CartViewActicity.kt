@@ -16,7 +16,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -30,7 +29,8 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.CartListAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalesPersonProductAdapterClass
-import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModleClass
+import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModelClass
+import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getCartdetailsModle
 import com.squareup.picasso.Picasso
 import org.json.JSONArray
@@ -38,13 +38,14 @@ import org.json.JSONObject
 import java.lang.reflect.Field
 
 class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdapterClass.OnItemClickListener{
-    var getCartListDetails: ArrayList<CartListModleClass> = ArrayList()
+
     var  accessToken: String? = null
     var  empautoid: String? = null
     var  draftAutoId: Int?=null
     var  TotalAmount: Float?=null
     var  totalcount: Int?=null
     lateinit var CustomerName:TextView
+    var productListModelClass: ArrayList<CartListModelClass> = arrayListOf()
     lateinit var cartListAdapter:CartListAdapterClass
     var itemCounts: Int = 0
     var responseMessage: String? = null
@@ -125,8 +126,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
              draftAutoId=0
         }else if (draft!="" || draft!=null  ||TotalAmounts!=null||TotalAmounts!=" " ||totalcounts!=null || totalcounts!=""){
             draftAutoId=draft.toString().toInt()
-            TotalAmount=TotalAmounts.toString().toFloat()
-            totalcount=totalcounts.toString().toInt()
+//            TotalAmount=TotalAmounts.toString().toFloat()
+//            totalcount=totalcounts.toString().toInt()
         }
         Log.e("TotalAmount 13",TotalAmount.toString())
         Log.e("totalcount 13",totalcount.toString())
@@ -253,9 +254,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                 0,
                             )
                         }
-                        var totalSize = getCartListDetails.size
+                        var totalSize = productListModelClass.size
                         CustomerName.setText("Cart(" + totalSize + ")").toString()
-                        Log.e("getCartListDetails",getCartListDetails.size.toString())
+                        Log.e("getCartListDetails",productListModelClass.size.toString())
                         pDialog.dismiss()
                     }else{
                         var popUp=SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)
@@ -300,8 +301,10 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         }
     }
 
+
+
     override fun OnItemsClick(position: Int) {
-        val ClickedItem:CartListModleClass=getCartListDetails[position]
+        val ClickedItem:CartListModelClass=productListModelClass[position]
         if (AppPreferences.internetConnectionCheck(this@CartViewActicity)) {
             val preferences = PreferenceManager.getDefaultSharedPreferences(this)
             var accessToken = preferences.getString("accessToken", "")
@@ -517,6 +520,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         isExchangeCheckBox = dilog.findViewById<CheckBox>(R.id.isExchangeCheckBox)
         var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
         spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
+        isFreeCheckBox.visibility=View.GONE
+        isExchangeCheckBox.visibility=View.GONE
         SProductID.setText(ClickedItem.getPId())
         s_ProductName.setText(ClickedItem.getPName())
 //        stockProductS.setText("Stock : " + ClickedItem.getCStock())
@@ -680,6 +685,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         isExchangeCheckBox.setOnClickListener(this)
 
         btnAddToCart.setOnClickListener(View.OnClickListener {
+
             if (AppPreferences.internetConnectionCheck(it.context)) {
                 var pricevalue = Price.text.toString()
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -726,8 +732,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
                 sendRequestObject.put("pObj", pObj.put("CustomerAutoId", customerAutoId))
                 sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
-                sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
+                sendRequestObject.put("pObj", pObj.put("isFree", ClickedItem.getFree()))
+                sendRequestObject.put("pObj", pObj.put("isExchange", ClickedItem.getExchange()))
                 sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
                 if (pricevalue.trim() != "" && pricevalue != null) {
                     var price = pricevalue.toFloat()
@@ -765,40 +771,28 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                     Log.e("Tax level ",Tax.toString())
                                     NetPrice=UnitPrice!!.toFloat()* OQty!!
 
-                                    addCartDetailsModelClass("","",UnitType!!,0, unitPrice = UnitPrice!!,
-                                        0, netPrice = NetPrice!!,0,0,0,0,"",draftAutoId!!,Total!!,NofItem!!,OQty!!)
+//                                    addCartDetailsModelClass("","",UnitType!!,0, unitPrice = UnitPrice!!,
+//                                        0, netPrice = NetPrice!!,0,0,0,0,"",draftAutoId!!,Total!!,NofItem!!,OQty!!)
                                     // addToCartData.add(cartData)
                                 }
+                                ClickedItem.setNetPrice(NetPrice)
+                                ClickedItem.setUnitPrice(UnitPrice)
+                                ClickedItem.setUnitType(UnitType)
                                 ClickedItem.setNofItem(NofItem)
                                 ClickedItem.setReqQty(OQty)
                                 ClickedItem.setUnitPrice(UnitPrice)
                                 ClickedItem.setTotal(Total)
                                 ClickedItem.setUnitType(UnitType)
-                                ClickedItem.setTax(Tax)
+                                ClickedItem.settax(Tax)
                                 ClickedItem.setNetPrice(NetPrice)
 //                                TotalPrice=(NetPrice!!)
 //                                if (ClickedItem.getadded()!!>0){
 //                                    itemCounts++
 //                                }
-//                              ClickedItem.setdraftAutoId(draftAutoId)
+                                TotalAmount=Total.toString().toFloat()
+                              ClickedItem.setdraftAutoId(draftAutoId)
+                                cartListAdapter.notifyItemChanged(position)
                                 //Adapter.NO_SELECTION
-                                val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-                                val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
-                                sharedLoadOrderPage.putInt("checkFreeValue", checkFreeValue)
-                                sharedLoadOrderPage.putInt("isExchangeValue", isExchangeValue)
-                                sharedLoadOrderPage.putInt("unitAutoidValue", unitAutoidValue!!)
-                                sharedLoadOrderPage.putInt("draftAutoId", draftAutoId!!)
-                                sharedLoadOrderPage.apply()
-
-                                Log.e("draftAutoId", draftAutoId.toString())
-                                val intent = Intent("USER_NAME_CHANGED_ACTION")
-                                intent.putExtra("username", NofItem.toString())
-                                intent.putExtra("Total", Total.toString())
-                                intent.putExtra("draftAutoId", draftAutoId)
-                                // put your all data using put extra
-                                // put your all data using put extra
-                                LocalBroadcastManager.getInstance(it.context).sendBroadcast(intent)
-
                                 var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                                 popUp.setContentText(responseMessage1.toString())
                                 popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -874,9 +868,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
 
 
     override fun OnDeleteClicks(position: Int) {
-        val ClickedItem: CartListModleClass = getCartListDetails[position]
+        val ClickedItem: CartListModelClass = productListModelClass[position]
         val actualPosition = position
-           getCartListDetails.removeAt(actualPosition)
+        productListModelClass.removeAt(actualPosition)
         if (AppPreferences.internetConnectionCheck(this)) {
             val preferences = PreferenceManager.getDefaultSharedPreferences(this)
             var accessToken = preferences.getString("accessToken", "")
@@ -920,8 +914,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
             )
             sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
             sendRequestObject.put("pObj", pObj.put("unitAutoId",unitAutoidValue))
-            sendRequestObject.put("pObj", pObj.put("isFree",checkFreeValue))
-            sendRequestObject.put("pObj", pObj.put("isExchange",isExchangeValue))
+            sendRequestObject.put("pObj", pObj.put("isFree",ClickedItem.getFree()))
+            sendRequestObject.put("pObj", pObj.put("isExchange",ClickedItem.getExchange()))
             if (draftAutoId == 0) {
                 sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
             } else {
@@ -948,14 +942,11 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                         var Cstock = responsDataObject.getString("CStock")
                         var bp = responsDataObject.getDouble("BP")
                         var BP = bp.toFloat()
-//                        UnitType = responsDataObject.getString("UnitType")
                         ClickedItem.setReqQty(0)
-//                        ClickedItem.setOQty(0)
                            var n1: Float = 0.0F
                         ClickedItem.setNetPrice(n1)
-//                        ClickedItem.setBP(BP = BP)
-//                        ClickedItem.setUnitType(UnitType)
-//                        ClickedItem.setCStock(Cstock)
+                        ClickedItem.setTotal("0.00")
+                        CustomerName.setText("Cart(" + productListModelClass.size + ")").toString()
                         var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                         popUp.setContentText(responseMessage2.toString())
                         popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -1011,7 +1002,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
             dialog?.show()
         }
         cartListAdapter.notifyItemChanged(actualPosition)
-        cartListAdapter.notifyItemRangeChanged(actualPosition, getCartListDetails.size)
+        cartListAdapter.notifyItemRangeChanged(actualPosition, productListModelClass.size)
     }
 
 
@@ -1034,10 +1025,10 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         OQty:Int,
         )
     {
-        var ModelClassCustomer1 = CartListModleClass(pId,pName,unitType,qtyPerUnit,unitPrice,reqQty,netPrice,free,exchange,tax,unitAutoId,ImgPath,Total,NofItem,draftAutoId,OQty)
-        getCartListDetails.add(ModelClassCustomer1)
+        var ModelClassCustomer1 = CartListModelClass(pId,pName,unitType,qtyPerUnit,unitPrice,reqQty,netPrice,free,exchange,tax,unitAutoId,ImgPath,Total,NofItem,draftAutoId,OQty)
+        productListModelClass.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.cartDetailsRecyclerView)
-        cartListAdapter = CartListAdapterClass(getCartListDetails, this@CartViewActicity,this@CartViewActicity)
+        cartListAdapter = CartListAdapterClass(productListModelClass, this@CartViewActicity,this@CartViewActicity)
         recyclerview.adapter = cartListAdapter
     }
 

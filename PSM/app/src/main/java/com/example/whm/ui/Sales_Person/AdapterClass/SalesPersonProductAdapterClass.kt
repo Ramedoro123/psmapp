@@ -26,8 +26,9 @@ class SalesPersonProductAdapterClass(
     var data: Context?,
     private val listener: OnItemClickLitener,
 ) : RecyclerView.Adapter<SalesPersonProductAdapterClass.ViewHolder>(), View.OnClickListener {
-
-
+    var TotalPrice:Float=0.0f
+    var itemCounts: Int = 0
+    var NetPrice:Float=0.0f
     public interface OnItemClickLitener {
         fun OnItemClick(position: Int)
         fun OnDeleteClick(position: Int)
@@ -158,9 +159,24 @@ class SalesPersonProductAdapterClass(
             holder.ProductStock.setText("Stock : " + productStoct.toString())
             holder.ProductStock.setTextColor(Color.parseColor("#000000"))
         }
-        Picasso.get().load(ProductItem.getImageUrl()).error(R.drawable.default_pic).into(holder.ProductImage);
-
+        var image=ProductItem.getImageUrl()
+        if (image!=""&&image!=null)
+        {
+            Picasso.get().load(image).error(R.drawable.default_pic).into(holder.ProductImage);
+        }
+        else{
+            holder.ProductImage.setImageResource(R.drawable.default_pic)
+        }
+        NetPrice= NetPrice+(ProductItem.getNetPrice()!!)
+        if (ProductItem.getadded()!!>0){
+            itemCounts++
+        }
     }
+
+
+
+
+
     private fun finish() {
     }
 

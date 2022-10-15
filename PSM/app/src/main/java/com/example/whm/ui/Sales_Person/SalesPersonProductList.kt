@@ -45,7 +45,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
     var itemCounts: Int = 0
     var TotalPrice:Float=0.0f
     var totalValue:Double?=null
-    //    var draftAutoID:Int?=0
     var customerName: String? = null
     var ProductItemList: String? = null
     var customerId: String? = null
@@ -55,9 +54,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
     lateinit var orderTotalValue: TextView
     var responseMessage: String? = null
     var pDialog: SweetAlertDialog? = null
-    var productListModelClass: ArrayList<SalesPersonProductModel> = arrayListOf()
-    lateinit var productAdapterClass: SalesPersonProductAdapterClass
-
     var mylist = ArrayList<String>()
     var mylist1 = ArrayList<String>()
     var minPriceslist = ArrayList<String>()
@@ -90,19 +86,19 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
     var usd: Float = 0.0F
     var uahEdited = false
     var usdEdited = false
-    var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
     var cartResponseResultData = JSONArray()
     lateinit var spineer: Spinner
     lateinit var valueIncrementDecrement: EditText
     lateinit var decrementBtn: Button
     lateinit var incrementBtn: Button
-
     lateinit var Price: EditText
     lateinit var isFreeCheckBox: CheckBox
     lateinit var isExchangeCheckBox: CheckBox
     lateinit var discountAmount: EditText
     lateinit var discountPercent: EditText
-
+    lateinit var productAdapterClass: SalesPersonProductAdapterClass
+    var productListModelClass: ArrayList<SalesPersonProductModel> = arrayListOf()
+    var getcartDetailsdata: MutableList<getCartdetailsModle> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_person_product_list)
@@ -120,21 +116,9 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         customerName = preferences.getString("CustomerName", "")
         customerId = preferences.getString("customerId", "")
         ProductItemList = preferences.getString("ProductItemList", "")
-
         draftAutoId = intent.getIntExtra("draftAutoId", 0)
-         var Totals   = intent.getFloatExtra("TotalAmount",0.0f)
-         var NofItems = intent.getIntExtra("totalcount",0)
-        TotalPrice=Totals.toString().toFloat()
-        itemCounts=NofItems.toInt()
-        Total= TotalPrice.toString()
-        NofItem= itemCounts.toString()
-        cart_badge.setText(itemCounts.toString())
-        orderTotalValue.setText("%.2f".format(TotalPrice))
-
-        Log.e("draftautoId 12", draftAutoId.toString())
-        Log.e("totalValue 12", TotalPrice.toString())
-        Log.e("username 12", itemCounts.toString())
         LocalBroadcastManager.getInstance(this).registerReceiver(broadCastReceiver, IntentFilter("USER_NAME_CHANGED_ACTION"))
+
 
         userInformation.setOnClickListener(View.OnClickListener {
             var dilog = Dialog(this@SalesPersonProductList)
@@ -197,7 +181,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             sharedLoadOrderPage.putString("OrderAutoid", draftAutoId?.toString())
             sharedLoadOrderPage.putString("TotalPrice", Total?.toString())
             sharedLoadOrderPage.putString("itemCounts", NofItem?.toString())
-             Log.e("sharedLoadOrderPage",sharedLoadOrderPage.toString())
             sharedLoadOrderPage.apply()
             startActivity(intent)
             finish()
@@ -248,7 +231,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
     val broadCastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             if (intent != null) {
-                username = intent.getStringExtra("username");
+                 username = intent.getStringExtra("usernames");
                 var total = intent.getStringExtra("Total");
                  draftAutoId = intent.getIntExtra("draftAutoId", 0);
                  totalValue = total.toString().toDouble()
@@ -257,6 +240,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             }
         }
     }
+
 
     private fun productListApiCall(productId: String, productName: String, barcode: String) {
         pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
@@ -299,6 +283,10 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 val responseCode = responsedData.getString("responseCode")
                 productListModelClass.clear()
                 if (responseCode == "201") {
+                    var NetPrice:Float?=null
+                    var TotalValue:Float=0.0f
+                    var itemcount:Int=0
+                    var added:Int?=null
                     val responseResultData = responsedData.getJSONArray("responseData")
                     if (responseResultData.length() != null && responseResultData.length() > 0) {
                         for (i in 0 until responseResultData.length()) {
@@ -313,10 +301,10 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                             var IsTaxable = responseResultData.getJSONObject(i).getInt("IsTaxable")
                             var ReqQty = responseResultData.getJSONObject(i).getInt("ReqQty")
                             var OUnitType = responseResultData.getJSONObject(i).getInt("OUnitType")
-                            var added = responseResultData.getJSONObject(i).getInt("added")
+                                added = responseResultData.getJSONObject(i).getInt("added")
                             var UnitPrice = responseResultData.getJSONObject(i).getDouble("UnitPrice")
                             var UnitPrices: Float = UnitPrice.toFloat()
-                            var NetPrice: Float = NetPrices.toFloat()
+                              NetPrice= NetPrices.toFloat()
                             var BP: Float = balencePrice.toFloat()
                             Log.e("ReqQty", ReqQty.toString())
                             addProductdataModelClass(PId,
@@ -337,7 +325,17 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 0.2f,
                                 0,
                                 0)
+
+                            TotalValue=TotalValue+NetPrice.toString().toFloat()
+                            if (added!!>0)
+                            {
+                                itemcount++
+                            }
+                            cart_badge.setText(itemcount.toString())
+                            orderTotalValue.setText("%.2f".format(TotalValue))
                         }
+
+//                        Toast.makeText(this,itemcount.toString(),Toast.LENGTH_LONG).show()
                         var totalSize = productListModelClass.size
                         productTitle.setText("Product(" + totalSize + ")").toString()
                         pDialog!!.dismiss()
@@ -815,14 +813,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                     sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
                 }
 
-                Log.e("checkFreeValue", checkFreeValue.toString())
-                Log.e("isExchangeValue", isExchangeValue.toString())
-                Log.e("NofItem", valueIncrementDecrement.text.toString())
-                Log.e("Price", Price.text.toString())
-                Log.e("unitAutoidValue", unitAutoidValue.toString())
-                Log.e("discountPercent.text", discountPercent.text.toString())
-                Log.e("discountAmount.text", discountAmount.text.toString())
-                Log.e("draftAutoId", draftAutoId.toString())
+              Log.e("sendRequestObjectProduct list",sendRequestObject.toString())
 
                 //send request queue in vally
                 val queue = Volley.newRequestQueue(this)
@@ -851,29 +842,10 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                         .getString("UnitType")
                                     Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
                                     Log.e("Tax level ",Tax.toString())
-                                     NetPrice=UnitPrice!!.toFloat()* OQty!!
-                                    addProductdataModelClass("",
-                                        "",
-                                        "",
-                                        "",
-                                        0.2f,
-                                        UnitType!!,
-                                        NetPrice = NetPrice,
-                                        IsTaxable = Tax!!,
-                                        0,
-                                        0,
-                                        0.2f,
-                                        0,
-                                        draftAutoId!!,
-                                        Total!!,
-                                        NofItem!!,
-                                        UnitPrice!!,
-                                        OQty!!,
-                                        Tax!!)
-
-                                    // addToCartData.add(cartData)
+                                     NetPrice=UnitPrice!!.toFloat()*OQty!!
                                 }
-
+                                ClickedItem.setdraftAutoID(draftAutoId)
+                                ClickedItem.setUnitType(UnitType)
                                 ClickedItem.setNofItem(NofItem)
                                 ClickedItem.setOQty(OQty)
                                 ClickedItem.setUnitPrice(UnitPrice)
@@ -885,6 +857,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 if (ClickedItem.getadded()!!>0){
                                     itemCounts++
                                 }
+
+                                productAdapterClass.notifyItemChanged(position)
 //                              ClickedItem.setdraftAutoId(draftAutoId)
                                 //Adapter.NO_SELECTION
                                 val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -897,7 +871,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
 
                                 Log.e("draftAutoId", draftAutoId.toString())
                                 val intent = Intent("USER_NAME_CHANGED_ACTION")
-                                intent.putExtra("username", NofItem.toString())
+                                intent.putExtra("usernames", NofItem.toString())
                                 intent.putExtra("Total", Total.toString())
                                 intent.putExtra("draftAutoId", draftAutoId)
                                 // put your all data using put extra
@@ -977,162 +951,182 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         productAdapterClass.notifyItemChanged(position)
     }
 
+
     override fun OnDeleteClick(position: Int) {
-        val ClickedItem: SalesPersonProductModel = productListModelClass[position]
-        if (AppPreferences.internetConnectionCheck(this)) {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-            var accessToken = preferences.getString("accessToken", "")
-            var empautoid = preferences.getString("EmpAutoId", "")
-            var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-            pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
-            pDialog!!.titleText = "Fetching ..."
-            pDialog!!.setCancelable(false)
-            pDialog!!.show()
-            val sendRequestObject = JSONObject()
-            val requestContainer = JSONObject()
-            val pObj = JSONObject()
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("appVersion", AppPreferences.AppVersion)
-            )
-            sendRequestObject.put(
-                "requestContainer", requestContainer.put(
-                    "deviceID",
-                    Settings.Secure.getString(
-                        this!!.contentResolver,
-                        Settings.Secure.ANDROID_ID
+
+        var alertbox = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        alertbox.titleText = "Are you sure?"
+        alertbox.setContentText("You want to delete. ").contentTextSize = 20
+        alertbox.cancelButtonBackgroundColor = Color.parseColor("#4cae4c")
+        alertbox.setCancelButton("Yes")
+        { sDialog ->
+            sDialog.dismissWithAnimation()
+        }
+        alertbox.confirmText = "No"
+        alertbox.confirmButtonBackgroundColor = Color.parseColor("#E60606")
+        alertbox.setCancelClickListener { sDialog ->
+            val ClickedItem: SalesPersonProductModel = productListModelClass[position]
+
+            if (AppPreferences.internetConnectionCheck(this)) {
+                val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+                var accessToken = preferences.getString("accessToken", "")
+                var empautoid = preferences.getString("EmpAutoId", "")
+                var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+                pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+                pDialog!!.titleText = "Fetching ..."
+                pDialog!!.setCancelable(false)
+                pDialog!!.show()
+                val sendRequestObject = JSONObject()
+                val requestContainer = JSONObject()
+                val pObj = JSONObject()
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("appVersion", AppPreferences.AppVersion)
+                )
+                sendRequestObject.put(
+                    "requestContainer", requestContainer.put(
+                        "deviceID",
+                        Settings.Secure.getString(
+                            this!!.contentResolver,
+                            Settings.Secure.ANDROID_ID
+                        )
                     )
                 )
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("deviceVersion", AppPreferences.versionRelease)
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("deviceName", AppPreferences.DeviceName)
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("accessToken", accessToken)
-            )
-            sendRequestObject.put(
-                "requestContainer",
-                requestContainer.put("userAutoId", empautoid)
-            )
-            sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
-            sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-            sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
-            sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
-            if (draftAutoId == 0) {
-                sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-            } else {
-                sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-            }
-            if (ClickedItem.getOUnitType() != null && ClickedItem.getOUnitType() != 0) {
-                sendRequestObject.put("pObj", pObj.put("unitAutoId", ClickedItem.getOUnitType()))
-            }
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("deviceName", AppPreferences.DeviceName)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("accessToken", accessToken)
+                )
+                sendRequestObject.put(
+                    "requestContainer",
+                    requestContainer.put("userAutoId", empautoid)
+                )
+                sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
+                sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
+                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
+                sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
+                if (draftAutoId==0) {
+                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                } else {
+                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                }
+                if (ClickedItem.getOUnitType() != null && ClickedItem.getOUnitType() != 0) {
+                    sendRequestObject.put("pObj", pObj.put("unitAutoId", ClickedItem.getOUnitType()))
+                }
+                Log.e("sendRequestObject delete",sendRequestObject.toString())
+                //send request queue in vally
+                val queue = Volley.newRequestQueue(this)
+                val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                    AppPreferences.deleteItemApi, sendRequestObject,
+                    { response ->
+                        val responseResult = JSONObject(response.toString())
+                        val responsedData = JSONObject(responseResult.getString("d"))
+                        var responseMessage2 = responsedData.getString("responseMessage")
+                        val responseStatus = responsedData.getInt("responseStatus")
+                        if (responseStatus == 200) {
+                            var responsDataObject = JSONObject(responsedData.getString("responseData"))
+                            val actualPosition = position
+                            var Cstock = responsDataObject.getString("CStock")
+                            Total= responsDataObject.getString("OrderTotal")
+                            NofItem = responsDataObject.getString("TotalItems")
+                            var bp = responsDataObject.getDouble("BP")
+                            var BP = bp.toFloat()
+                            UnitType = responsDataObject.getString("UnitType")
 
-            //  Log.e("productId",productId.toString())
-//            Log.e("checkFreeValue", checkFreeValue.toString())
-//            Log.e("isExchangeValue", isExchangeValue.toString())
-//            Log.e("unitAutoidValue", unitAutoidValue.toString())
-//            Log.e("draftAutoId", draftAutoId.toString())
-//            Log.e("draftAutoId", sendRequestObject.toString())
+                            ClickedItem.setReqQty(0)
+                            ClickedItem.setOQty(0)
+                            var n1: Float = 0.0F
+                            ClickedItem.setNetPrice(n1)
+                            ClickedItem.setBP(BP = BP)
+                            ClickedItem.setUnitType(UnitType)
+                            ClickedItem.setCStock(Cstock)
+                            ClickedItem.setTotal(Total)
+                            ClickedItem.setNofItem(NofItem)
+                            ClickedItem.setIsTaxable(0)
 
-            //send request queue in vally
-            val queue = Volley.newRequestQueue(this)
-            val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-                AppPreferences.deleteItemApi, sendRequestObject,
-                { response ->
-                    val responseResult = JSONObject(response.toString())
-                    val responsedData = JSONObject(responseResult.getString("d"))
-                    var responseMessage2 = responsedData.getString("responseMessage")
-                    val responseStatus = responsedData.getInt("responseStatus")
-                    if (responseStatus == 200) {
-                        var responsDataObject = JSONObject(responsedData.getString("responseData"))
-                        val actualPosition = position
-                        var Cstock = responsDataObject.getString("CStock")
-                         Total= responsDataObject.getString("OrderTotal")
-                         NofItem = responsDataObject.getString("TotalItems")
-                        var bp = responsDataObject.getDouble("BP")
-                        var BP = bp.toFloat()
-                        UnitType = responsDataObject.getString("UnitType")
-                        val intent = Intent("USER_NAME_CHANGED_ACTION")
-                        intent.putExtra("username", NofItem.toString())
-                        intent.putExtra("Total", Total.toString())
-                        intent.putExtra("draftAutoId", draftAutoId)
-                        // put your all data using put extra
-                        // put your all data using put extra
-                        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-                        ClickedItem.setReqQty(0)
-                        ClickedItem.setOQty(0)
-                        var n1: Float = 0.0F
-                        ClickedItem.setNetPrice(n1)
-                        ClickedItem.setBP(BP = BP)
-                        ClickedItem.setUnitType(UnitType)
-                        ClickedItem.setCStock(Cstock)
-                        ClickedItem.setTotal(Total)
-                        ClickedItem.setNofItem(NofItem)
-                        ClickedItem.setIsTaxable(0)
-                        productAdapterClass.notifyItemChanged(actualPosition)
-                        productAdapterClass.notifyItemRangeChanged(actualPosition,
-                            getcartDetailsdata.size)
+                            val intent = Intent("USER_NAME_CHANGED_ACTION")
+                            intent.putExtra("usernames", NofItem.toString())
+                            Log.e("NofItem",NofItem.toString())
+                            intent.putExtra("Total", Total.toString())
+                            intent.putExtra("draftAutoId", draftAutoId)
+//                         put your all data using put extra
+//                         put your all data using put extra
+                            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
 
-                        var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                        popUp.setContentText(responseMessage2.toString())
-                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                        popUp.setConfirmClickListener()
-                        { sDialog ->
-                            sDialog.dismissWithAnimation()
-                            popUp.dismiss()
-                            pDialog.dismiss()
-                        }
-                        popUp.show()
-                        popUp.setCanceledOnTouchOutside(false)
-                    } else {
-                        var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                        popUp.setContentText(responseMessage2.toString())
-                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                        popUp.setConfirmClickListener()
-                        { sDialog ->
-                            sDialog.dismissWithAnimation()
-                            popUp.dismiss()
-                            pDialog.dismiss()
-                        }
-                        popUp.show()
-                        popUp.setCanceledOnTouchOutside(false)
+                            productAdapterClass.notifyItemChanged(actualPosition)
+                            productAdapterClass.notifyItemRangeChanged(actualPosition,
+                                getcartDetailsdata.size)
+
+                            var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                            popUp.setContentText(responseMessage2.toString())
+                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                            popUp.setConfirmClickListener()
+                            { sDialog ->
+                                sDialog.dismissWithAnimation()
+                                popUp.dismiss()
+                                pDialog.dismiss()
+                            }
+                            popUp.show()
+                            popUp.setCanceledOnTouchOutside(false)
+                        } else {
+                            var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                            popUp.setContentText(responseMessage2.toString())
+                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                            popUp.setConfirmClickListener()
+                            { sDialog ->
+                                sDialog.dismissWithAnimation()
+                                popUp.dismiss()
+                                pDialog.dismiss()
+                            }
+                            popUp.show()
+                            popUp.setCanceledOnTouchOutside(false)
 //                                        warningMessage(message = responseMessage1.toString())
 //                                        Log.e("message",responseMessage1.toString())
-                        //  pDialog!!.dismiss()
-                    }
-                },
-                Response.ErrorListener { pDialog!!.dismiss() })
-            JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
-                10000000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            )
-            try {
-                queue.add(JsonObjectRequest)
-            } catch (e: Exception) {
-                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
-            }
-        } else {
-            val dialog = this?.let { Dialog(it) }
-            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
-            val btDismiss =
-                dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
-            btDismiss?.setOnClickListener {
-                dialog.dismiss()
-                val intent = Intent(this, MainActivity2::class.java)
-                this?.startActivity(intent)
-                finish()
+                            //  pDialog!!.dismiss()
+                        }
+                    },
+                    Response.ErrorListener { pDialog!!.dismiss() })
+                JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                    10000000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                )
+                try {
+                    queue.add(JsonObjectRequest)
+                } catch (e: Exception) {
+                    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+                }
+            } else
+            {
+                val dialog = this?.let { Dialog(it) }
+                dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+                val btDismiss =
+                    dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+                btDismiss?.setOnClickListener {
+                    dialog.dismiss()
+                    val intent = Intent(this, MainActivity2::class.java)
+                    this?.startActivity(intent)
+                    finish()
 
+                }
+                dialog?.show()
             }
-            dialog?.show()
+            sDialog.dismissWithAnimation()
         }
+        alertbox.setConfirmClickListener { sDialog ->
+
+            sDialog.dismissWithAnimation()
+        }
+        alertbox.setCanceledOnTouchOutside(false)
+        alertbox.show()
     }
 
     private fun addProductdataModelClass(

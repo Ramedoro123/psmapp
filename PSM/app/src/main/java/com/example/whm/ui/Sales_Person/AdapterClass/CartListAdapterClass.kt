@@ -1,8 +1,6 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass
 
 import android.content.Context
-import android.graphics.Color
-import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +9,12 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
-import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModleClass
+import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModelClass
+import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
 import com.squareup.picasso.Picasso
 
 class CartListAdapterClass(
-    private val CartList: List<CartListModleClass>,
+    private val CartList: List<CartListModelClass>,
     var cartViewActicity: Context,
     private val listener:OnItemClickListener,
 ) : RecyclerView.Adapter<CartListAdapterClass.ViewHolder>(),View.OnClickListener {
@@ -94,8 +93,12 @@ class CartListAdapterClass(
         }
         holder.cartTotalAmount.setText("$" + "%.2f".format(NetPrice))
         holder.cartPpiece.setText("$" + "%.2f".format(priceProduct)+"/" +UnitType+ " X" +ReqQty)
-
-        Picasso.get().load(cartListData.getImgPath()).error(R.drawable.default_pic).into(holder.ProductImageCart);
+        var image=cartListData.getImgPath()
+        if (image!=null &&image!="") {
+            Picasso.get().load(image).error(R.drawable.default_pic).into(holder.ProductImageCart);
+        }else{
+            holder.ProductImageCart.setImageResource(R.drawable.default_pic)
+        }
 
     }
     override fun getItemCount(): Int {

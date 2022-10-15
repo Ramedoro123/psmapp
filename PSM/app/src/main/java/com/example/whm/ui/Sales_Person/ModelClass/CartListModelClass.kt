@@ -1,6 +1,6 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
-class CartListModleClass(
+class CartListModelClass(
     PId:String,
     PName:String,
     UnitType:String,
@@ -16,58 +16,65 @@ class CartListModleClass(
     Total: String,
     NofItem:String,
     draftAutoId: Int,
-    OQty:Int){
+    OQty:Int
+)
 
-    private var PName:String
+
+{
     private var PId:String
-    private var UnitPrice:Float
-    private var NetPrice:Float
+    private var PName:String
+    private var ImgPath:String
     private var UnitType:String
     private var QtyPerUnit:Int
+    private var UnitPrice:Float
     private var ReqQty:Int
+    private var NetPrice:Float
     private var Free:Int
     private var Exchange:Int
     private var tax:Int
     private var UnitAutoId:Int
-    private var ImgPath:String
-    private var Total:String
+    private var Total: String
     private var NofItem:String
-    private var draftAutoId:Int
-    private var  OQty:Int
+    private var draftAutoId: Int
+    private var OQty:Int
+
     init {
-        this.PName=PName
         this.PId=PId
-        this.UnitPrice=UnitPrice
-        this.NetPrice=NetPrice
+        this.PName=PName
+        this.ImgPath=ImgPath
         this.UnitType=UnitType
         this.QtyPerUnit=QtyPerUnit
+        this.UnitPrice=UnitPrice
         this.ReqQty=ReqQty
+        this.NetPrice=NetPrice
         this.Free=Free
         this.Exchange=Exchange
         this.tax=tax
         this.UnitAutoId=UnitAutoId
-        this.ImgPath=ImgPath
-        this.Total=Total
-        this.NofItem=NofItem
-        this.draftAutoId=draftAutoId
-        this.OQty=OQty
+       this.Total=Total
+       this.NofItem=NofItem
+       this.draftAutoId=draftAutoId
+       this.OQty=OQty
+
+
+    }
+    fun getPId():String?{
+        return PId
+    }
+    fun setPId(PId:String?){
+        this.PId=PId!!
     }
     fun getPName():String?{
         return PName
     }
-
-    fun getPId():String?{
-        return PId
+    fun setPName(PName:String?){
+        this.PName=PName!!
     }
-
-    fun getUnitPrice():Float?{
-        return UnitPrice
+    fun getImgPath():String?{
+        return ImgPath
     }
-    fun getNetPrice():Float?{
-        return NetPrice
-    }
-    fun setNetPrice(NetPrice:Float?){
-        this.NetPrice=NetPrice!!
+    fun setImgPath(ImageUrl:String?){
+        this.ImgPath=ImageUrl!!
     }
     fun getUnitType():String?{
         return UnitType
@@ -81,19 +88,32 @@ class CartListModleClass(
     fun setQtyPerUnit(QtyPerUnit:Int?){
         this.QtyPerUnit=QtyPerUnit!!
     }
+    fun getUnitPrice():Float?{
+        return UnitPrice
+    }
+    fun setUnitPrice(UnitPrice:Float?){
+        this.UnitPrice=UnitPrice!!
+    }
     fun getReqQty():Int?{
         return ReqQty
     }
     fun setReqQty(ReqQty:Int?){
         this.ReqQty=ReqQty!!
     }
+    fun getNetPrice():Float?{
+        return NetPrice
+    }
+    fun setNetPrice(NetPrice:Float?){
+        this.NetPrice=NetPrice!!
+    }
+
+
     fun getFree():Int?{
         return Free
     }
     fun setFree(Free:Int?){
         this.Free=Free!!
-    }
-    fun getExchange():Int?{
+    } fun getExchange():Int?{
         return Exchange
     }
     fun setExchange(Exchange:Int?){
@@ -102,52 +122,38 @@ class CartListModleClass(
     fun gettax():Int?{
         return tax
     }
-    fun setTax(Tax:Int?){
+    fun settax(tax:Int?){
         this.tax=tax!!
     }
-   fun getUnitAutoId():Int?{
+    fun getUnitAutoId():Int?{
         return UnitAutoId
     }
     fun setUnitAutoId(UnitAutoId:Int?){
         this.UnitAutoId=UnitAutoId!!
     }
 
-    fun getImgPath():String?{
-        return ImgPath
-    }
-
-    fun setImgPath(ImgPath:String?){
-        this.ImgPath=ImgPath!!
-    }
-    fun setPName(PName:String?){
-        this.PName=PName!!
-    }
-    fun setUnitPrice(UnitPrice:Float?){
-        this.UnitPrice=UnitPrice!!
-    }
-
-    fun getTotal():String?{
-        return Total
-    }
-    fun setTotal(Total:String?){
-        this.Total=Total!!
-    }
-    fun getNofItem():String?{
-        return NofItem
-    }
-    fun setNofItem(NofItem:String?){
-        this.NofItem=NofItem!!
-    }
     fun getdraftAutoId():Int?{
         return draftAutoId
     }
-    fun draftAutoId(draftAutoId:Int?){
+    fun setdraftAutoId(draftAutoId:Int?){
         this.draftAutoId=draftAutoId!!
     }
     fun getOQty():Int?{
         return OQty
     }
     fun setOQty(OQty:Int?){
-        this.OQty=OQty!!
+        this.draftAutoId=OQty!!
     }
+    fun getTotal():String?{
+        return Total
+    }
+    fun setTotal(Total:String?){
+        this.Total=Total!!
+    }fun getNofItem():String?{
+        return NofItem
+    }
+    fun setNofItem(NofItem:String?){
+        this.NofItem=NofItem!!
+    }
+
 }
