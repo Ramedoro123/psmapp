@@ -109,9 +109,11 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         var CustomerInformation=findViewById<TextView>(R.id.CustomerInformation)
         OrderSummary.setOnClickListener(View.OnClickListener {
 
-           startActivity(Intent(this@CartViewActicity,OrderSummaryActivity::class.java))
-
-            finish()
+//           startActivity(Intent(this@CartViewActicity,OrderSummaryActivity::class.java))
+            var intent=Intent(this@CartViewActicity,OrderSummaryActivity::class.java)
+            intent.putExtra("draftAutoId",draftAutoId)
+            startActivity(intent)
+           finish()
         })
 
 //        var bundle :Bundle ?=intent.extras
@@ -398,13 +400,19 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
 
                             for (n in 0..getcartDetailsdata.size - 1) {
                                 pricess = getcartDetailsdata[n].getprice()
+
                                 dispValue1=getcartDetailsdata[n].getdispValue()
                                 disaValue1=getcartDetailsdata[n].getdisaValue()
+
                                 minPrices = getcartDetailsdata[n].getMinPric()
                                 isFree = getcartDetailsdata[n].getfrees().toString()
                                 unitAutoID = getcartDetailsdata[n].getuiDs()
                                 unitAutoID?.let { it1 -> unitAutoIdList.add(it1) }
                                 isFreelist.add(isFree.toString())
+
+                                dispValue.add(dispValue1.toString())
+                                disaValue.add(disaValue1.toString())
+
                                 mylist1.add(pricess.toString())
                                 minPriceslist.add(minPrices.toString())
                                 var isdefault1 = getcartDetailsdata[n].getisdefault()
@@ -436,15 +444,15 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                         id: Long,
                                     ) {
                                         val item2: String = mylist1[position]
-                                        val dispValue: String = dispValue[position]
-                                        val disaValue: String = disaValue[position]
+                                        val dispValue1: String = dispValue[position]
+                                        val disaValue1: String = disaValue[position]
                                         minPrice = minPriceslist[position]
                                         isFrees = isFreelist[position]
                                         unitAutoidValue = unitAutoIdList[position]
                                         Log.e("isFrees", isFrees.toString())
                                         priceValue = item2.toDouble()
-                                        discountAmount.setText("%.2f".format(dispValue.toDouble()))
-                                        discountPercent.setText("%.2f".format(disaValue.toDouble()))
+                                        discountAmount.setText("%.2f".format(dispValue1.toDouble()))
+                                        discountPercent.setText("%.2f".format(disaValue1.toDouble()))
                                         Price.setText("%.2f".format(priceValue))
                                         Log.e("Price", Price.text.toString())
                                         if (isFreeCheckBox.isChecked) {
@@ -757,12 +765,12 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
                 sendRequestObject.put("pObj", pObj.put("isExchange",isExchangeValue))
                 sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
-                if (pricevalue.trim() != "" && pricevalue != null) {
+                if (pricevalue.trim() != "" && pricevalue != null &&pricevalue!="0.00") {
                     var price = pricevalue.toFloat()
-                    sendRequestObject.put("pObj", pObj.put("unitPrice", "0"))
+                    sendRequestObject.put("pObj", pObj.put("unitPrice", price))
                 }
-                sendRequestObject.put("pObj", pObj.put("Oim_Discount","0"))
-                sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount","0"))
+                sendRequestObject.put("pObj", pObj.put("Oim_Discount",discountPercent.text.toString()))
+                sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount",discountAmount.text.toString()))
                 if (draftAutoId!=0) {
                     sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
                 }
@@ -830,7 +838,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                 dilog.dismiss()
                                 checkFreeValue = 0
                                 isExchangeValue = 0
-                            } else {
+                            }
+                            else {
                                 warningMessage(message = responseMessage1.toString())
                                 pDialog!!.dismiss()
                             }

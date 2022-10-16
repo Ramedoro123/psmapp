@@ -51,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
@@ -94,7 +94,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:background="#f6ab90"
-                            app:layout_constraintBottom_toTopOf="@+id/textView47"
+                            app:layout_constraintBottom_toTopOf="@+id/billingA"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -103,17 +103,15 @@
                                 android:id="@+id/billingAddress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
                                 android:padding="5dp"
                                 android:text="Billing Address"
-                                android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/textView47"
+                            android:id="@+id/billingA"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="3dp"
@@ -151,7 +149,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:background="#f6ab90"
-                            app:layout_constraintBottom_toTopOf="@+id/textView48"
+                            app:layout_constraintBottom_toTopOf="@+id/shippingA"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
@@ -164,14 +162,13 @@
                                 android:layout_gravity="center"
                                 android:padding="5dp"
                                 android:text="Shipping Address"
-                                android:textAlignment="center"
                                 android:textColor="@color/black"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/textView48"
+                            android:id="@+id/shippingA"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="3dp"
@@ -346,7 +343,7 @@
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/textView38"
+                            android:id="@+id/subTotal"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
@@ -368,11 +365,11 @@
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@+id/textView38"
-                            app:layout_constraintTop_toTopOf="@+id/textView38" />
+                            app:layout_constraintEnd_toStartOf="@+id/subTotal"
+                            app:layout_constraintTop_toTopOf="@+id/subTotal" />
 
                         <EditText
-                            android:id="@+id/textView41"
+                            android:id="@+id/overAllDisP"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
@@ -384,7 +381,7 @@
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView38" />
+                            app:layout_constraintTop_toBottomOf="@+id/subTotal" />
 
                         <TextView
                             android:id="@+id/textView46"
@@ -394,11 +391,11 @@
                             android:text="Overall Disc (%)"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@+id/textView41"
-                            app:layout_constraintTop_toTopOf="@+id/textView41" />
+                            app:layout_constraintEnd_toStartOf="@+id/overAllDisP"
+                            app:layout_constraintTop_toTopOf="@+id/overAllDisP" />
 
                         <EditText
-                            android:id="@+id/textView49"
+                            android:id="@+id/overAllDisAmount"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
@@ -410,7 +407,7 @@
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView41" />
+                            app:layout_constraintTop_toBottomOf="@+id/overAllDisP" />
 
                         <TextView
                             android:id="@+id/textView50"
@@ -420,11 +417,11 @@
                             android:text="OverAll Disc ($)"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@+id/textView49"
-                            app:layout_constraintTop_toTopOf="@+id/textView49" />
+                            app:layout_constraintEnd_toStartOf="@+id/overAllDisAmount"
+                            app:layout_constraintTop_toTopOf="@+id/overAllDisAmount" />
 
                         <EditText
-                            android:id="@+id/textView51"
+                            android:id="@+id/shipingCharge"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
@@ -436,7 +433,7 @@
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView49" />
+                            app:layout_constraintTop_toBottomOf="@+id/overAllDisAmount" />
 
                         <TextView
                             android:id="@+id/textView52"
@@ -446,11 +443,11 @@
                             android:text="Shipping Charges"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@+id/textView51"
-                            app:layout_constraintTop_toTopOf="@+id/textView51" />
+                            app:layout_constraintEnd_toStartOf="@+id/shipingCharge"
+                            app:layout_constraintTop_toTopOf="@+id/shipingCharge" />
 
                         <EditText
-                            android:id="@+id/textView57"
+                            android:id="@+id/adjcmentV"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
@@ -462,7 +459,7 @@
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView51" />
+                            app:layout_constraintTop_toBottomOf="@+id/shipingCharge" />
 
                         <TextView
                             android:id="@+id/textView58"
@@ -472,11 +469,11 @@
                             android:text="Adjustment"
                             android:textColor="@color/black"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@+id/textView57"
-                            app:layout_constraintTop_toTopOf="@+id/textView57" />
+                            app:layout_constraintEnd_toStartOf="@+id/adjcmentV"
+                            app:layout_constraintTop_toTopOf="@+id/adjcmentV" />
 
                         <TextView
-                            android:id="@+id/textView59"
+                            android:id="@+id/payableAmount"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="15dp"
@@ -488,7 +485,7 @@
                             android:textSize="17dp"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView57" />
+                            app:layout_constraintTop_toBottomOf="@+id/adjcmentV" />
 
                         <TextView
                             android:id="@+id/textView60"
@@ -499,8 +496,8 @@
                             android:textColor="@color/black"
                             android:textSize="17sp"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toStartOf="@+id/textView59"
-                            app:layout_constraintTop_toTopOf="@+id/textView59" />
+                            app:layout_constraintEnd_toStartOf="@+id/payableAmount"
+                            app:layout_constraintTop_toTopOf="@+id/payableAmount" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -524,7 +521,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:background="#f6ab90"
-                            app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
+                            app:layout_constraintBottom_toTopOf="@+id/salsePRemark"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -541,7 +538,7 @@
                         </FrameLayout>
 
                         <EditText
-                            android:id="@+id/editTextTextMultiLine"
+                            android:id="@+id/salsePRemark"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
                             android:ems="10"
@@ -591,7 +588,7 @@
                         </FrameLayout>
 
                         <EditText
-                            android:id="@+id/textView61"
+                            android:id="@+id/driverRemark"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
                             android:padding="5dp"

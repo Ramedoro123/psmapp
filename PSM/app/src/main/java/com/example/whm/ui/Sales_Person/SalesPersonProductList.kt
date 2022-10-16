@@ -476,6 +476,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 isFreelist.add(isFree.toString())
                                 dispValue.add(dispValue1.toString())
                                 disaValue.add(disaValue1.toString())
+
                                 disaValue
                                 mylist1.add(pricess.toString())
                                 minPriceslist.add(minPrices.toString())

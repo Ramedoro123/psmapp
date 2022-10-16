@@ -4,6 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -60,6 +63,12 @@ class CustomerDetailsActivity : AppCompatActivity() {
 
         moreOption.setOnClickListener(View.OnClickListener {
         val popupMenu=PopupMenu(this,it)
+            val inflater: MenuInflater = popupMenu.getMenuInflater()
+            inflater.inflate(R.menu.more_optionmenu,popupMenu.getMenu())
+            var ChangeBillNo = popupMenu.menu?.findItem(R.id.NewOrder)
+            if (ChangeBillNo != null) {
+                ChangeBillNo.isVisible = true
+            }
             popupMenu.setOnMenuItemClickListener { item->
                 when(item.itemId){
                 R.id.NewOrder->{
@@ -74,4 +83,6 @@ class CustomerDetailsActivity : AppCompatActivity() {
         })
     }
 }
+
+
 
