@@ -29,6 +29,13 @@ class OrderSummaryActivity : AppCompatActivity() {
     lateinit var billingA: TextView
     lateinit var shippingA: TextView
     lateinit var subTotal: TextView
+    lateinit var weightTax: TextView
+    lateinit var totalTax: TextView
+    lateinit var weightTaxLevel: TextView
+    lateinit var mlTaxLevel: TextView
+    lateinit var textView8: TextView
+    lateinit var taxType: TextView
+    lateinit var mlTax: TextView
     lateinit var deliveryDate: TextView
     lateinit var overAllDisP: EditText
     lateinit var overAllDisAmount: EditText
@@ -54,6 +61,13 @@ class OrderSummaryActivity : AppCompatActivity() {
         billingA = findViewById<TextView>(R.id.billingA)
         shippingA = findViewById<TextView>(R.id.shippingA)
         subTotal = findViewById<TextView>(R.id.subTotal)
+        weightTax = findViewById<TextView>(R.id.weightTax)
+        totalTax = findViewById<TextView>(R.id.totalTax)
+        mlTaxLevel = findViewById<TextView>(R.id.mlTaxLevel)
+        taxType = findViewById<TextView>(R.id.taxType)
+        textView8 = findViewById<TextView>(R.id.textView8)
+        mlTax = findViewById<TextView>(R.id.mlTax)
+        weightTaxLevel = findViewById<TextView>(R.id.weightTaxLevel)
         overAllDisP = findViewById<EditText>(R.id.overAllDisP)
         overAllDisAmount = findViewById<EditText>(R.id.overAllDisAmount)
         shipingCharge = findViewById<EditText>(R.id.shipingCharge)
@@ -61,13 +75,14 @@ class OrderSummaryActivity : AppCompatActivity() {
         adjcmentV = findViewById<EditText>(R.id.adjcmentV)
         salsePRemark = findViewById<EditText>(R.id.salsePRemark)
         driverRemark = findViewById<EditText>(R.id.driverRemark)
-
         var moreOption = findViewById<ImageView>(R.id.moreOption)
-
-
         scrollView2 = findViewById<ScrollView>(R.id.scrollView2)
         spinner4 = findViewById<Spinner>(R.id.spinner4)
         this.scrollView2!!.visibility = View.GONE
+        mlTaxLevel.visibility=View.GONE
+        weightTaxLevel.visibility=View.GONE
+        weightTax.visibility=View.GONE
+        mlTax.visibility=View.GONE
         getShippingType()
         draftAutoId = intent.getIntExtra("draftAutoId", 0)
         btnBackOrderSummary8.setOnClickListener(View.OnClickListener {
@@ -181,17 +196,66 @@ class OrderSummaryActivity : AppCompatActivity() {
                             var shippingsA = responsDataObject.getString("SA")
                             var deliveryDates = responsDataObject.getString("DeliveryDate")
                             var SubTotal = responsDataObject.getString("SubTotal")
-                            var subTotals=SubTotal.toFloat()
                             var adjcment = responsDataObject.getString("Adj")
-                        billingA.setText(billingsA)
-                        shippingA.setText(shippingsA)
-                        subTotal.setText("%.2f".format(subTotals.toDouble()))
-                        deliveryDate.setText(deliveryDates)
-//                        overAllDisP
-//                        overAllDisAmount
-//                        shipingCharge
-//                        payableAmount
-                        adjcmentV.setText(adjcment.toString())
+                            var MLQty = responsDataObject.getString("MLQty")
+                            var MLTax = responsDataObject.getString("MLTax")
+                            var WeightQty = responsDataObject.getString("WeightQty")
+                            var WeightTax = responsDataObject.getString("WeightTax")
+                            var TaxType = responsDataObject.getString("TaxType")
+                            var Tax = responsDataObject.getString("Tax")
+                            var CD = responsDataObject.getString("CD")
+                            var DisAmt = responsDataObject.getString("DisAmt")
+                            var  discountP= CD.toFloat()
+                            var  disAmt= DisAmt.toFloat()
+                            var subTotals=SubTotal.toFloat()
+                            var adjcments=adjcment.toFloat()
+                        if(MLQty!=null &&MLQty!="0" &&WeightQty!=null &&WeightQty!="0"
+                            &&WeightQty!=""&&MLQty!="" &&MLTax!="0"&&MLTax!=""&&MLTax!=null&&WeightTax!=""&&WeightTax!="0"&&WeightTax!=null){
+                             Log.e("MLQty",MLQty)
+                            var MLQtys=MLQty.toFloat()
+                            var MLTaxValue=MLTax.toFloat()
+                            var WeightQtys=WeightQty.toFloat()
+                            var WeightTaxs=WeightTax.toFloat()
+                            mlTaxLevel.visibility=View.VISIBLE
+                            weightTaxLevel.visibility=View.VISIBLE
+                            weightTax.visibility=View.VISIBLE
+                            mlTax.visibility=View.VISIBLE
+                            mlTaxLevel.setText("ML Tax (QTY : %.2f".format(MLQtys.toDouble()) + ")")
+                            weightTaxLevel.setText("Weight Tax (QTY : %.2f".format(WeightQtys.toDouble()) + ")")
+
+                            weightTax.setText("$ %.2f".format(WeightTaxs.toDouble()))
+                            mlTax.setText("$ %.2f".format(MLTaxValue.toDouble()))
+                        }else if (Tax!="0"&&Tax!=""&&Tax!=null)
+                        {
+                            var totalTaxs=Tax.toFloat()
+                            totalTax.visibility=View.VISIBLE
+                            textView8.visibility=View.VISIBLE
+                            totalTax.setText("$ %.2f".format(totalTaxs.toDouble()))
+                        }
+                        else{
+                            mlTaxLevel.visibility=View.GONE
+                            weightTaxLevel.visibility=View.GONE
+                            weightTax.visibility=View.GONE
+                            mlTax.visibility=View.GONE
+                            totalTax.visibility=View.GONE
+                            textView8.visibility=View.GONE
+                        }
+
+                            billingA.setText(billingsA)
+                            shippingA.setText(shippingsA)
+                            subTotal.setText("$ %.2f".format(subTotals.toDouble()))
+                            deliveryDate.setText(deliveryDates)
+                            taxType.setText(TaxType)
+                            overAllDisP.setText("%.2f".format(discountP.toDouble()))
+                            overAllDisAmount.setText("%.2f".format(disAmt.toDouble()))
+                          if (subTotals!=null&& adjcments!=null)
+                          {
+
+                                   var Total=(adjcments+subTotals)
+                                   payableAmount.setText("$ %.2f".format(Total.toDouble()))
+                          }
+
+                        adjcmentV.setText("$ %.2f".format(adjcments.toDouble()))
 //                        salsePRemark
 //                        driverRemark
                         }
@@ -207,6 +271,8 @@ class OrderSummaryActivity : AppCompatActivity() {
                         }
                         popUp.show()
                         popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
                     } else {
                         var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         popUp.setContentText(responseMessage2.toString())
@@ -219,6 +285,8 @@ class OrderSummaryActivity : AppCompatActivity() {
                         }
                         popUp.show()
                         popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
 //                                        warningMessage(message = responseMessage1.toString())
 //                                        Log.e("message",responseMessage1.toString())
                         //  pDialog!!.dismiss()
@@ -403,6 +471,7 @@ class OrderSummaryActivity : AppCompatActivity() {
         }
         popUp.show()
         popUp.setCanceledOnTouchOutside(false)
+        popUp.setCancelable(false)
     }
 
     private fun listDropdown(spineer: Spinner) {

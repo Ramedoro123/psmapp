@@ -917,6 +917,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
 
                                 popUp.show()
                                 popUp.setCanceledOnTouchOutside(false)
+                                popUp.setCancelable(false)
+                                pDialog.setCancelable(false)
                                 pDialog!!.dismiss()
                                 dilog.dismiss()
                                 checkFreeValue = 0
@@ -938,6 +940,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                             }
                             popUp.show()
                             popUp.setCanceledOnTouchOutside(false)
+                            popUp.setCancelable(false)
+                            pDialog.setCancelable(false)
 //                                        warningMessage(message = responseMessage1.toString())
 //                                        Log.e("message",responseMessage1.toString())
                             //  pDialog!!.dismiss()
@@ -1104,6 +1108,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                             }
                             popUp.show()
                             popUp.setCanceledOnTouchOutside(false)
+                            popUp.setCancelable(false)
+                            pDialog.setCancelable(false)
                         } else {
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                             popUp.setContentText(responseMessage2.toString())
@@ -1116,6 +1122,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                             }
                             popUp.show()
                             popUp.setCanceledOnTouchOutside(false)
+                            popUp.setCancelable(false)
+                            pDialog.setCancelable(false)
 //                                        warningMessage(message = responseMessage1.toString())
 //                                        Log.e("message",responseMessage1.toString())
                             //  pDialog!!.dismiss()
@@ -1248,6 +1256,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         }
         popUp.show()
         popUp.setCanceledOnTouchOutside(false)
+        popUp.setCancelable(false)
         pDialog!!.dismiss()
     }
 
@@ -1263,6 +1272,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         }
         popUp.show()
         popUp.setCanceledOnTouchOutside(false)
+        popUp.setCancelable(false)
     }
 
     private fun listDropdown(spineer: Spinner) {

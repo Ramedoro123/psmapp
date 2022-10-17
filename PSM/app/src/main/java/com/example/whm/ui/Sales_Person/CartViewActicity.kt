@@ -834,6 +834,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
 
                                 popUp.show()
                                 popUp.setCanceledOnTouchOutside(false)
+                                popUp.setCancelable(false)
+                                pDialog.setCancelable(false)
                                 pDialog!!.dismiss()
                                 dilog.dismiss()
                                 checkFreeValue = 0
@@ -856,6 +858,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                             }
                             popUp.show()
                             popUp.setCanceledOnTouchOutside(false)
+                            popUp.setCancelable(false)
+                            pDialog.setCancelable(false)
 //                                        warningMessage(message = responseMessage1.toString())
 //                                        Log.e("message",responseMessage1.toString())
                             //  pDialog!!.dismiss()
@@ -989,6 +993,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                         }
                         popUp.show()
                         popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
                     } else {
                         var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         popUp.setContentText(responseMessage2.toString())
@@ -1001,6 +1007,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                         }
                         popUp.show()
                         popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
 //                                        warningMessage(message = responseMessage1.toString())
 //                                        Log.e("message",responseMessage1.toString())
                         //  pDialog!!.dismiss()
@@ -1074,6 +1082,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         }
         popUp.show()
         popUp.setCanceledOnTouchOutside(false)
+        popUp.setCancelable(false)
     }
 
     private fun listDropdown(spineer: Spinner) {

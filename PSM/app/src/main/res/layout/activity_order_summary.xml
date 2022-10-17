@@ -260,8 +260,6 @@
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="3dp"
-                    android:layout_marginBottom="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/cardView11"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView9">
@@ -316,7 +314,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/cardView12"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView10">
+                    app:layout_constraintTop_toBottomOf="@+id/cardView14">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -348,9 +346,9 @@
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginEnd="5dp"
-                            android:textAlignment="viewEnd"
+                            android:background="@drawable/fram_squir"
                             android:paddingRight="5dp"
-                            android:text="$13.00"
+                            android:textAlignment="viewEnd"
                             android:textColor="@color/black"
                             android:textSize="15dp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -427,13 +425,14 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginEnd="5dp"
                             android:background="@drawable/fram_squir"
+                            android:editable="false"
                             android:paddingRight="5dp"
                             android:text="$0.00"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/overAllDisAmount" />
+                            app:layout_constraintTop_toBottomOf="@+id/weightTax" />
 
                         <TextView
                             android:id="@+id/textView52"
@@ -454,7 +453,6 @@
                             android:layout_marginEnd="5dp"
                             android:background="@drawable/fram_squir"
                             android:paddingRight="5dp"
-                            android:text="$0.02"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/black"
                             android:textSize="15sp"
@@ -472,18 +470,22 @@
                             app:layout_constraintEnd_toStartOf="@+id/adjcmentV"
                             app:layout_constraintTop_toTopOf="@+id/adjcmentV" />
 
-                        <TextView
+                        <EditText
                             android:id="@+id/payableAmount"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="5dp"
                             android:layout_marginEnd="5dp"
-                            android:text="$13.02"
+                            android:layout_marginBottom="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:editable="false"
                             android:paddingRight="5dp"
+                            android:text="$0.00"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/black"
-                            android:textSize="17dp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/adjcmentV" />
 
@@ -498,6 +500,79 @@
                             android:textStyle="bold"
                             app:layout_constraintEnd_toStartOf="@+id/payableAmount"
                             app:layout_constraintTop_toTopOf="@+id/payableAmount" />
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:text="Total Tax"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/totalTax"
+                            app:layout_constraintTop_toTopOf="@+id/totalTax" />
+
+                        <TextView
+                            android:id="@+id/totalTax"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:paddingRight="5dp"
+                            android:text="$0.00"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/overAllDisAmount" />
+
+                        <TextView
+                            android:id="@+id/mlTaxLevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/mlTax"
+                            app:layout_constraintTop_toTopOf="@+id/mlTax" />
+
+                        <TextView
+                            android:id="@+id/mlTax"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:paddingRight="5dp"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/totalTax" />
+
+                        <TextView
+                            android:id="@+id/weightTaxLevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/weightTax"
+                            app:layout_constraintTop_toTopOf="@+id/weightTax" />
+
+                        <TextView
+                            android:id="@+id/weightTax"
+                            android:layout_width="120dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/fram_squir"
+                            android:paddingRight="5dp"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mlTax" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -599,6 +674,62 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/frameLayout8" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView14"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="3dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView11"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView10" >
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textView63"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="5dp"
+                            android:text="Sales Tax Type"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:layout_editor_absoluteY="9dp" />
+
+                        <View
+                            android:id="@+id/view7"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp"
+                            android:background="#D6D6D6"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView63"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/taxType"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="5dp"
+                            android:hint="Sales Tax Type"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/view7"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
