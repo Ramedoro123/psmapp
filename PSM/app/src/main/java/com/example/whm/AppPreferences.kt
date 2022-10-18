@@ -63,6 +63,7 @@ object AppPreferences {
     const val cartListApi=salesPersonUrl+"WliveOrderMaster.asmx/cartlist"
     const val getShippingType=salesPersonUrl+"Worder.asmx/getShippingType"
     const val summarydetails=salesPersonUrl+"WliveOrderMaster.asmx/summarydetails"
+    const val ordersubmit=salesPersonUrl+"WliveOrderMaster.asmx/ordersubmit"
 
     //for devices
     var manufacturer = Build.MANUFACTURER
