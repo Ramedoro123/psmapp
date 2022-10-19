@@ -133,5 +133,17 @@
         android:label="@string/Customer_List"
         tools:layout="@layout/activity_customer_list"
         />
+    <activity
+        android:id="@+id/nav_Customer_Order_List"
+        android:name="com.example.whm.ui.Sales_Person.OrderList"
+        android:label="@string/orderList"
+        tools:layout="@layout/activity_order_list"
+        />
+    <activity
+        android:id="@+id/nav_CustomerDraftOrder_List"
+        android:name="com.example.whm.ui.Sales_Person.DraftOrderList"
+        android:label="Draft Order List"
+        tools:layout="@layout/activity_order_list"
+        />
 
 </navigation>

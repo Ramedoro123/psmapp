@@ -64,6 +64,8 @@ class HomeFragment : Fragment() {
         val btnAddOnPacked_order=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Add_OnPacked_order_list_Picker)
          val Update_Location=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Update_Location)
          val Customer_List=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Customer_List)
+         val nav_Customer_Order=mView.findViewById<Button>(com.example.myapplication.R.id.nav_Customer_Order_List)
+         val nav_CustomerDraftOrder=mView.findViewById<Button>(com.example.myapplication.R.id.nav_CustomerDraftOrder_List)
         var Usertype = preferences.getString("EmpTypeNo", "")
         var Empname = preferences.getString("Empname", "")
         var LName = preferences.getString("LName", "")
@@ -79,6 +81,8 @@ class HomeFragment : Fragment() {
             btnDriLoad.visibility=View.GONE
             btnOrderList.visibility=View.GONE
             Customer_List.visibility=View.VISIBLE
+            nav_Customer_Order.visibility=View.VISIBLE
+            nav_CustomerDraftOrder.visibility=View.VISIBLE
         }
         if (Usertype.toString() == "9") {
 
@@ -195,6 +199,12 @@ class HomeFragment : Fragment() {
         }
         Customer_List.setOnClickListener{
             this.findNavController().navigate(com.example.myapplication.R.id.nav_Customer_List)
+        }
+        nav_Customer_Order.setOnClickListener{
+            this.findNavController().navigate(com.example.myapplication.R.id.nav_Customer_Order_List)
+        }
+        nav_CustomerDraftOrder.setOnClickListener{
+            this.findNavController().navigate(com.example.myapplication.R.id.nav_CustomerDraftOrder_List)
         }
         return mView
     }

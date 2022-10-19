@@ -101,8 +101,16 @@
             android:icon="@drawable/ic_baseline_person_4_24"
             android:visible="false"
             android:title="@string/Customer_List" />
-
-
+        <item
+            android:id="@+id/nav_Customer_Order_List"
+            android:icon="@drawable/order"
+            android:visible="false"
+            android:title="@string/orderList" />
+        <item
+            android:id="@+id/nav_CustomerDraftOrder_List"
+            android:icon="@drawable/order"
+            android:visible="false"
+            android:title="Draft Order List" />
         <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_baseline_info_24"

@@ -266,6 +266,7 @@ class OrderSummaryActivity : AppCompatActivity() {
             sendRequestObject.put("pObj", pObj.put("Remarks", salsePRemark.text.toString()))
             sendRequestObject.put("pObj", pObj.put("DriverRemarks", driverRemark.text.toString()))
             sendRequestObject.put("pObj", pObj.put("totalTax", totalTax.text.toString()))
+            sendRequestObject.put("pObj", pObj.put("deliveryDate", deliveryDate.text.toString()))
             if (draftAutoId != 0) {
                 sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
             }

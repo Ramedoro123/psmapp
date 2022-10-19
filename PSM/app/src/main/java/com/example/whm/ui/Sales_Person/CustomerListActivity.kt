@@ -51,7 +51,7 @@ public class CustomerListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_customer_list)
         var backbtn=findViewById<TextView>(R.id.btnBackOrderCustomerList)
            SearchCustomer1=findViewById<TextView>(R.id.SearchCustomer)
-        CustomerTitle=findViewById<TextView>(R.id.customerHeader)
+           CustomerTitle=findViewById<TextView>(R.id.customerHeader)
         backbtn.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this,MainActivity2::class.java))
             finish()
@@ -208,6 +208,7 @@ public class CustomerListActivity : AppCompatActivity() {
     }
 
     private fun CustomerList(customerId: String, customerName: String) {
+
         val pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         pDialog.progressHelper.barColor = Color.parseColor("#A5DC86")
         pDialog.titleText = "Fetching ..."

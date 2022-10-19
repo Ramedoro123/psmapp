@@ -473,12 +473,26 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                             discountAmount.setBackgroundResource(R.drawable.borderline)
                                             discountPercent.setBackgroundResource(R.drawable.borderline)
                                         }
-
+                                            var exchange=ClickedItem.getExchange()?.toInt()
                                         var free = isFrees.toString().toInt()
-                                        if (free == 1) {
-                                            isFreeCheckBox.setEnabled(true)
-                                        } else {
+                                        Log.e("free",free.toString())
+                                        Log.e("exchange",exchange.toString())
+                                        if (free!=0){
                                             isFreeCheckBox.setEnabled(false)
+                                            //isExchangeCheckBox.setEnabled(false)
+                                            isFreeCheckBox.toggle()
+                                            Price.isEnabled = true
+                                            discountAmount.isEnabled = true
+                                            discountPercent.isEnabled = true
+                                            Price.setBackgroundResource(R.drawable.borderline)
+                                            discountAmount.setBackgroundResource(R.drawable.borderline)
+                                            discountPercent.setBackgroundResource(R.drawable.borderline)
+
+                                        }
+                                        else {
+                                            isFreeCheckBox.setEnabled(true)
+                                            isExchangeCheckBox.setEnabled(true)
+
                                         }
                                     }
 

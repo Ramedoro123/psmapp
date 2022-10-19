@@ -16,9 +16,22 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.example.whm.ui.Sales_Person.OrderSummaryActivity"
+            android:name="com.example.whm.ui.Sales_Person.DraftOrderList"
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
+        <activity
+            android:name="com.example.whm.ui.Sales_Person.OrderList"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name="com.example.whm.ui.Sales_Person.OrderSummaryActivity"
+            android:exported="false" />
         <activity
             android:name="com.example.whm.ui.Sales_Person.CartViewActicity"
             android:exported="false" />

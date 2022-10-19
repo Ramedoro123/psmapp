@@ -541,10 +541,11 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                             discountPercent.setBackgroundResource(R.drawable.borderline)
                                         }
                                         var free = isFrees.toString().toInt()
-                                        if (free == 1) {
-                                            isFreeCheckBox.setEnabled(true)
-                                        } else {
+                                        Log.e("free",free.toString())
+                                        if (free!=1) {
                                             isFreeCheckBox.setEnabled(false)
+                                        } else {
+                                            isFreeCheckBox.setEnabled(true)
                                         }
                                     }
                                 }

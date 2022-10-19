@@ -79,14 +79,14 @@ class CartListAdapterClass(
         else if (isFree!=0&&isFree!=null){
             holder.isFreeAndExchenge.visibility=View.VISIBLE
             holder.isFreeAndExchenge.background.setTint(ContextCompat.getColor(cartViewActicity, R.color.Kelly_Green))
-            holder.isFreeAndExchenge.setText("isFree")
+            holder.isFreeAndExchenge.setText("Free")
         }
         else if (isExchange!=0&&isExchange!=null)
         {
             holder.isFreeAndExchenge.visibility=View.VISIBLE
 //            holder.isFreeAndExchenge.setBackgroundColor(Color.parseColor("#666EE8"))
             holder.isFreeAndExchenge.background.setTint(ContextCompat.getColor(cartViewActicity, R.color.purpleLite))
-            holder.isFreeAndExchenge.setText("isExchange")
+            holder.isFreeAndExchenge.setText("Exchange")
         }
         else{
             holder.isFreeAndExchenge.visibility=View.GONE
