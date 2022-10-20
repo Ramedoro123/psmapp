@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.text.Editable
+import android.text.InputFilter
+import android.text.Spanned
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
@@ -26,6 +28,7 @@ import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getS
 import com.example.myapplication.com.example.whm.ui.inventoryreceive.DatePickerFragment
 import org.json.JSONObject
 import java.lang.reflect.Field
+import java.util.regex.Pattern
 
 
 class OrderSummaryActivity : AppCompatActivity() {
@@ -117,6 +120,7 @@ class OrderSummaryActivity : AppCompatActivity() {
             datePickerFragment.enterTransition
 
         }
+        shipingCharge.filters= arrayOf(OrderSummaryActivity.DecimalDigitsInputFilter(6,2))
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         moreOption.setOnClickListener(View.OnClickListener {
             val popupMenu = PopupMenu(this, it)
@@ -265,8 +269,9 @@ class OrderSummaryActivity : AppCompatActivity() {
             sendRequestObject.put("pObj", pObj.put("ShippingCharges", shipingCharge.text.toString()))
             sendRequestObject.put("pObj", pObj.put("Remarks", salsePRemark.text.toString()))
             sendRequestObject.put("pObj", pObj.put("DriverRemarks", driverRemark.text.toString()))
-            sendRequestObject.put("pObj", pObj.put("totalTax", totalTax.text.toString()))
-            sendRequestObject.put("pObj", pObj.put("deliveryDate", deliveryDate.text.toString()))
+            sendRequestObject.put("pObj", pObj.put("DeliveryDate", deliveryDate.text.toString()))
+            sendRequestObject.put("pObj", pObj.put("OverallDisc", overAllDisP.text.toString()))
+            sendRequestObject.put("pObj", pObj.put("OverallDiscAmt", overAllDisAmount.text.toString()))
             if (draftAutoId != 0) {
                 sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
             }
@@ -692,7 +697,40 @@ class OrderSummaryActivity : AppCompatActivity() {
         val popupWindow: ListPopupWindow = popup.get(spineer) as ListPopupWindow
         popupWindow.height = (200).toInt()
     }
+    class DecimalDigitsInputFilter(digitsBeforeZero: Int, digitsAfterZero: Int) : InputFilter {
+        //                                             digitsBeforeZero  or       digitsBeforeZero + dot + digitsAfterZero
+        private val pattern =
+            Pattern.compile("(\\d{0,$digitsBeforeZero})|(\\d{0,$digitsBeforeZero}\\.\\d{0,$digitsAfterZero})")
 
+        override fun filter(
+            source: CharSequence,
+            start: Int,
+            end: Int,
+            dest: Spanned,
+            dstart: Int,
+            dend: Int,
+        ): CharSequence? {
+            return if (source.isEmpty()) {
+                // When the source text is empty, we need to remove characters and check the result
+                if (pattern.matcher(dest.removeRange(dstart, dend)).matches()) {
+                    // No changes to source
+                    null
+                } else {
+                    // Don't delete characters, return the old subsequence
+                    dest.subSequence(dstart, dend)
+                }
+            } else {
+                // Check the result
+                if (pattern.matcher(dest.replaceRange(dstart, dend, source)).matches()) {
+                    // No changes to source
+                    null
+                } else {
+                    // Return nothing
+                    ""
+                }
+            }
+        }
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         val inflater = menuInflater

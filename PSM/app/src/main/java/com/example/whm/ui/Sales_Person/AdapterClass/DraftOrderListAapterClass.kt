@@ -16,7 +16,7 @@ class DraftOrderListAapterClass(private val OrderListData:List<ModelClassCustome
         var customername: TextView = itemView.findViewById(R.id.customername)
         var imageFarword: CircleImageView = itemView.findViewById(R.id.imageFarword)
         var orderType: TextView = itemView.findViewById(R.id.orderType)
-        var itemsAndAmount: TextView = itemView.findViewById(R.id.itemsAndAmount)
+        var itemsAndAmount: TextView = itemView.findViewById(R.id.orderDate)
         var orderNoAndDate: TextView = itemView.findViewById(R.id.orderNoAndDate)
         var colorSide: TextView = itemView.findViewById(R.id.colorSide)
     }

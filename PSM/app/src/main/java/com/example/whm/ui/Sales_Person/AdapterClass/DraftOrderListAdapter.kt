@@ -2,6 +2,7 @@ package com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass
 
 import android.content.Context
 import android.graphics.Color
+import android.provider.Telephony.Mms.Draft
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassOrderCustomerList
 import com.example.whm.ui.Sales_Person.DraftOrderList
+import com.example.whm.ui.Sales_Person.OrderList
 import de.hdodenhof.circleimageview.CircleImageView
-
-class SalseP_OrderListAdapter(private val OrderListData: ArrayList<ModelClassOrderCustomerList>, var Listdata: Context?,
-                              private val listener: DraftOrderList,
-): RecyclerView.Adapter<SalseP_OrderListAdapter.ViewHolder>()
+class DraftOrderListAdapter(private val OrderListData: ArrayList<ModelClassOrderCustomerList>, var Listdata: Context?,
+                            private val listener: OnItemClickListeners,
+): RecyclerView.Adapter<DraftOrderListAdapter.ViewHolder>()
 {
-    public interface OnItemClickListener {
+    public interface OnItemClickListeners {
         fun OnItemsClick(position: Int)
         fun OnDeleteClicks(position: Int)
     }
-    inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView),View.OnClickListener {
+    inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
         var customername: TextView = itemView.findViewById(R.id.customername)
         var imageFarword: CircleImageView = itemView.findViewById(R.id.imageFarword)
         var orderType: TextView = itemView.findViewById(R.id.orderType)
@@ -102,7 +103,7 @@ class SalseP_OrderListAdapter(private val OrderListData: ArrayList<ModelClassOrd
             holder.orderType.setTextColor(Color.parseColor(colorCode.toString()))
             holder.orderType.text=orderListdata.getstatus()
         }
-       if (OrderStatus=="6")
+        if (OrderStatus=="6")
         {
             holder.colorSide.setBackgroundColor(Color.parseColor(colorCode.toString()))
             holder.imageFarword.setCircleBackgroundColor(Color.parseColor(colorCode.toString()))
@@ -144,6 +145,6 @@ class SalseP_OrderListAdapter(private val OrderListData: ArrayList<ModelClassOrd
     }
 
     override fun getItemCount(): Int {
-  return OrderListData.size
+        return OrderListData.size
     }
 }

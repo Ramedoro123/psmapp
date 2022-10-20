@@ -30,13 +30,14 @@
             android:layout_marginLeft="50dp"
             android:layout_toRightOf="@id/btnBackOrderCustomerOrder"
             android:gravity="center"
-            android:text="Order List(10)"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="18sp" />
 
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/OrderCustomerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="3dp"
