@@ -65,6 +65,8 @@ object AppPreferences {
     const val summarydetails=salesPersonUrl+"WliveOrderMaster.asmx/summarydetails"
     const val ordersubmit=salesPersonUrl+"WliveOrderMaster.asmx/ordersubmit"
     const val OrderListSalesPerson=salesPersonUrl+"WliveOrderMaster.asmx/OrderList"
+    const val DraftOrderList=salesPersonUrl+"WliveOrderMaster.asmx/DraftOrderList"
+    const val OrderDetailsAPI=salesPersonUrl+"WliveOrderMaster.asmx/OrderDetails"
 
     //for devices
     var manufacturer = Build.MANUFACTURER

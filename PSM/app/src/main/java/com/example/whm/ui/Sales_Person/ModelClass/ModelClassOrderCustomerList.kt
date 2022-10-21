@@ -41,8 +41,9 @@ init {
     this.shippingType=shippingType
     this.shipId=shipId
     this.noOfItems=noOfItems
-    this.creditMemo=creditMemo
     this.colorCode=colorCode
+    this.creditMemo=creditMemo
+
 }
     fun getautoId():Int?{
         return autoId

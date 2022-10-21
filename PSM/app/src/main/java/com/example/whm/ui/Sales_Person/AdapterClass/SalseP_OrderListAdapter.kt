@@ -10,11 +10,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassOrderCustomerList
-import com.example.whm.ui.Sales_Person.DraftOrderList
+import com.example.whm.ui.Sales_Person.OrderList
 import de.hdodenhof.circleimageview.CircleImageView
 
 class SalseP_OrderListAdapter(private val OrderListData: ArrayList<ModelClassOrderCustomerList>, var Listdata: Context?,
-                              private val listener: DraftOrderList,
+                              private val listener: OrderList,
 ): RecyclerView.Adapter<SalseP_OrderListAdapter.ViewHolder>()
 {
     public interface OnItemClickListener {
@@ -62,6 +62,8 @@ class SalseP_OrderListAdapter(private val OrderListData: ArrayList<ModelClassOrd
         var NoOfItems=orderListdata.getnoOfItems()
         var grandTotal=orderListdata.getgrandTotal()
         var grandTotals:Float=grandTotal!!.toFloat()
+        holder.itemsAndAmount.visibility=View.VISIBLE
+        holder.orderNo.visibility=View.VISIBLE
         holder.itemsAndAmount.setText(NoOfItems+" Item "+"$%.2f".format(grandTotals))
         holder.orderNo.setText(orderNo)
         holder.orderDate.setText(orderdate)

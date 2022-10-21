@@ -25,19 +25,22 @@ import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.DraftOrderListAdapter
-import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalseP_OrderListAdapter
-import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassOrderCustomerList
+import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassDraftOrderList
 import org.json.JSONObject
 
 class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAdapter.OnItemClickListeners {
-    var modelClassCustomerOrder: ArrayList<ModelClassOrderCustomerList> = arrayListOf()
-    lateinit var customerOrderAdapter: SalseP_OrderListAdapter
+    var modelClassDraftOrder: ArrayList<ModelClassDraftOrderList> = arrayListOf()
+    lateinit var customerOrderAdapter: DraftOrderListAdapter
     lateinit var SalesDraftOrder: TextView
+    lateinit var btnBackDraftOrder: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_draft_order_list)
         SalesDraftOrder=findViewById(R.id.SalesDraftOrder)
-
+        btnBackDraftOrder=findViewById(R.id.btnBackDraftOrder)
+        btnBackDraftOrder.setOnClickListener(View.OnClickListener {
+            onBackPressed()
+        })
 
 
         if (AppPreferences.internetConnectionCheck(this)) {
@@ -88,7 +91,9 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
                 requestContainer.put("deviceName", AppPreferences.DeviceName))
             ContainerObject.put("requestContainer",requestContainer.put("accessToken",accessToken))
             ContainerObject.put("requestContainer",requestContainer.put("userAutoId",empautoid))
-            ContainerObject.put("pObj", searchcustomer.put("CustomerAutoid",0 ))
+            ContainerObject.put("pObj", searchcustomer.put("CustomerName","" ))
+            ContainerObject.put("pObj", searchcustomer.put("FromDate","" ))
+            ContainerObject.put("pObj", searchcustomer.put("ToDate","" ))
 //        ContainerObject.put("searchcustomer", searchcustomer.put("customerName",customerName ))
 //        ContainerObject.put("searchcustomer", searchcustomer.put("customerType",autoId ))
             Log.e("ContainerObject Order list request",ContainerObject.toString())
@@ -98,7 +103,7 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
             // Request a string response from the provided URL.
             val JsonObjectRequest =
                 JsonObjectRequest(Request.Method.POST,
-                    AppPreferences.OrderListSalesPerson,
+                    AppPreferences.DraftOrderList,
                     ContainerObject,
                     { response ->
                         val Response = (response.toString())
@@ -110,25 +115,19 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
                             val responseData = ResponseResult.getJSONArray("responseData")
                             Log.e("responseData",responseData.toString())
                             for (i in 0 until responseData.length()) {
-                                var AutoId = responseData.getJSONObject(i).getInt("AutoId")
-                                var OrderNo = responseData.getJSONObject(i).getString("OrderNo")
+                                var DraftAutoId = responseData.getJSONObject(i).getInt("DraftAutoId")
                                 var OrderDate = responseData.getJSONObject(i).getString("OrderDate")
                                 var CustomerName = responseData.getJSONObject(i).getString("CustomerName")
                                 var Status = responseData.getJSONObject(i).getString("Status")
-                                var StatusCode = responseData.getJSONObject(i).getString("StatusCode")
-                                var GrandTotal = responseData.getJSONObject(i).getString("GrandTotal")
-                                var SalesPerson = responseData.getJSONObject(i).getString("SalesPerson")
-                                var ShippingType = responseData.getJSONObject(i).getString("ShippingType")
-                                var ShipId = responseData.getJSONObject(i).getString("ShipId")
                                 var NoOfItems = responseData.getJSONObject(i).getString("NoOfItems")
-                                var CreditMemo = responseData.getJSONObject(i).getString("CreditMemo")
                                 var ColorCode = responseData.getJSONObject(i).getString("ColorCode")
+                                var grandTotal = responseData.getJSONObject(i).getString("GrandAmount")
                                 Log.e("ColorCode1",ColorCode.toString())
                                 //    Log.e("DueBalance",twoDigitValue.)
-                                SalsePModelClassList(AutoId,OrderNo,OrderDate,CustomerName,Status,StatusCode,GrandTotal,SalesPerson,ShippingType,ShipId
-                                    ,NoOfItems,CreditMemo,ColorCode)
+                                SalsePModelClassList(DraftAutoId,OrderDate,CustomerName,Status
+                                    ,NoOfItems,ColorCode, grandTotal)
                             }
-                            var totalOrder=modelClassCustomerOrder.size
+                            var totalOrder=modelClassDraftOrder.size
                             SalesDraftOrder.setText("Order List"+"("+totalOrder+")")
                             pDialog.dismiss()
                         } else {
@@ -175,25 +174,18 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
         }
     }
     private fun SalsePModelClassList(
-        autoId: Int,
-        orderNo: String,
+        DraftAutoId: Int,
         orderDate: String,
         customerName: String,
         status: String,
-        statusCode: String,
-        grandTotal: String,
-        salesPerson: String,
-        shippingType: String,
-        shipId: String,
         noOfItems: String,
-        creditMemo: String,
-        colorCode: String
+        colorCode: String,
+        grandTotal: String,
     ) {
-        var ModelClassCustomer1 = ModelClassOrderCustomerList(autoId,orderNo,orderDate,customerName,status,statusCode,grandTotal,salesPerson,shippingType,shipId,noOfItems
-            ,creditMemo,colorCode)
-        modelClassCustomerOrder.add(ModelClassCustomer1)
+        var ModelClassCustomer1 = ModelClassDraftOrderList(DraftAutoId,orderDate,customerName,status,noOfItems,colorCode,grandTotal)
+        modelClassDraftOrder.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.OrderCustomerRecyclerView)
-        customerOrderAdapter = SalseP_OrderListAdapter(modelClassCustomerOrder, this,this@DraftOrderList)
+        customerOrderAdapter = DraftOrderListAdapter(modelClassDraftOrder, this,this@DraftOrderList)
         recyclerview.adapter = customerOrderAdapter
 
     }

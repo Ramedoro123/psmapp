@@ -295,6 +295,8 @@ class OrderSummaryActivity : AppCompatActivity() {
                         popUp.setConfirmClickListener()
                         { sDialog ->
                             sDialog.dismissWithAnimation()
+                            startActivity(Intent(this,MainActivity2::class.java))
+                            finish()
                             popUp.dismiss()
                             pDialog.dismiss()
                         }
@@ -302,6 +304,7 @@ class OrderSummaryActivity : AppCompatActivity() {
                         popUp.setCanceledOnTouchOutside(false)
                         popUp.setCancelable(false)
                         pDialog.setCancelable(false)
+
                     } else {
                         var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         popUp.setContentText(responseMessage2.toString())
@@ -477,19 +480,20 @@ class OrderSummaryActivity : AppCompatActivity() {
 //                        driverRemark
                         }
 
-                        var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                        popUp.setContentText(responseMessage2.toString())
-                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                        popUp.setConfirmClickListener()
-                        { sDialog ->
-                            sDialog.dismissWithAnimation()
-                            popUp.dismiss()
-                            pDialog.dismiss()
-                        }
-                        popUp.show()
-                        popUp.setCanceledOnTouchOutside(false)
-                        popUp.setCancelable(false)
+//                        var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+//                        popUp.setContentText(responseMessage2.toString())
+//                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+//                        popUp.setConfirmClickListener()
+//                        { sDialog ->
+//                            sDialog.dismissWithAnimation()
+//                            popUp.dismiss()
+//                            pDialog.dismiss()
+//                        }
+//                        popUp.show()
+//                        popUp.setCanceledOnTouchOutside(false)
+//                        popUp.setCancelable(false)
                         pDialog.setCancelable(false)
+                        pDialog.dismiss()
                     } else {
                         var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                         popUp.setContentText(responseMessage2.toString())
