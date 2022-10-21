@@ -162,9 +162,11 @@ class SalesPersonProductAdapterClass(
         var image=ProductItem.getImageUrl()
         if (image!=""&&image!=null)
         {
+            holder.ProductImage.height.minus(30)
             Picasso.get().load(image).error(R.drawable.default_pic).into(holder.ProductImage);
         }
         else{
+            holder.ProductImage.height.minus(30)
             holder.ProductImage.setImageResource(R.drawable.default_pic)
         }
         NetPrice= NetPrice+(ProductItem.getNetPrice()!!)

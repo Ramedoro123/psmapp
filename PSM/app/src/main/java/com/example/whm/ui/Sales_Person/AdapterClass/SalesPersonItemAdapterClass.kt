@@ -20,6 +20,7 @@ class SalesPersonItemAdapterClass(private val OrderItemListData: ArrayList<Order
         var ProductImage: ImageView = itemView.findViewById(R.id.ProductImage)
         var ProductdID: TextView = itemView.findViewById(R.id.ProductdID)
         var ProductPrice: TextView = itemView.findViewById(R.id.ProductPrice)
+        var ProductStock: TextView = itemView.findViewById(R.id.ProductStock)
 
 
 //        init {
@@ -49,10 +50,22 @@ class SalesPersonItemAdapterClass(private val OrderItemListData: ArrayList<Order
     override fun onBindViewHolder(holder: SalesPersonItemAdapterClass.ViewHolder, position: Int) {
         var orderItemPosition=OrderItemListData[position]
           holder.customername.text=orderItemPosition.getproductName().toString()
+          holder.ProductdID.text=orderItemPosition.getproductId().toString()
+        holder.ProductStock.visibility=View.GONE
+        var unitprice=orderItemPosition.getunitPrice().toString()
+        var unitType=orderItemPosition.getunitType().toString()
         var image=orderItemPosition.getimageUrl().toString()
+
+        if (unitprice!=null&&unitprice!=""&&unitType!=null&&unitType!="")
+        {
+            var unitprice=unitprice.toString().toFloat()
+            holder.ProductPrice.setText("$" + "%.2f".format(unitprice) + "(" + unitType + ")")
+        }
         if (image!=null&&image!=""){
+            holder.ProductImage.height.minus(30)
             Picasso.get().load(image).error(R.drawable.default_pic).into(holder.ProductImage);
         }else{
+            holder.ProductImage.maxHeight.rangeTo(30)
             holder.ProductImage.setImageResource(R.drawable.default_pic)
         }
     }

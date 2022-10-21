@@ -207,8 +207,10 @@ class OrderList : AppCompatActivity(),View.OnClickListener,SalseP_OrderListAdapt
 
     override fun OnItemsClick(position: Int) {
         var productOrderDetals=modelClassCustomerOrder[position]
+        Log.e("productOrderDetals.getautoId()",productOrderDetals.getautoId().toString())
         val intent:Intent=Intent(this,SalesPersonOrderDetailsActivity::class.java)
-            intent.putExtra("orderAutoId",productOrderDetals.getautoId())
+
+            intent.putExtra("orderAutoId",productOrderDetals.getautoId().toString())
            startActivity(intent)
            finish()
 

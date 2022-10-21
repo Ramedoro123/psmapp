@@ -99,7 +99,8 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
         btnBackOrderDetails.setOnClickListener(View.OnClickListener {
             onBackPressed()
         })
-        orderAutoId=intent.getStringExtra("orderAutoId")
+
+        orderAutoId = intent.getStringExtra("orderAutoId")
         Log.e("orderAutoId",orderAutoId.toString())
         if (AppPreferences.internetConnectionCheck(this)) {
             val recyclerview = findViewById<RecyclerView>(R.id.OrderCustomerDetailsRecyclerView)
@@ -150,7 +151,7 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                 requestContainer.put("deviceName", AppPreferences.DeviceName))
             ContainerObject.put("requestContainer",requestContainer.put("accessToken",accessToken))
             ContainerObject.put("requestContainer",requestContainer.put("userAutoId",empautoid))
-            ContainerObject.put("pObj", searchcustomer.put("OrderAutoId","120189"))
+            ContainerObject.put("pObj", searchcustomer.put("OrderAutoId",orderAutoId.toString()))
 //        ContainerObject.put("searchcustomer", searchcustomer.put("customerName",customerName ))
 //        ContainerObject.put("searchcustomer", searchcustomer.put("customerType",autoId ))
             Log.e("ContainerObject Order list request",ContainerObject.toString())
@@ -173,19 +174,69 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                             var responsDataObject = JSONObject(ResponseResult.getString("responseData"))
                             var OrderNo=responsDataObject.getString("OrderNo")
                             var OrderDate=responsDataObject.getString("OrderDate")
+                            var CustomerId=responsDataObject.getString("CustomerId")
                             var DeliveryDate=responsDataObject.getString("DeliveryDate")
+
 //                            var TaxType=responsDataObject.getString("TaxType")
                             var BillAddr=responsDataObject.getString("BillAddr")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
-//                            var OrderNo=responsDataObject.getString("OrderNo")
+                            var ShipAddr=responsDataObject.getString("ShipAddr")
+                            var CustomerName=responsDataObject.getString("CustomerName")
+                            var Status=responsDataObject.getString("Status")
+                            var ShippingTypeName=responsDataObject.getString("ShippingTypeName")
+                            var AdjustmentAmt=responsDataObject.getString("AdjustmentAmt")
+                            var SubTotal=responsDataObject.getString("SubTotal")
+                            var Weigth_OZQty=responsDataObject.getString("Weigth_OZQty")
+                            var Weigth_OZTax=responsDataObject.getString("Weigth_OZTax")
+                            var Weigth_OZTaxAmount=responsDataObject.getString("Weigth_OZTaxAmount")
+                            var MLQty=responsDataObject.getString("MLQty")
+                            var MLTax=responsDataObject.getString("MLTax")
+                            var MLTaxPer=responsDataObject.getString("MLTaxPer")
+                            var TaxLabel=responsDataObject.getString("TaxLabel")
+                            var PaidMaount=responsDataObject.getString("PaidMaount")
+                            var DueAmount=responsDataObject.getString("DueAmount")
+                            var PayableAmount=responsDataObject.getString("PayableAmount")
+
+                            orderNumber.setText(OrderNo.toString())
+                            orderdate.setText(OrderDate.toString())
+                            customerNameSp.setText(CustomerName.toString())
+                            shippingaddressSp.setText(ShipAddr.toString())
+                            billingAddressSp.setText(BillAddr.toString())
+                            shippingTypeSp.setText(ShippingTypeName)
+                            status.setText(Status.toString())
+                            customeridCS.setText(CustomerId.toString())
+                            deliveryDateSp.setText(DeliveryDate.toString())
+                            if (SubTotal!=null) {
+                                var subTotal=SubTotal.toString().toFloat()
+                                subTotalOrderdetails.setText("$" + "%.2f".format(subTotal.toDouble()))
+                            }
+                            else if (PaidMaount!=null) {
+                                var paidAmount=PaidMaount.toString().toFloat()
+                                paidAmountValue.setText("$" + "%.2f".format(paidAmount.toDouble()))
+                            }
+                            else if (AdjustmentAmt!=null) {
+                                var adjustment=AdjustmentAmt.toString().toFloat()
+                                AdjAmountvalue.setText("$" + "%.2f".format(adjustment.toDouble()))
+                            }
+                            else if (PayableAmount!=null){
+                                var payable=PayableAmount.toString().toFloat()
+                                payableAmountValue.setText("$" + "%.2f".format(payable.toDouble()))
+                            }
+
+                            if (Weigth_OZQty!=null&&Weigth_OZQty!=""&&Weigth_OZQty!="0"&&Weigth_OZTax!=null&&Weigth_OZTax!=""&&Weigth_OZTax!="0"
+                                &&Weigth_OZTaxAmount!=""&&Weigth_OZTaxAmount!=null&&Weigth_OZTaxAmount!="0"){
+
+                            }
+                            else if (MLQty!=""&&MLQty!="0"&&MLQty!=null&& MLTax!=null&& MLTax!=""&& MLTax!="0" && MLTaxPer!="0"&& MLTaxPer!=""&& MLTaxPer!=null)
+                            {
+
+                            }else if (DueAmount!=null&&DueAmount!=""&&DueAmount!="0")
+                            {
+
+                            }
+                            else
+                            {
+
+                            }
                             Log.e("responsDataObjectall",responsDataObject.toString())
                             val responseData = responsDataObject.getJSONArray("OrderItemList")
                             val responseData1 = responsDataObject.getJSONArray("DelItemList")
@@ -193,6 +244,10 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                             {
                                 responsdata=responseData
                                 Log.e("responseData3",responsdata.toString())
+                            }
+                            else if (responseData1!=null&&responseData1.length()>0)
+                            {
+                                responsdata=responseData1
                             }
                             Log.e("responseData5",responsdata.toString())
 
