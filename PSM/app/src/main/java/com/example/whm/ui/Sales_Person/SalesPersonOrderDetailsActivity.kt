@@ -13,6 +13,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -24,6 +25,7 @@ import com.android.volley.toolbox.Volley
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
+import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.RemarkAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalesPersonItemAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.OrderItemModelClass
 import org.json.JSONArray
@@ -41,10 +43,6 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
     lateinit var shippingaddressSp:TextView
     lateinit var payableAmountValue:TextView
     lateinit var balanceamountValue:TextView
-    lateinit var salesPersonRem:TextView
-    lateinit var salesPreRemarkvalue:TextView
-    lateinit var driverRemarkValue:TextView
-    lateinit var driverRemarkText:TextView
     lateinit var payableText:TextView
     lateinit var AdjAmountvalue:TextView
     lateinit var wegitTaxValue:TextView
@@ -59,10 +57,28 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
     lateinit var mlTaxQty:TextView
     lateinit var adjText:TextView
     lateinit var taxML:TextView
+    lateinit var discountPercentlevel:TextView
+    lateinit var discountAmountlevel:TextView
+    lateinit var shippingCharge:TextView
+    lateinit var discountPersentText:TextView
+    lateinit var discountAmountText:TextView
+    lateinit var shipingtext:TextView
+    lateinit var salestext:TextView
+    lateinit var Salsetax:TextView
+    lateinit var textView81:View
+    lateinit var textView84:View
+    lateinit var textView48:View
+    lateinit var textView61:View
+    lateinit var textView69:View
+    lateinit var textView75:View
+    lateinit var remarks: CardView
     var orderAutoId:String?=null
     var responsdata=JSONArray()
+    var RemarkLists=JSONArray()
     var modelClassOrderItems: ArrayList<OrderItemModelClass> = arrayListOf()
+    var remarksItems: ArrayList<remarks> = arrayListOf()
     lateinit var customerOrderItemAdapter: SalesPersonItemAdapterClass
+    lateinit var remarkAdapterClass: RemarkAdapterClass
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sales_person_order_details)
@@ -78,10 +94,10 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
         balanceamountValue=findViewById(R.id.balanceamountValue)
         payableText=findViewById(R.id.payableText)
         paidAmountValue=findViewById(R.id.paidAmountValue)
-        salesPersonRem=findViewById(R.id.salesPersonRem)
-        salesPreRemarkvalue=findViewById(R.id.salesPreRemarkvalue)
-        driverRemarkText=findViewById(R.id.driverRemarkText)
-        driverRemarkValue=findViewById(R.id.driverRemarkValue)
+//        salesPersonRem=findViewById(R.id.salesPersonRem)
+//        salesPreRemarkvalue=findViewById(R.id.salesPreRemarkvalue)
+//        driverRemarkText=findViewById(R.id.driverRemarkText)
+//        driverRemarkValue=findViewById(R.id.driverRemarkValue)
         paidAmountText=findViewById(R.id.paidAmountText)
         shippingTypeSp=findViewById(R.id.shippingTypeSp)
         AdjAmountvalue=findViewById(R.id.AdjAmountvalue)
@@ -95,17 +111,35 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
         status=findViewById(R.id.status)
         adjText=findViewById(R.id.adjText)
         taxML=findViewById(R.id.taxML)
-
+        discountAmountlevel=findViewById(R.id.discountAmountlevel)
+        discountPercentlevel=findViewById(R.id.discountPercentlevel)
+        shippingCharge=findViewById(R.id.shippingCharge)
+        Salsetax=findViewById(R.id.Salsetax)
+        salestext=findViewById(R.id.salsetext)
+        textView81=findViewById(R.id.textView81)
+        textView84=findViewById(R.id.textView84)
+        textView48=findViewById(R.id.textView48)
+        textView61=findViewById(R.id.textView61)
+        textView69=findViewById(R.id.textView69)
+        textView75=findViewById(R.id.textView75)
+        remarks=findViewById(R.id.remarks)
+        discountPersentText=findViewById(R.id.discountPersentText)
+        discountAmountText=findViewById(R.id.discountAmountText)
+        shipingtext=findViewById(R.id.shipingtext)
         btnBackOrderDetails.setOnClickListener(View.OnClickListener {
-            onBackPressed()
+            startActivity(Intent(this@SalesPersonOrderDetailsActivity,OrderList::class.java))
+            finish()
         })
 
         orderAutoId = intent.getStringExtra("orderAutoId")
         Log.e("orderAutoId",orderAutoId.toString())
         if (AppPreferences.internetConnectionCheck(this)) {
             val recyclerview = findViewById<RecyclerView>(R.id.OrderCustomerDetailsRecyclerView)
+            val recyclerviews = findViewById<RecyclerView>(R.id.recyclerViewRemarks)
+            val layoutManager1 = LinearLayoutManager(this)
             val layoutManager = LinearLayoutManager(this)
             recyclerview.layoutManager = layoutManager
+            recyclerviews.layoutManager = layoutManager1
             OrderItemtListfunctionCall()
         }
 
@@ -195,6 +229,12 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                             var PaidMaount=responsDataObject.getString("PaidMaount")
                             var DueAmount=responsDataObject.getString("DueAmount")
                             var PayableAmount=responsDataObject.getString("PayableAmount")
+                            var BalanceAmount=responsDataObject.getString("BalanceAmount")
+                            var TotalAmount=responsDataObject.getString("TotalAmount")
+                            var TotalTax=responsDataObject.getString("TotalTax")
+                            var DiscountAmount=responsDataObject.getString("DiscountAmount")
+                            var DiscountPercent=responsDataObject.getString("DiscountPercent")
+                            var ShippingCharges=responsDataObject.getString("ShippingCharges")
 
                             orderNumber.setText(OrderNo.toString())
                             orderdate.setText(OrderDate.toString())
@@ -205,41 +245,134 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                             status.setText(Status.toString())
                             customeridCS.setText(CustomerId.toString())
                             deliveryDateSp.setText(DeliveryDate.toString())
+                            salesTaxType.setText(TaxLabel.toString())
+
+                            if (DiscountAmount!=""&&DiscountAmount!="0"&&DiscountAmount!=null)
+                            {
+                                var discountAmount=DiscountAmount.toString().toFloat()
+                                discountAmountlevel.visibility=View.VISIBLE
+                                textView48.visibility=View.VISIBLE
+                                discountAmountText.visibility=View.VISIBLE
+                                discountAmountlevel.setText("$" + "%.2f".format(discountAmount.toDouble()))
+
+                            }else{
+                                discountAmountlevel.visibility=View.GONE
+                                textView48.visibility=View.GONE
+                                discountAmountText.visibility=View.GONE
+                            }
+                            if (DiscountPercent!=""&&DiscountPercent!="0"&&DiscountPercent!=null)
+                            {
+                                var discountPercent=DiscountPercent.toString().toFloat()
+                                discountPercentlevel.visibility=View.VISIBLE
+                                textView61.visibility=View.VISIBLE
+                                discountPersentText.visibility=View.VISIBLE
+                                discountPercentlevel.setText("$" + "%.2f".format(discountPercent.toDouble()))
+                            }else{
+                                discountPercentlevel.visibility=View.GONE
+                                textView61.visibility=View.GONE
+                                discountPersentText.visibility=View.GONE
+                            }
+                            if (ShippingCharges!=""&&ShippingCharges!="0"&&ShippingCharges!=null)
+                            {
+                                var shippingCharges=ShippingCharges.toString().toFloat()
+                                shippingCharge.visibility=View.VISIBLE
+                                textView69.visibility=View.VISIBLE
+                                shipingtext.visibility=View.VISIBLE
+                                shippingCharge.setText("$" + "%.2f".format(shippingCharges.toDouble()))
+                            }else{
+                                shippingCharge.visibility=View.GONE
+                                textView69.visibility=View.GONE
+                                shipingtext.visibility=View.GONE
+                            }
+                            if(TotalTax!=""&&TotalTax!=null&&TotalTax!="0"){
+                                var salsetax=TotalTax.toString().toFloat()
+                                Salsetax.visibility=View.VISIBLE
+                                salestext.visibility=View.VISIBLE
+                                textView75.visibility=View.VISIBLE
+                                Salsetax.setText("$" + "%.2f".format(salsetax.toDouble()))
+
+                            }else{
+                                Salsetax.visibility=View.GONE
+                                salestext.visibility=View.GONE
+                                textView75.visibility=View.GONE
+                            }
+
+
+
                             if (SubTotal!=null) {
                                 var subTotal=SubTotal.toString().toFloat()
                                 subTotalOrderdetails.setText("$" + "%.2f".format(subTotal.toDouble()))
-                            }
-                            else if (PaidMaount!=null) {
+                              }
+                            if (PaidMaount!=null) {
                                 var paidAmount=PaidMaount.toString().toFloat()
-                                paidAmountValue.setText("$" + "%.2f".format(paidAmount.toDouble()))
+                                paidAmountValue.setText("$" + "%.2f".format(paidAmount.toDouble()).toString())
                             }
-                            else if (AdjustmentAmt!=null) {
+                            if (AdjustmentAmt!=null&&AdjustmentAmt!=""&&AdjustmentAmt!="0") {
                                 var adjustment=AdjustmentAmt.toString().toFloat()
                                 AdjAmountvalue.setText("$" + "%.2f".format(adjustment.toDouble()))
+                                AdjAmountvalue.visibility=View.VISIBLE
+                                adjText.visibility=View.VISIBLE
+                             }
+                            else{
+                                AdjAmountvalue.visibility=View.GONE
+                                adjText.visibility=View.GONE
                             }
-                            else if (PayableAmount!=null){
+                             if (PayableAmount!=null){
                                 var payable=PayableAmount.toString().toFloat()
                                 payableAmountValue.setText("$" + "%.2f".format(payable.toDouble()))
-                            }
+                             }
+                            if (BalanceAmount!=null){
+                                var balanceAmount=BalanceAmount.toString().toFloat()
+                                balanceamountValue.setText("$" + "%.2f".format(balanceAmount.toDouble()))
 
-                            if (Weigth_OZQty!=null&&Weigth_OZQty!=""&&Weigth_OZQty!="0"&&Weigth_OZTax!=null&&Weigth_OZTax!=""&&Weigth_OZTax!="0"
+                              }
+                            if (TotalAmount!=null){
+                                var totalAmount=TotalAmount.toString().toFloat()
+                                orderTotalvalue.setText("$" + "%.2f".format(totalAmount.toDouble()))
+
+                            }
+                             if (Weigth_OZQty!=null&&Weigth_OZQty!=""&&Weigth_OZQty!="0"&&Weigth_OZTax!=null&&Weigth_OZTax!=""
                                 &&Weigth_OZTaxAmount!=""&&Weigth_OZTaxAmount!=null&&Weigth_OZTaxAmount!="0"){
+                                 weighttaxQty.visibility=View.VISIBLE
+                                 wegitTaxValue.visibility=View.VISIBLE
+                                 textView84.visibility=View.VISIBLE
+                                var weightQty=Weigth_OZQty.toString().toFloat()
+                                var WeigthTax=Weigth_OZTax.toString().toFloat()
+                                var WeigthTaxAmount=Weigth_OZTaxAmount.toString().toFloat()
+                                weighttaxQty.setText("Weight Tax ("+WeigthTax+"%) "+"(Qty : %.2f".format(weightQty.toDouble()) + ") :")
+                                wegitTaxValue.setText("$" + "%.2f".format(WeigthTaxAmount.toDouble()))
+                            }else{
+                                 weighttaxQty.visibility=View.GONE
+                                 wegitTaxValue.visibility=View.GONE
+                                 textView84.visibility=View.GONE
+                             }
+                            if (MLQty!=""&&MLQty!="0"&&MLQty!=null&& MLTax!=null&& MLTax!=""&& MLTax!="0"&& MLTaxPer!=""&& MLTaxPer!=null)
+                            {
+                                mlTaxQty.visibility = View.VISIBLE
+                                taxML.visibility = View.VISIBLE
+                                textView81.visibility=View.VISIBLE
+                               var mltax=MLTax.toString().toFloat()
+                               var MLQty=MLQty.toString().toFloat()
+                               var MLTaxPer=MLTaxPer.toString().toFloat()
+                                mlTaxQty.setText("ML Tax ("+MLTaxPer+"%) "+"(Qty : %.2f".format(MLQty.toDouble()) + ") :")
+                                taxML.setText("$" + "%.2f".format(mltax.toDouble()))
 
                             }
-                            else if (MLQty!=""&&MLQty!="0"&&MLQty!=null&& MLTax!=null&& MLTax!=""&& MLTax!="0" && MLTaxPer!="0"&& MLTaxPer!=""&& MLTaxPer!=null)
-                            {
-
-                            }else if (DueAmount!=null&&DueAmount!=""&&DueAmount!="0")
+                            else{
+                                mlTaxQty.visibility = View.GONE
+                                taxML.visibility = View.GONE
+                                textView81.visibility=View.GONE
+                            }
+                            if (DueAmount!=null&&DueAmount!=""&&DueAmount!="0")
                             {
 
                             }
-                            else
-                            {
-
+                            else {
                             }
                             Log.e("responsDataObjectall",responsDataObject.toString())
                             val responseData = responsDataObject.getJSONArray("OrderItemList")
                             val responseData1 = responsDataObject.getJSONArray("DelItemList")
+                            val RemarkList = responsDataObject.getJSONArray("RemarkList")
                             if (responseData!=null&&responseData.length()>0)
                             {
                                 responsdata=responseData
@@ -248,6 +381,14 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                             else if (responseData1!=null&&responseData1.length()>0)
                             {
                                 responsdata=responseData1
+                            }
+                           if (RemarkList!=null&&RemarkList.length()>0)
+                            {
+                                RemarkLists=RemarkList
+                                remarks.visibility=View.VISIBLE
+                            }
+                           else{
+                                remarks.visibility=View.GONE
                             }
                             Log.e("responseData5",responsdata.toString())
 
@@ -263,8 +404,14 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                                 //    Log.e("DueBalance",twoDigitValue.)
                                 SalsePersonOrderItems(ProductId,ProductName,UnitType,UnitPrice,NetPrice,ImageUrl,RequiredQty)
                             }
-                            var totalOrder=modelClassOrderItems.size
-//                            SalesDraftOrder.setText("Order List"+"("+totalOrder+")")
+
+                            for (i in 0 until RemarkLists.length())
+                            {
+                                var EmpType = RemarkLists.getJSONObject(i).getString("EmpType")
+                                var Remarks = RemarkLists.getJSONObject(i).getString("Remarks")
+                                var EmpName = RemarkLists.getJSONObject(i).getString("EmpName")
+                                allRemarks(EmpType,Remarks,EmpName)
+                            }
                             pDialog.dismiss()
                         } else {
 
@@ -310,6 +457,14 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun allRemarks(empType: String, remarks: String, empName: String) {
+        var ModelClassCustomer1 = remarks(empType,remarks,empName)
+        remarksItems.add(ModelClassCustomer1)
+        val recyclerview = findViewById<RecyclerView>(R.id.recyclerViewRemarks)
+        remarkAdapterClass = RemarkAdapterClass(remarksItems, this)
+        recyclerview.adapter = remarkAdapterClass
+    }
+
     private fun SalsePersonOrderItems(
         productId: Int,
         productName: String,
@@ -325,5 +480,28 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
         customerOrderItemAdapter = SalesPersonItemAdapterClass(modelClassOrderItems, this)
         recyclerview.adapter = customerOrderItemAdapter
 
+    }
+}
+public class remarks(empType:String,
+                     remarks:String,
+                     empName:String)
+{
+    private var empType: String
+    private var remarks: String
+    private var empName: String
+    init {
+       this.empType=empType
+       this.remarks=remarks
+       this.empName=empName
+    }
+
+    fun getempType():String?{
+        return empType
+    }
+    fun getremarks():String?{
+        return remarks
+    }
+    fun getempName():String?{
+        return empName
     }
 }

@@ -18,7 +18,7 @@ class ModelClassDraftOrderList(  DraftAutoId: Int,orderDate: String, customerNam
         this.colorCode=colorCode
         this.grandTotal=grandTotal
     }
-    fun DraftAutoId():Int?{
+    fun getDraftAutoId():Int?{
         return DraftAutoId
     }
     fun getorderDate():String?{

@@ -2,18 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     tools:context="com.example.whm.ui.Sales_Person.SalesPersonProductList">
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
@@ -32,6 +24,7 @@
                 android:layout_marginStart="4dp"
                 android:background="@drawable/ic_baseline_arrow_back_24"
                 android:backgroundTint="@color/white" />
+
             <TextView
                 android:id="@+id/productTitle"
                 style="@style/TextAppearance.AppCompat.Title"
@@ -65,12 +58,11 @@
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </RelativeLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout3"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,8 +72,6 @@
             android:id="@+id/ProductListRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
-            android:layout_marginBottom="68dp"
             android:background="@color/teal_700"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
@@ -181,15 +171,16 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="6dp"
-        android:layout_marginBottom="3dp"
         android:background="@drawable/bg_edittext"
+        android:hint="Scan Barcode"
         android:maxLength="20"
         android:maxLines="1"
-        android:hint="Scan Barcode"
         android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

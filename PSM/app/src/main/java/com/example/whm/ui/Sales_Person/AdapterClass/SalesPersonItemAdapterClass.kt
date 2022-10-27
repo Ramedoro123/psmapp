@@ -16,24 +16,13 @@ class SalesPersonItemAdapterClass(private val OrderItemListData: ArrayList<Order
 ): RecyclerView.Adapter<SalesPersonItemAdapterClass.ViewHolder>() {
 
     inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView), View.OnClickListener {
-        var customername: TextView = itemView.findViewById(R.id.productIdSalse)
-        var ProductImage: ImageView = itemView.findViewById(R.id.ProductImage)
-        var ProductdID: TextView = itemView.findViewById(R.id.ProductdID)
-        var ProductPrice: TextView = itemView.findViewById(R.id.ProductPrice)
-        var ProductStock: TextView = itemView.findViewById(R.id.ProductStock)
-
-
-//        init {
-//
-//            itemView.setOnClickListener(View.OnClickListener {
-//                val position = adapterPosition
-//                if (position != RecyclerView.NO_POSITION) {
-//                    listener.OnItemsClick(position)
-//                }
-//            })
-//
-//        }
-
+        var cartPname=itemView.findViewById<TextView>(R.id.cartPname)
+        val cartPid=itemView.findViewById<TextView>(R.id.cartPid)
+        val cartPpiece=itemView.findViewById<TextView>(R.id.cartPpiece)
+        val cartTotalAmount=itemView.findViewById<TextView>(R.id.cartTotalAmount)
+        val isFreeAndExchenge=itemView.findViewById<TextView>(R.id.isFreeAndExchenge)
+        val ProductImageCart=itemView.findViewById<ImageView>(R.id.ProductImageCart)
+        val btnDeleteCartList=itemView.findViewById<TextView>(R.id.btnDeleteCartList)
         override fun onClick(v: View?) {
 
         }
@@ -43,30 +32,39 @@ class SalesPersonItemAdapterClass(private val OrderItemListData: ArrayList<Order
         viewType: Int,
     ): SalesPersonItemAdapterClass.ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.product_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.cartlist_viewdetails, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: SalesPersonItemAdapterClass.ViewHolder, position: Int) {
         var orderItemPosition=OrderItemListData[position]
-          holder.customername.text=orderItemPosition.getproductName().toString()
-          holder.ProductdID.text=orderItemPosition.getproductId().toString()
-        holder.ProductStock.visibility=View.GONE
+          holder.cartPname.text=orderItemPosition.getproductName().toString()
+          holder.cartPid.text=orderItemPosition.getproductId().toString()
+          holder.btnDeleteCartList.visibility=View.GONE
         var unitprice=orderItemPosition.getunitPrice().toString()
         var unitType=orderItemPosition.getunitType().toString()
         var image=orderItemPosition.getimageUrl().toString()
+        var ReqQty=orderItemPosition.getrequiredQty().toString()
+        var netPrice=orderItemPosition.getnetPrice().toString()
 
         if (unitprice!=null&&unitprice!=""&&unitType!=null&&unitType!="")
         {
             var unitprice=unitprice.toString().toFloat()
-            holder.ProductPrice.setText("$" + "%.2f".format(unitprice) + "(" + unitType + ")")
+            //holder.ProductPrice.setText("$" + "%.2f".format(unitprice) + "(" + unitType + ")")
+            holder.cartPpiece.setText("$" + "%.2f".format(unitprice)+"/" +unitType+ " X" +ReqQty)
         }
+        if (netPrice!=""&&netPrice!=null)
+        {
+            var netprice=netPrice.toString().toFloat()
+            holder.cartTotalAmount.setText("$" + "%.2f".format(netprice))
+        }
+
         if (image!=null&&image!=""){
-            holder.ProductImage.height.minus(30)
-            Picasso.get().load(image).error(R.drawable.default_pic).into(holder.ProductImage);
+            holder.ProductImageCart.height.minus(30)
+            Picasso.get().load(image).error(R.drawable.default_pic).into(holder.ProductImageCart);
         }else{
-            holder.ProductImage.maxHeight.rangeTo(30)
-            holder.ProductImage.setImageResource(R.drawable.default_pic)
+            holder.ProductImageCart.maxHeight.rangeTo(30)
+            holder.ProductImageCart.setImageResource(R.drawable.default_pic)
         }
     }
 

@@ -26,6 +26,7 @@ import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.DraftOrderListAdapter
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassDraftOrderList
+import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
 import org.json.JSONObject
 
 class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAdapter.OnItemClickListeners {
@@ -194,8 +195,13 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
 
     }
 
-    override fun OnItemsClick(position: Int) {
-
+    override fun OnItemsClick(position: Int)
+    {
+        val ClickedItem: ModelClassDraftOrderList=modelClassDraftOrder[position]
+        var intent:Intent=Intent(this,SalesPersonProductList::class.java)
+        intent.putExtra("draftAutoIdd",ClickedItem.getDraftAutoId().toString())
+        startActivity(intent)
+        finish()
     }
 
     override fun OnDeleteClicks(position: Int) {

@@ -121,6 +121,11 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         customerId = preferences.getString("customerId", "")
         ProductItemList = preferences.getString("ProductItemList", "")
         draftAutoId = intent.getIntExtra("draftAutoId", 0)
+        var draftAutoIdd = intent.getStringExtra("draftAutoIdd")
+        if (draftAutoIdd!=null&&draftAutoIdd!=""&&draftAutoIdd!="0"){
+            draftAutoId=draftAutoIdd.toInt()
+        }
+
         LocalBroadcastManager.getInstance(this).registerReceiver(broadCastReceiver, IntentFilter("USER_NAME_CHANGED_ACTION"))
 
 
