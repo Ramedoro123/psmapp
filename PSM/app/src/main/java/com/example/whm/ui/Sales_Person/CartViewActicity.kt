@@ -272,7 +272,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                         popUp.setConfirmClickListener()
                         {
                                 sDialog -> sDialog.dismissWithAnimation()
-                            popUp.dismiss()
+                                startActivity(Intent(this,SalesPersonProductList::class.java))
+                                finish()
+                                popUp.dismiss()
                         }
                         popUp.show()
                         popUp.setCanceledOnTouchOutside(false)
@@ -474,25 +476,25 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                             discountAmount.setBackgroundResource(R.drawable.borderline)
                                             discountPercent.setBackgroundResource(R.drawable.borderline)
                                         }
-                                            var exchange=ClickedItem.getExchange()?.toInt()
+                                        var exchange=ClickedItem.getExchange()?.toInt()
                                         var free = isFrees.toString().toInt()
                                         Log.e("free",free.toString())
                                         Log.e("exchange",exchange.toString())
-                                        if (free!=0){
+                                        if (free!=1){
                                             isFreeCheckBox.setEnabled(false)
                                             //isExchangeCheckBox.setEnabled(false)
-                                            isFreeCheckBox.toggle()
-                                            Price.isEnabled = true
-                                            discountAmount.isEnabled = true
-                                            discountPercent.isEnabled = true
-                                            Price.setBackgroundResource(R.drawable.borderline)
-                                            discountAmount.setBackgroundResource(R.drawable.borderline)
-                                            discountPercent.setBackgroundResource(R.drawable.borderline)
+//                                            isFreeCheckBox.toggle()
+//                                            Price.isEnabled = true
+//                                            discountAmount.isEnabled = true
+//                                            discountPercent.isEnabled = true
+//                                            Price.setBackgroundResource(R.drawable.borderline)
+//                                            discountAmount.setBackgroundResource(R.drawable.borderline)
+//                                            discountPercent.setBackgroundResource(R.drawable.borderline)
 
                                         }
                                         else {
                                             isFreeCheckBox.setEnabled(true)
-                                            isExchangeCheckBox.setEnabled(true)
+
 
                                         }
                                     }

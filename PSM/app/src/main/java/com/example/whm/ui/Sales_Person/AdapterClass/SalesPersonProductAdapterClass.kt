@@ -98,6 +98,7 @@ class SalesPersonProductAdapterClass(
         var Qty = ProductItem.getOQty().toString()
 
         var Tax=ProductItem.getTax().toString()
+
         holder.netPrice.visibility = View.GONE
         holder.taxableLevel.visibility = View.GONE
         holder.OrderQtyValue.visibility = View.GONE
@@ -105,9 +106,9 @@ class SalesPersonProductAdapterClass(
         holder.orderQtyProduct.visibility = View.GONE
              Log.e("unitPrice",unitPrice.toString())
              Log.e("UnitTypes",UnitTypes.toString())
-             Log.e("TaxAble value",taxValue.toString())
+             Log.e("TaxAble Tax",taxValue.toString())
 
-        if (Qty != null && Qty != "" && unitPrice != 0.2f && unitPrice != null && UnitTypes != null && UnitTypes != "" && Qty != "0"&&netPrices != null && netPrices!="" &&netPrices!="0.00" ||taxValue!=0 &&taxValue!=null &&ReQty!=null &&ReQty!="" &&ReQty!="0")
+        if (Qty != null && Qty != "" && unitPrice != 0.2f && unitPrice != null && UnitTypes != null && UnitTypes != "" && Qty != "0"&&netPrices != null && netPrices!="" &&netPrices!="0.0" ||taxValue!=0 &&taxValue!=null &&ReQty!=null &&ReQty!="" &&ReQty!="0")
         {
             var netPrice=netPrices.toFloat()
             holder.OrderQtyValue.setText(Qty.toString())
@@ -126,7 +127,7 @@ class SalesPersonProductAdapterClass(
             holder.netPrice.setText("$" + "%.2f".format(netPrice))
             holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitTypes + ")")
         }
-        else if ((netPrices != null && netPrices!="" &&netPrices!="0.00" &&ReQty!="0" &&ReQty!=""&&ReQty!=null))
+        else if ((netPrices != null && netPrices!="" &&netPrices!="0.0" &&ReQty!="0" &&ReQty!=""&&ReQty!=null))
         {
             holder.OrderQtyValue.setText(ReQty.toString())
 //            Log.e("ReQty 456465   d",Qty)

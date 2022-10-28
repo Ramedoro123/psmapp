@@ -902,7 +902,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 sharedLoadOrderPage.putInt("unitAutoidValue", unitAutoidValue!!)
                                 sharedLoadOrderPage.putInt("draftAutoId", draftAutoId!!)
                                 sharedLoadOrderPage.apply()
-
                                 Log.e("draftAutoId", draftAutoId.toString())
                                 val intent = Intent("USER_NAME_CHANGED_ACTION")
                                 intent.putExtra("usernames", NofItem.toString())
