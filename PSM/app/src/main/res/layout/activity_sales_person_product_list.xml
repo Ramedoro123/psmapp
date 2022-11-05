@@ -176,7 +176,7 @@
         android:background="@drawable/bg_edittext"
         android:hint="Scan Barcode"
         android:maxLength="20"
-        android:maxLines="1"
+        android:lines="1"
         android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout3"
         app:layout_constraintEnd_toEndOf="parent"

@@ -142,6 +142,9 @@ fun getIsTaxable():Int{
     return IsTaxable
 
 }
+fun setIsTaxable(IsTaxable:Int?){
+    this.IsTaxable=IsTaxable!!
+}
 fun getReqQty():Int?{
     return ReqQty
 }
@@ -157,11 +160,6 @@ fun getUnitPrices():Float?{
     fun setNetPrice(NetPrice:Float?){
         this.NetPrice= NetPrice!!
     }
-
-    fun setIsTaxable(IsTaxable:Int?){
-        this.IsTaxable=IsTaxable!!
-    }
-
     fun setReqQty(ReqQty:Int?){
         this.ReqQty=ReqQty!!
     }

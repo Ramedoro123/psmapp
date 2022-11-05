@@ -42,12 +42,17 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
         var SippingAddress=CustomerList.getSAdd()
         var priceLavle=CustomerList.getPLN()
         var storeNo=CustomerList.getC1()
-        var dueblance=CustomerList.getDueBalances()
         var storeCredit=CustomerList.getSCA()
         var customerTerms=CustomerList.getCT()
         var ctype=CustomerList.getctype()
         var OnRoute=CustomerList.getOnRoute()
         var deuBalance=CustomerList.getDueBalances()!!.toFloat()
+        if (deuBalance>0.00){
+            holder.Duevalue.setText("Due : $"+"%.2f".format(deuBalance.toFloat()))
+            holder.Duevalue.visibility=View.VISIBLE
+        }else{
+            holder.Duevalue.visibility=View.GONE
+        }
         holder.CustomerListCard.setOnClickListener(View.OnClickListener {
             val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(Listdata)
             val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
@@ -74,10 +79,7 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
             (Listdata as Activity).finish()
         })
 
-        if (deuBalance>0.00) {
-                          holder.Duevalue.setText("Due : $"+"%.2f".format(deuBalance))
-                              holder.Duevalue.visibility=View.VISIBLE
-                           }
+
             //Toast.makeText(UpdateLocation,UpdateLocationList.getAId().toString(),Toast.LENGTH_LONG).show()
         }
     override fun getItemCount(): Int {

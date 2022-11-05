@@ -126,7 +126,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
        empautoid = preferences.getString("EmpAutoId", "")
         var  customerName = preferences.getString("CustomerName", "")
         var customerId = preferences.getString("customerId", "")
-           var draft= preferences.getString("OrderAutoid", "")
+        var draft= preferences.getString("OrderAutoid", "")
+        var noOfItem= preferences.getString("noOfItems", "")
+        var totalvalue= preferences.getString("grandTotal", "")
 //           var TotalAmounts =preferences.getString("TotalPrice","0.00")
 //           var totalcounts = preferences.getString("itemCounts", "")
         if (draft=="" || draft==null){
@@ -143,6 +145,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
             intent.putExtra("draftAutoId",draftAutoId)
             intent.putExtra("TotalAmount",TotalAmount)
             intent.putExtra("totalcount",totalcount)
+            intent.putExtra("noOfItems",noOfItem)
+            intent.putExtra("grandTotal",totalvalue)
 
             Log.e("draftAutoId", draftAutoId.toString())
             startActivity(intent)
@@ -567,8 +571,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         isExchangeCheckBox = dilog.findViewById<CheckBox>(R.id.isExchangeCheckBox)
         var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
         spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
-//        isFreeCheckBox.visibility=View.GONE
+ //        isFreeCheckBox.visibility=View.GONE
 //        isExchangeCheckBox.visibility=View.GONE
+        btnAddToCart.setText("Update")
         SProductID.setText(ClickedItem.getPId())
         s_ProductName.setText(ClickedItem.getPName())
 //        stockProductS.setText("Stock : " + ClickedItem.getCStock())
@@ -779,8 +784,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
                 sendRequestObject.put("pObj", pObj.put("CustomerAutoId", customerAutoId))
                 sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
-                sendRequestObject.put("pObj", pObj.put("isExchange",isExchangeValue))
+                sendRequestObject.put("pObj", pObj.put("isFree",ClickedItem.getFree()))
+                sendRequestObject.put("pObj", pObj.put("isExchange",ClickedItem.getExchange()))
                 sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
                 if (pricevalue.trim() != "" && pricevalue != null &&pricevalue!="0.00") {
                     var price = pricevalue.toFloat()

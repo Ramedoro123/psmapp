@@ -122,10 +122,20 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         ProductItemList = preferences.getString("ProductItemList", "")
         draftAutoId = intent.getIntExtra("draftAutoId", 0)
         var draftAutoIdd = intent.getStringExtra("draftAutoIdd")
+        var grandTotal = intent.getStringExtra("grandTotal")
+        var noOfItems = intent.getStringExtra("noOfItems")
         if (draftAutoIdd!=null&&draftAutoIdd!=""&&draftAutoIdd!="0"){
             draftAutoId=draftAutoIdd.toInt()
         }
-
+        var noOfItem=username
+        var totalValue1=totalValue.toString()
+        if (grandTotal!=null&&noOfItems!=null&&grandTotal!=""&&noOfItems!="" ||noOfItem!=null&&noOfItems!=null&&totalValue1!=""&&totalValue1!="")
+        {
+            username = noOfItems
+            totalValue = grandTotal!!.toDouble()
+            cart_badge.setText(username)
+            orderTotalValue.setText("%.2f".format(totalValue))
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(broadCastReceiver, IntentFilter("USER_NAME_CHANGED_ACTION"))
 
 
@@ -188,8 +198,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
             val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
             sharedLoadOrderPage.putString("OrderAutoid", draftAutoId?.toString())
-//            sharedLoadOrderPage.putString("TotalPrice", Total?.toString())
-//            sharedLoadOrderPage.putString("itemCounts", NofItem?.toString())
+            sharedLoadOrderPage.putString("noOfItems", username?.toString())
+            sharedLoadOrderPage.putString("grandTotal", totalValue?.toString())
             sharedLoadOrderPage.apply()
             startActivity(intent)
             finish()
@@ -198,17 +208,18 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             ScanBarcode!!.requestFocus()
             ScanBarcode!!.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
                 if ((keyCode == KeyEvent.KEYCODE_ENTER) && (event.action == KeyEvent.ACTION_DOWN)) {
-                    var scanbarcodeproduct = ScanBarcode!!.text.toString()
+                    var scanbarcodeproduct = ScanBarcode!!.text.trim().toString()
                     if (scanbarcodeproduct.trim().isEmpty()) {
-                        ScanBarcode.text.clear()
-                        ScanBarcode.setText("")
-                        ScanBarcode.requestFocus()
+                        ScanBarcode!!.text.clear()
+                        ScanBarcode!!.setText("")
+                        ScanBarcode!!.requestFocus()
                     } else {
+                        var barcode=scanbarcodeproduct.replace("/n",ScanBarcode.toString())
                         // Scan barcode function calling here
                         productListModelClass.clear()
-                        productListApiCall("", "", barcode = ScanBarcode.text.toString())
-                        ScanBarcode.requestFocus()
-                        ScanBarcode.text.clear()
+                        productListApiCall("", "", barcode = barcode.toString())
+                        ScanBarcode!!.text.clear()
+                        ScanBarcode!!.requestFocus()
                         // btnPrevious.isEnabled=true
                     }
                 }
@@ -221,7 +232,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             val recyclerview = findViewById<RecyclerView>(R.id.ProductListRecyclerView)
             val layoutManager = LinearLayoutManager(this)
             recyclerview.layoutManager = layoutManager
-            productListApiCall("", "", "")
+//            productListApiCall("", "", "")
         } else {
             val dialog = this?.let { Dialog(it) }
             dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -277,9 +288,11 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         sendRequestObject.put("pObj", pObj.put("barcode", barcode))
         if (draftAutoId == 0) {
             sendRequestObject.put("pObj", pObj.put("draftautoId", draftAutoId))
-        } else {
+        }
+        else {
             sendRequestObject.put("pObj", pObj.put("draftautoId", draftAutoId))
         }
+        Log.e("sendRequestObject ProductList",sendRequestObject.toString())
         //send request queue in vally
         val queue = Volley.newRequestQueue(this)
         val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
@@ -340,8 +353,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                             {
                                 itemcount++
                             }
-                            cart_badge.setText(itemcount.toString())
-                            orderTotalValue.setText("%.2f".format(TotalValue))
+//                            cart_badge.setText(itemcount.toString())
+//                            orderTotalValue.setText("%.2f".format(TotalValue))
                         }
 
 //                        Toast.makeText(this,itemcount.toString(),Toast.LENGTH_LONG).show()
@@ -448,7 +461,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                 isdefault1 = responseResultData.getJSONObject(i).getInt("isdefault")
                                 var dispValue= responseResultData.getJSONObject(i).getString("DisP")
                                 var disaValue= responseResultData.getJSONObject(i).getString("DisA")
-
                                 var cartdata = getCartdetailsModle(
                                     UIDs!!,
                                     UName!!,
@@ -516,7 +528,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                         val item2: String = mylist1[position]
                                         val dispValue: String = dispValue[position]
                                         val disaValue: String = disaValue[position]
-                                        minPrice = minPriceslist[position]
+                                          var minPrices = minPriceslist[position]
+                                         minPrice=minPrices
                                         isFrees = isFreelist[position]
                                         unitAutoidValue = unitAutoIdList[position]
                                         Log.e("isFrees", isFrees.toString())
@@ -672,18 +685,18 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 }
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val tmp = discountAmount.text.toString()
+                val tmpDisAmoun = discountAmount.text.toString()
                 val tmps = minPrice.toString()
                 val temsprie = Price.text.toString()
-                if (!tmp.isEmpty() && uahEdited && tmp != "." && tmps != null && tmps != "." && temsprie != "" && temsprie != null && tmp != "0.00") {
-                    uah = tmp.toFloat()
+                if (!tmpDisAmoun.isEmpty() && uahEdited && tmpDisAmoun != "." && tmps != null && tmps != "." && temsprie != "" && temsprie != null && tmpDisAmoun != "0.00") {
+                    uah = tmpDisAmoun.toFloat()
                     var price = temsprie.toFloat()
-                    val minprice = tmps.toFloat()
-                    var Amountdiscount: Float = price - uah
+                    val minprice1 = tmps.toFloat()
+                    var Amountdiscount:Float = price - uah
                     if (uah > price) {
                         discountAmount.text.replace(0, discountAmount.text.length, "0.00")
                     }
-                    if (minprice <= Amountdiscount) {
+                    if (minprice1 <= Amountdiscount) {
                         usd = uah * 100 / price
                         discountPercent.setText("%.2f".format(usd))
                     } else {
@@ -708,7 +721,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     }
-                } else if (tmp.isEmpty()) {
+                } else if (tmpDisAmoun.isEmpty()) {
                     discountPercent.text.clear()
                 }
             }
@@ -734,16 +747,17 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val tmp = discountPercent.text.toString()
                 val tmps = Price.text.toString()
-                if (!tmp.isEmpty() && usdEdited && tmp != "." && tmps != null && tmps != "" && tmps != "." && tmp != "0.00") {
+                  var minp=minPrice.toString()
+                if (!tmp.isEmpty() && usdEdited && tmp != "." && tmps != null && tmps != "" && tmps != "." && tmp != "0.00"&&minp!="") {
 
                     usd = tmp.toFloat()
                     val price = tmps.toFloat()
-                    val minprice = minPrice.toString().toFloat()
+                    val minprice1=minp.toFloat()
                     var Amountdiscount: Float = price - usd * 100 / 100
                     if (usd > 100) {
                         discountPercent.text.replace(0, discountPercent.text.length, "0.00")
                     }
-                    if (minprice <= Amountdiscount) {
+                    if (minprice1 <= Amountdiscount) {
                         uah = usd * price / 100
                         discountAmount.setText("%.2f".format(uah))
                     } else {
@@ -784,186 +798,213 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         isExchangeCheckBox.setOnClickListener(this)
 
         btnAddToCart.setOnClickListener(View.OnClickListener {
-            if (AppPreferences.internetConnectionCheck(it.context)) {
-                var pricevalue = Price.text.toString()
-                val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-                var accessToken = preferences.getString("accessToken", "")
-                var empautoid = preferences.getString("EmpAutoId", "")
-                var customerAutoId = preferences.getString("customerAutoId", "")
-                var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-                pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
-                pDialog!!.titleText = "Fetching ..."
-                pDialog!!.setCancelable(false)
-                pDialog!!.show()
-                val sendRequestObject = JSONObject()
-                val requestContainer = JSONObject()
-                val pObj = JSONObject()
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("appVersion", AppPreferences.AppVersion)
-                )
-                sendRequestObject.put(
-                    "requestContainer", requestContainer.put(
-                        "deviceID",
-                        Settings.Secure.getString(
-                            this!!.contentResolver,
-                            Settings.Secure.ANDROID_ID
-                        )
-                    )
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("deviceVersion", AppPreferences.versionRelease)
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("deviceName", AppPreferences.DeviceName)
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("accessToken", accessToken)
-                )
-                sendRequestObject.put(
-                    "requestContainer",
-                    requestContainer.put("userAutoId", empautoid)
-                )
-                sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
-                sendRequestObject.put("pObj", pObj.put("CustomerAutoId", customerAutoId))
-                sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
-                sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
-                sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
-                sendRequestObject.put("pObj", pObj.put("ReqQty", valueIncrementDecrement.text.toString()))
-                if (pricevalue.trim() != "" && pricevalue != null) {
-                    var price = pricevalue.toFloat()
-                    sendRequestObject.put("pObj", pObj.put("unitPrice", price))
-                }
-                sendRequestObject.put("pObj", pObj.put("Oim_Discount", discountPercent.text.toString()))
-                sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount", discountAmount.text.toString()))
-                if (draftAutoId == 0) {
-                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-                } else {
-                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
-                }
+            var valueIncrement=valueIncrementDecrement.text.toString().trim()
+                   if (AppPreferences.internetConnectionCheck(it.context)) {
+                       if (valueIncrement!=""&&valueIncrement!="0"&&valueIncrement!=null){
+                           var pricevalue = Price.text.toString()
+                           val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+                           var accessToken = preferences.getString("accessToken", "")
+                           var empautoid = preferences.getString("EmpAutoId", "")
+                           var customerAutoId = preferences.getString("customerAutoId", "")
+                           var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+                           pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+                           pDialog!!.titleText = "Fetching ..."
+                           pDialog!!.setCancelable(false)
+                           pDialog!!.show()
+                           val sendRequestObject = JSONObject()
+                           val requestContainer = JSONObject()
+                           val pObj = JSONObject()
+                           sendRequestObject.put(
+                               "requestContainer",
+                               requestContainer.put("appVersion", AppPreferences.AppVersion)
+                           )
+                           sendRequestObject.put(
+                               "requestContainer", requestContainer.put(
+                                   "deviceID",
+                                   Settings.Secure.getString(
+                                       this!!.contentResolver,
+                                       Settings.Secure.ANDROID_ID
+                                   )
+                               )
+                           )
+                           sendRequestObject.put(
+                               "requestContainer",
+                               requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+                           )
+                           sendRequestObject.put(
+                               "requestContainer",
+                               requestContainer.put("deviceName", AppPreferences.DeviceName)
+                           )
+                           sendRequestObject.put(
+                               "requestContainer",
+                               requestContainer.put("accessToken", accessToken)
+                           )
+                           sendRequestObject.put(
+                               "requestContainer",
+                               requestContainer.put("userAutoId", empautoid)
+                           )
+                           sendRequestObject.put("pObj", pObj.put("productId", ClickedItem.getPId()))
+                           sendRequestObject.put("pObj", pObj.put("CustomerAutoId", customerAutoId))
+                           sendRequestObject.put("pObj", pObj.put("unitAutoId", unitAutoidValue))
+                           sendRequestObject.put("pObj", pObj.put("isFree", checkFreeValue))
+                           sendRequestObject.put("pObj", pObj.put("isExchange", isExchangeValue))
+                           sendRequestObject.put("pObj", pObj.put("ReqQty",valueIncrement))
+                           var disP=discountPercent.text.toString().trim()
+                           var disA=discountAmount.text.toString().trim()
+                           if (pricevalue.trim() != "" && pricevalue != null) {
+                               var price = pricevalue.toFloat()
+                               sendRequestObject.put("pObj", pObj.put("unitPrice", price))
+                           }
+                           if (disP!=null &&disP!="" &&disA!=null &&disA!="" ){
+                               sendRequestObject.put("pObj", pObj.put("Oim_Discount",disP.toString()))
+                               sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount",disA.toString()))
+                           }
+                           else{
+                               sendRequestObject.put("pObj", pObj.put("Oim_Discount","0.00"))
+                               sendRequestObject.put("pObj", pObj.put("Oim_DiscountAmount","0.00"))
+                           }
+                           if (draftAutoId == 0) {
+                               sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                           } else {
+                               sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                           }
 
-              Log.e("sendRequestObjectProduct list",sendRequestObject.toString())
+                           Log.e("sendRequestObjectProduct btnAddToCart",sendRequestObject.toString())
 
-                //send request queue in vally
-                val queue = Volley.newRequestQueue(this)
-                val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
-                    AppPreferences.addToCartAPI, sendRequestObject,
-                    { response ->
-                        val responseResult = JSONObject(response.toString())
-                        val responsedData = JSONObject(responseResult.getString("d"))
-                        var responseMessage1 = responsedData.getString("responseMessage")
-                        val responseStatus = responsedData.getInt("responseStatus")
-                        if (responseStatus == 200) {
-                            cartResponseResultData = responsedData.getJSONArray("responseData")
-                            Log.e("sendRequestObjectProduct list",cartResponseResultData.toString())
-                            if (cartResponseResultData.length() != null && cartResponseResultData.length() > 0) {
+                           //send request queue in vally
+                           val queue = Volley.newRequestQueue(this)
+                           val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                               AppPreferences.addToCartAPI, sendRequestObject,
+                               { response ->
+                                   val responseResult = JSONObject(response.toString())
+                                   val responsedData = JSONObject(responseResult.getString("d"))
+                                   var responseMessage1 = responsedData.getString("responseMessage")
+                                   val responseStatus = responsedData.getInt("responseStatus")
+                                   if (responseStatus == 200) {
+                                       cartResponseResultData = responsedData.getJSONArray("responseData")
+                                       Log.e("sendRequestObjectProduct list",cartResponseResultData.toString())
+                                       if (cartResponseResultData.length() != null && cartResponseResultData.length() > 0) {
 
-                                var NetPrice:Float?=null
-                                for (i in 0 until cartResponseResultData.length()) {
-                                    draftAutoId = cartResponseResultData.getJSONObject(i)
-                                        .getInt("DraftAutoId")
-                                    Total =
-                                        cartResponseResultData.getJSONObject(i).getString("Total")
-                                    NofItem = cartResponseResultData.getJSONObject(i)
-                                        .getString("NooofItem")
-                                    OQty = cartResponseResultData.getJSONObject(i).getInt("OQty")
-                                    UnitPrice = cartResponseResultData.getJSONObject(i)
-                                        .getDouble("UnitPrice").toFloat()
-                                    UnitType = cartResponseResultData.getJSONObject(i).getString("UnitType")
-                                    Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
+                                           var NetPrice:Float?=null
+                                           for (i in 0 until cartResponseResultData.length()) {
+                                               draftAutoId = cartResponseResultData.getJSONObject(i)
+                                                   .getInt("DraftAutoId")
+                                               Total =
+                                                   cartResponseResultData.getJSONObject(i).getString("Total")
+                                               NofItem = cartResponseResultData.getJSONObject(i)
+                                                   .getString("NooofItem")
+                                               OQty = cartResponseResultData.getJSONObject(i).getInt("OQty")
+                                               UnitPrice = cartResponseResultData.getJSONObject(i)
+                                                   .getDouble("UnitPrice").toFloat()
+                                               UnitType = cartResponseResultData.getJSONObject(i).getString("UnitType")
+                                               Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
 
-                                    Log.e("Tax level ",Tax.toString())
-                                     NetPrice=UnitPrice!!.toFloat()*OQty!!
-                                }
-                                ClickedItem.setdraftAutoID(draftAutoId)
-                                ClickedItem.setUnitType(UnitType)
-                                ClickedItem.setNofItem(NofItem)
-                                ClickedItem.setOQty(OQty)
-                                ClickedItem.setUnitPrice(UnitPrice)
-                                ClickedItem.setTotal(Total)
-                                ClickedItem.setUnitType(UnitType)
-                                ClickedItem.setIsTaxable(Tax)
-                                ClickedItem.setNetPrice(NetPrice)
-                                TotalPrice=(NetPrice!!)
-                                if (ClickedItem.getadded()!!>0){
-                                    itemCounts++
-                                }
+                                               Log.e("Tax level ",Tax.toString())
+                                               NetPrice=UnitPrice!!.toFloat()*OQty!!
+                                           }
+                                           ClickedItem.setdraftAutoID(draftAutoId)
+                                           ClickedItem.setUnitType(UnitType)
+                                           ClickedItem.setNofItem(NofItem)
+                                           ClickedItem.setOQty(OQty)
+                                           ClickedItem.setUnitPrices(UnitPrice)
+                                           ClickedItem.setTotal(Total)
+                                           ClickedItem.setUnitType(UnitType)
+                                           ClickedItem.setIsTaxable(Tax)
+                                           ClickedItem.setNetPrice(NetPrice)
+                                           TotalPrice=(NetPrice!!)
+//                                if (ClickedItem.getadded()!!>0){
+//                                    itemCounts++
+//                                }
 
-                                productAdapterClass.notifyItemChanged(position)
+                                           productAdapterClass.notifyItemChanged(position)
 //                              ClickedItem.setdraftAutoId(draftAutoId)
-                                //Adapter.NO_SELECTION
-                                val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-                                val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
-                                sharedLoadOrderPage.putInt("checkFreeValue", checkFreeValue)
-                                sharedLoadOrderPage.putInt("isExchangeValue", isExchangeValue)
-                                sharedLoadOrderPage.putInt("unitAutoidValue", unitAutoidValue!!)
-                                sharedLoadOrderPage.putInt("draftAutoId", draftAutoId!!)
-                                sharedLoadOrderPage.apply()
-                                Log.e("draftAutoId", draftAutoId.toString())
-                                val intent = Intent("USER_NAME_CHANGED_ACTION")
-                                intent.putExtra("usernames", NofItem.toString())
-                                intent.putExtra("Total", Total.toString())
-                                intent.putExtra("draftAutoId", draftAutoId)
-                                // put your all data using put extra
-                                // put your all data using put extra
-                                LocalBroadcastManager.getInstance(it.context).sendBroadcast(intent)
+                                           //Adapter.NO_SELECTION
+                                           val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+                                           val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
+                                           sharedLoadOrderPage.putInt("checkFreeValue", checkFreeValue)
+                                           sharedLoadOrderPage.putInt("isExchangeValue", isExchangeValue)
+                                           sharedLoadOrderPage.putInt("unitAutoidValue", unitAutoidValue!!)
+                                           sharedLoadOrderPage.putInt("draftAutoId", draftAutoId!!)
+                                           sharedLoadOrderPage.apply()
+                                           Log.e("draftAutoId", draftAutoId.toString())
+                                           val intent = Intent("USER_NAME_CHANGED_ACTION")
+                                           intent.putExtra("usernames", NofItem.toString())
+                                           intent.putExtra("Total", Total.toString())
+                                           intent.putExtra("draftAutoId", draftAutoId)
+                                           // put your all data using put extra
+                                           // put your all data using put extra
+                                           LocalBroadcastManager.getInstance(it.context).sendBroadcast(intent)
 
-                                var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                                popUp.setContentText(responseMessage1.toString())
-                                popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                                popUp.setConfirmClickListener()
-                                { sDialog ->
-                                    sDialog.dismissWithAnimation()
-                                    popUp.dismiss()
-                                }
+                                           var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                                           popUp.setContentText(responseMessage1.toString())
+                                           popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                                           popUp.setConfirmClickListener()
+                                           { sDialog ->
+                                               sDialog.dismissWithAnimation()
+                                               popUp.dismiss()
+                                           }
 
-                                popUp.show()
-                                popUp.setCanceledOnTouchOutside(false)
-                                popUp.setCancelable(false)
-                                pDialog.setCancelable(false)
-                                pDialog!!.dismiss()
-                                dilog.dismiss()
-                                checkFreeValue = 0
-                                isExchangeValue = 0
-                            } else {
-                                warningMessage(message = responseMessage1.toString())
-                                pDialog!!.dismiss()
-                            }
-                            // holder.cardView5.setCardBackgroundColor(Color.parseColor("#F2A2E8"))
-                        } else {
-                            var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                            popUp.setContentText(responseMessage1.toString())
-                            popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
-                            popUp.setConfirmClickListener()
-                            { sDialog ->
-                                sDialog.dismissWithAnimation()
-                                popUp.dismiss()
-                                pDialog.dismiss()
-                            }
-                            popUp.show()
-                            popUp.setCanceledOnTouchOutside(false)
-                            popUp.setCancelable(false)
-                            pDialog.setCancelable(false)
+                                           popUp.show()
+                                           popUp.setCanceledOnTouchOutside(false)
+                                           popUp.setCancelable(false)
+                                           pDialog.setCancelable(false)
+                                           pDialog!!.dismiss()
+                                           dilog.dismiss()
+                                           checkFreeValue = 0
+                                           isExchangeValue = 0
+                                       }
+                                       else {
+                                           warningMessage(message = responseMessage1.toString())
+                                           pDialog!!.dismiss()
+                                       }
+                                       // holder.cardView5.setCardBackgroundColor(Color.parseColor("#F2A2E8"))
+                                   }
+                                   else {
+                                       var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                                       popUp.setContentText(responseMessage1.toString())
+                                       popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                                       popUp.setConfirmClickListener()
+                                       { sDialog ->
+                                           sDialog.dismissWithAnimation()
+                                           popUp.dismiss()
+                                           pDialog.dismiss()
+                                       }
+                                       popUp.show()
+                                       popUp.setCanceledOnTouchOutside(false)
+                                       popUp.setCancelable(false)
+                                       pDialog.setCancelable(false)
 //                                        warningMessage(message = responseMessage1.toString())
 //                                        Log.e("message",responseMessage1.toString())
-                            //  pDialog!!.dismiss()
-                        }
-                    },
-                    Response.ErrorListener { pDialog!!.dismiss() })
-                JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
-                    10000000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                )
-                try {
-                    queue.add(JsonObjectRequest)
-                } catch (e: Exception) {
-                    Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
-                }
-            } else {
+                                       //  pDialog!!.dismiss()
+                                   }
+                               },
+                               Response.ErrorListener { pDialog!!.dismiss() })
+                           JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                               10000000,
+                               DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                               DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                           )
+                           try {
+                               queue.add(JsonObjectRequest)
+                           } catch (e: Exception) {
+                               Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+                           }
+                       }
+                       else
+                       {
+                           var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                           popUp.setContentText("Required quantity can't be blank or zero.")
+                           popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                           popUp.setConfirmClickListener()
+                           { sDialog ->
+                               sDialog.dismissWithAnimation()
+                               popUp.dismiss()
+                           }
+                           popUp.show()
+                           popUp.setCanceledOnTouchOutside(false)
+                           popUp.setCancelable(false)
+            }
+            }else {
                 val dialog = this?.let { Dialog(it) }
                 dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
@@ -978,6 +1019,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 }
                 dialog?.show()
             }
+
+
             productAdapterClass.notifyItemChanged(position)
         })
 
@@ -1241,23 +1284,21 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         })
         btnSearch.setOnClickListener(View.OnClickListener {
             productListModelClass.clear()
-            productListApiCall(productId = productId.text.toString(),
-                productName = productName.text.toString(),
-                "")
+            productListApiCall(productId = productId.text.toString(), productName = productName.text.toString(), "")
             dilog.dismiss()
         })
         dilog.show()
         dilog.getWindow()!!.setAttributes(lp);
     }
 
-    private fun massagePopupAlert() {
+    private fun massagePopupAlert(){
         var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
         popUp.setContentText(responseMessage)
         popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
         popUp.setConfirmClickListener()
         { sDialog ->
             sDialog.dismissWithAnimation()
-            productListApiCall("", "", "")
+//            productListApiCall("", "", "")
         }
         popUp.show()
         popUp.setCanceledOnTouchOutside(false)
@@ -1342,5 +1383,9 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         discountAmount.setText("%.2f".format(0.00))
         discountPercent.setText("%.2f".format(0.00))
     }
+}
+
+private fun Editable.replace(s: String, toString: String) {
+
 }
 

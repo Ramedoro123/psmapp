@@ -29,6 +29,7 @@ import com.example.myapplication.com.example.whm.ui.inventoryreceive.DatePickerF
 import org.json.JSONObject
 import java.lang.reflect.Field
 import java.util.regex.Pattern
+import kotlin.math.roundToInt
 
 
 class OrderSummaryActivity : AppCompatActivity() {
@@ -46,7 +47,7 @@ class OrderSummaryActivity : AppCompatActivity() {
     lateinit var overAllDisP: EditText
     lateinit var overAllDisAmount: EditText
     lateinit var shipingCharge: EditText
-    lateinit var payableAmount: TextView
+    lateinit var payableAmount: EditText
     lateinit var adjcmentV: EditText
     lateinit var salsePRemark: EditText
     lateinit var driverRemark: EditText
@@ -60,6 +61,11 @@ class OrderSummaryActivity : AppCompatActivity() {
     var EnabledTax: Int? = null
     var shippingType: String? = null
     var SubTotal: String? = null
+     var Total:Float?=null
+     var round:Float?=null
+    var adjcment: String? = null
+    var MLTax: String? = null
+    var WeightTax: String? = null
     var uah: Float = 0.0F
     var usd: Float = 0.0F
     var uahEdited = false
@@ -83,7 +89,7 @@ class OrderSummaryActivity : AppCompatActivity() {
         overAllDisP = findViewById<EditText>(R.id.overAllDisP)
         overAllDisAmount = findViewById<EditText>(R.id.overAllDisAmount)
         shipingCharge = findViewById<EditText>(R.id.shipingCharge)
-        payableAmount = findViewById<TextView>(R.id.payableAmount)
+        payableAmount = findViewById<EditText>(R.id.payableAmount)
         adjcmentV = findViewById<EditText>(R.id.adjcmentV)
         salsePRemark = findViewById<EditText>(R.id.salsePRemark)
         driverRemark = findViewById<EditText>(R.id.driverRemark)
@@ -158,26 +164,36 @@ class OrderSummaryActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val tmp = overAllDisAmount.text.toString()
                 val tmps = SubTotal.toString()
-                if (!tmp.isEmpty() && uahEdited && tmp != "." && tmps != null && tmps != ".") {
+                var tmps1 = Total
+                if (!tmp.isEmpty() && uahEdited && tmp != "." && tmps != null && tmps != "."&&tmps1!=null&&tmps1!=0.2f ) {
                     uah = tmp.toFloat()
                     val minprice = tmps.toFloat()
                     if (minprice>=uah) {
                         usd = uah * 100 / minprice
                         overAllDisP.setText("%.2f".format(usd))
                     }
-                    else {
+                    else{
                         overAllDisAmount.text.replace(0, overAllDisAmount.text.length, "0.00")
                         Toast.makeText(this@OrderSummaryActivity,"Percent Amount should not be greater than Sub Total Amount.",Toast.LENGTH_LONG).show()
                     }
-
+                    var tmp1=tmp.toFloat()
+                    var tmp2=tmps1.toFloat()
+                    var total1=tmp2-tmp1
+                    var round1=total1.roundToInt().toFloat()
+                    var adjs=round1!!-total1!!
+                    adjcmentV.setText("%.2f".format(adjs.toDouble()))
+                    payableAmount.setText("%.2f".format(round1))
                 } else if (tmp.isEmpty()) {
+                    var tem3 = 0.00
+                    var temp3 = tmps1!!.toFloat()
+                    var gangs = temp3 + tem3
+                    payableAmount.setText("%.2f".format(gangs.roundToInt().toFloat()))
                     overAllDisP.text.clear()
                 }
             }
 
             override fun afterTextChanged(s: Editable) {
                 uahEdited = false
-
             }
         })
         overAllDisP.addTextChangedListener(object : TextWatcher {
@@ -214,6 +230,43 @@ class OrderSummaryActivity : AppCompatActivity() {
                     }
                 } else if (tmp.isEmpty()) {
                     overAllDisAmount.text.clear()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                usdEdited = false
+            }
+        })
+        shipingCharge.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence,
+                start: Int,
+                count: Int,
+                after: Int,
+            ) {
+                if (!uahEdited) {
+                    usdEdited = true
+
+                }
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                var tmp = shipingCharge.text.toString()
+                var tmps = Total
+                if (!tmp.isEmpty() && usdEdited && tmp != "." && tmps != null && tmps !=null && tmps !=0.2f) {
+                    var tmp1=tmp.toFloat()
+                    var tmp2=tmps.toFloat()
+                    var total=tmp1+tmp2
+                    var round1=total.roundToInt().toFloat()
+                    var adjs=round1!!-total!!
+                    adjcmentV.setText("%.2f".format(adjs.toDouble()))
+                    payableAmount.setText("%.2f".format(round1.toFloat()))
+                }
+                else if (tmp.isEmpty()) {
+                    var tem3 = 0.00
+                    var temp3 = tmps!!.toFloat()
+                    var gangs = temp3 + tem3
+                    payableAmount.setText("%.2f".format(gangs.roundToInt().toFloat()))
                 }
             }
 
@@ -266,12 +319,21 @@ class OrderSummaryActivity : AppCompatActivity() {
             sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
 
             sendRequestObject.put("pObj", pObj.put("ShippingType", Autoid))
-            sendRequestObject.put("pObj", pObj.put("ShippingCharges", shipingCharge.text.toString()))
             sendRequestObject.put("pObj", pObj.put("Remarks", salsePRemark.text.toString()))
             sendRequestObject.put("pObj", pObj.put("DriverRemarks", driverRemark.text.toString()))
             sendRequestObject.put("pObj", pObj.put("DeliveryDate", deliveryDate.text.toString()))
-            sendRequestObject.put("pObj", pObj.put("OverallDisc", overAllDisP.text.toString()))
-            sendRequestObject.put("pObj", pObj.put("OverallDiscAmt", overAllDisAmount.text.toString()))
+            var overAllDisP1=overAllDisP.text.toString()
+            var shipingCharge1=shipingCharge.text.toString()
+            var overAllDisAmount1=overAllDisAmount.text.toString()
+            if (overAllDisP1==""||overAllDisAmount1==""||shipingCharge1=="") {
+                sendRequestObject.put("pObj", pObj.put("ShippingCharges", 0))
+                sendRequestObject.put("pObj", pObj.put("OverallDisc", 0))
+                sendRequestObject.put("pObj", pObj.put("OverallDiscAmt", 0))
+            }else{
+                sendRequestObject.put("pObj", pObj.put("ShippingCharges", shipingCharge1))
+                sendRequestObject.put("pObj", pObj.put("OverallDisc", overAllDisP1))
+                sendRequestObject.put("pObj", pObj.put("OverallDiscAmt", overAllDisAmount1))
+            }
             if (draftAutoId != 0) {
                 sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
             }
@@ -416,11 +478,11 @@ class OrderSummaryActivity : AppCompatActivity() {
                             var shippingsA = responsDataObject.getString("SA")
                             var deliveryDates = responsDataObject.getString("DeliveryDate")
                              SubTotal = responsDataObject.getString("SubTotal")
-                            var adjcment = responsDataObject.getString("Adj")
-                            var MLQty = responsDataObject.getString("MLQty")
-                            var MLTax = responsDataObject.getString("MLTax")
-                            var WeightQty = responsDataObject.getString("WeightQty")
-                            var WeightTax = responsDataObject.getString("WeightTax")
+                             adjcment = responsDataObject.getString("Adj")
+                             var MLQty = responsDataObject.getString("MLQty")
+                             MLTax = responsDataObject.getString("MLTax")
+                             var WeightQty = responsDataObject.getString("WeightQty")
+                             WeightTax = responsDataObject.getString("WeightTax")
                             var TaxType = responsDataObject.getString("TaxType")
                             var Tax = responsDataObject.getString("Tax")
                             var CD = responsDataObject.getString("CD")
@@ -428,14 +490,16 @@ class OrderSummaryActivity : AppCompatActivity() {
                             var  discountP= CD.toFloat()
                             var  disAmt= DisAmt.toFloat()
                             var subTotals=SubTotal?.toFloat()
-                            var adjcments=adjcment.toFloat()
+                            var adjcments=adjcment!!.toFloat()
+                            var MLTaxValue=MLTax!!.toFloat()
+                            var WeightTaxs=WeightTax!!.toFloat()
                         if(MLQty!=null &&MLQty!="0" &&WeightQty!=null &&WeightQty!="0"
                             &&WeightQty!=""&&MLQty!="" &&MLTax!="0"&&MLTax!=""&&MLTax!=null&&WeightTax!=""&&WeightTax!="0"&&WeightTax!=null){
                              Log.e("MLQty",MLQty)
                             var MLQtys=MLQty.toFloat()
-                            var MLTaxValue=MLTax.toFloat()
+                            var MLTaxValue=MLTax!!.toFloat()
                             var WeightQtys=WeightQty.toFloat()
-                            var WeightTaxs=WeightTax.toFloat()
+                            var WeightTaxs=WeightTax!!.toFloat()
                             mlTaxLevel.visibility=View.VISIBLE
                             weightTaxLevel.visibility=View.VISIBLE
                             weightTax.visibility=View.VISIBLE
@@ -460,22 +524,36 @@ class OrderSummaryActivity : AppCompatActivity() {
                             totalTax.visibility=View.GONE
                             textView8.visibility=View.GONE
                         }
-
                             billingA.setText(billingsA)
                             shippingA.setText(shippingsA)
+                            adjcmentV.setText("%.2f".format(adjcments.toDouble()))
                             subTotal.setText("%.2f".format(subTotals?.toDouble()))
                             deliveryDate.setText(deliveryDates)
                             taxType.setText(TaxType)
                             overAllDisP.setText("%.2f".format(discountP.toDouble()))
                             overAllDisAmount.setText("%.2f".format(disAmt.toDouble()))
-                          if (subTotals!=null&& adjcments!=null)
+                            var disAmount:Float?=null
+                            var adjsment:Float?=null
+                            var overAllDisAmount1= overAllDisAmount.text.trim().toString()
+                            var adjcmentV1= adjcmentV.text.trim().toString()
+                            if (overAllDisAmount1!="" &&overAllDisAmount1!=null&&adjcmentV1!=null&&adjcmentV1!="")
+                            {
+                                 disAmount=overAllDisAmount1.toFloat()
+                                 adjsment =adjcmentV1.toFloat()
+                            }
+//                            else{
+//                                disAmount=0.2f
+//                                adjsment=0.2f
+//                            }
+
+                          if (subTotals!=null)
                           {
-
-                                   var Total=(adjcments+subTotals)
-                                   payableAmount.setText("%.2f".format(Total.toDouble()))
+                                   Total=(adjsment!!+subTotals+WeightTaxs+MLTaxValue)-disAmount!!
+                                   round=Total!!.roundToInt().toFloat()
+                                   var adjs=round!!-Total!!
+                                  adjcmentV.setText("%.2f".format(adjs.toDouble()))
+                                  payableAmount.setText("%.2f".format(round!!.roundToInt().toFloat()))
                           }
-
-                        adjcmentV.setText("%.2f".format(adjcments.toDouble()))
 //                        salsePRemark
 //                        driverRemark
                         }
@@ -747,3 +825,4 @@ class OrderSummaryActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 }
+

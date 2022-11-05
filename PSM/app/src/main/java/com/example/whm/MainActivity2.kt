@@ -68,6 +68,10 @@ class MainActivity2 : AppCompatActivity() {
               nav_Menu.findItem(com.example.myapplication.R.id.nav_Customer_Order_List).isVisible=true
               nav_Menu.findItem(com.example.myapplication.R.id.nav_CustomerDraftOrder_List).isVisible=true
 
+        }else if (usertype=="10"){
+            nav_Menu.findItem(com.example.myapplication.R.id.nav_Customer_List).isVisible = true
+            nav_Menu.findItem(com.example.myapplication.R.id.nav_Customer_Order_List).isVisible=true
+            nav_Menu.findItem(com.example.myapplication.R.id.nav_CustomerDraftOrder_List).isVisible=true
         }
         else if (usertype == "9") {
             nav_Menu.findItem(com.example.myapplication.R.id.nav_product).isVisible = true

@@ -200,6 +200,8 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
         val ClickedItem: ModelClassDraftOrderList=modelClassDraftOrder[position]
         var intent:Intent=Intent(this,SalesPersonProductList::class.java)
         intent.putExtra("draftAutoIdd",ClickedItem.getDraftAutoId().toString())
+        intent.putExtra("grandTotal",ClickedItem.getgrandTotal().toString())
+        intent.putExtra("noOfItems",ClickedItem.getnoOfItems().toString())
         startActivity(intent)
         finish()
     }

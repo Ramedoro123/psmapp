@@ -458,73 +458,6 @@
                             app:layout_constraintTop_toBottomOf="@+id/subTotalOrderdetails" />
 
                         <TextView
-                            android:id="@+id/mlTaxQty"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="2dp"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toStartOf="@+id/taxML"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/taxML" />
-
-                        <TextView
-                            android:id="@+id/taxML"
-                            android:layout_width="80dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="3dp"
-                            android:gravity="end"
-                            android:paddingRight="3dp"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/view18" />
-
-                        <View
-                            android:id="@+id/textView81"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@color/teal_700"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/taxML" />
-
-                        <TextView
-                            android:id="@+id/wegitTaxValue"
-                            android:layout_width="80dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="3dp"
-                            android:gravity="end"
-                            android:paddingRight="3dp"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView81" />
-
-                        <TextView
-                            android:id="@+id/weighttaxQty"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="2dp"
-                            android:gravity="end"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toStartOf="@+id/wegitTaxValue"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/wegitTaxValue" />
-
-                        <View
-                            android:id="@+id/textView84"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@color/teal_700"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/wegitTaxValue" />
-
-                        <TextView
                             android:id="@+id/adjText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -690,7 +623,7 @@
                             android:paddingRight="3dp"
                             android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView84" />
+                            app:layout_constraintTop_toBottomOf="@+id/view18" />
 
                         <TextView
                             android:id="@+id/discountPersentText"
@@ -777,7 +710,18 @@
                             app:layout_constraintTop_toBottomOf="@+id/shippingCharge" />
 
                         <TextView
-                            android:id="@+id/Salsetax"
+                            android:id="@+id/mlTaxQty"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="2dp"
+                            android:gravity="end"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toStartOf="@+id/taxML"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/taxML" />
+
+                        <TextView
+                            android:id="@+id/taxML"
                             android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -787,6 +731,61 @@
                             android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView69" />
+
+                        <View
+                            android:id="@+id/textView81"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/teal_700"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/mlTaxQty" />
+
+                        <TextView
+                            android:id="@+id/wegitTaxValue"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="3dp"
+                            android:gravity="end"
+                            android:paddingRight="3dp"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView81" />
+
+                        <TextView
+                            android:id="@+id/weighttaxQty"
+                            android:layout_width="0dp"
+                            android:layout_height="19dp"
+                            android:layout_marginEnd="2dp"
+                            android:gravity="end"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toStartOf="@+id/wegitTaxValue"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/wegitTaxValue" />
+
+                        <View
+                            android:id="@+id/textView84"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/teal_700"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/wegitTaxValue" />
+
+                        <TextView
+                            android:id="@+id/Salsetax"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="3dp"
+                            android:gravity="end"
+                            android:paddingRight="3dp"
+                            android:textColor="@color/black"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView84" />
 
                         <TextView
                             android:id="@+id/salsetext"

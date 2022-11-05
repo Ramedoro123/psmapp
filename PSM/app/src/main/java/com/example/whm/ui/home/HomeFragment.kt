@@ -84,6 +84,16 @@ class HomeFragment : Fragment() {
             nav_Customer_Order.visibility=View.VISIBLE
             nav_CustomerDraftOrder.visibility=View.VISIBLE
         }
+        if (Usertype.toString()=="10"){
+            btnInvCheck.visibility = View.GONE
+            btnAddBar.visibility = View.GONE
+            btnUnLoadList.visibility=View.GONE
+            btnDriLoad.visibility=View.GONE
+            btnOrderList.visibility=View.GONE
+            Customer_List.visibility=View.VISIBLE
+            nav_Customer_Order.visibility=View.VISIBLE
+            nav_CustomerDraftOrder.visibility=View.VISIBLE
+        }
         if (Usertype.toString() == "9") {
 
             btnInvCheck.visibility = View.VISIBLE

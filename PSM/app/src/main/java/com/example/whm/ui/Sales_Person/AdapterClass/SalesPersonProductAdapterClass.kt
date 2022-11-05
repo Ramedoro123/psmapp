@@ -86,10 +86,7 @@ class SalesPersonProductAdapterClass(
         var taxValue = ProductItem.getIsTaxable().toInt()
         var netPrices = ProductItem.getNetPrice().toString()
         var priceProduct = ProductItem.getBP()!!.toFloat()
-        var UnitType = ProductItem.getUnitType().toString()
-        holder.ProductPrice.setText("$" + "%.2f".format(priceProduct) + "(" + UnitType + ")")
-
-        var unitPrice = ProductItem.getUnitPrice()!!.toFloat()
+        var unitPrice = ProductItem.getUnitPrices().toString()
 
         var UnitTypes = ProductItem.getUnitType().toString()
 
@@ -108,27 +105,30 @@ class SalesPersonProductAdapterClass(
              Log.e("UnitTypes",UnitTypes.toString())
              Log.e("TaxAble Tax",taxValue.toString())
 
-        if (Qty != null && Qty != "" && unitPrice != 0.2f && unitPrice != null && UnitTypes != null && UnitTypes != "" && Qty != "0"&&netPrices != null && netPrices!="" &&netPrices!="0.0" ||taxValue!=0 &&taxValue!=null &&ReQty!=null &&ReQty!="" &&ReQty!="0")
+        if ((Qty != null && Qty != "" && unitPrice !="0.0" && unitPrice !="" && unitPrice != null && Qty !="0"&&netPrices != null && netPrices!="" &&netPrices!="0.0") ||(taxValue!=0 &&taxValue!=null &&ReQty!=null &&ReQty!="" &&ReQty!="0"))
         {
             var netPrice=netPrices.toFloat()
+            var unitPrice=unitPrice.toFloat()
             holder.OrderQtyValue.setText(Qty.toString())
             holder.orderQtyProduct.visibility = View.VISIBLE
             holder.OrderQtyValue.visibility = View.VISIBLE
             holder.netPrice.visibility = View.VISIBLE
             holder.btnDeleteItem.visibility = View.VISIBLE
-            if (taxValue!=0 &&ReQty!="0") {
+            if (taxValue==1){
                 holder.taxableLevel.visibility = View.VISIBLE
-                holder.OrderQtyValue.setText(ReQty.toString())
+                holder.OrderQtyValue.setText(Qty.toString())
                 holder.OrderQtyValue.visibility = View.VISIBLE
                 holder.taxableLevel.setText("Taxable")
-            }else{
+            }
+            else{
                 holder.taxableLevel.visibility = View.GONE
             }
             holder.netPrice.setText("$" + "%.2f".format(netPrice))
             holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitTypes + ")")
         }
-        else if ((netPrices != null && netPrices!="" &&netPrices!="0.0" &&ReQty!="0" &&ReQty!=""&&ReQty!=null))
+        else if ((netPrices != null && netPrices!="" &&netPrices!="0.0" &&ReQty!="0" &&ReQty!=""&&ReQty!=null && unitPrice !="0.0" && unitPrice !="" && unitPrice != null))
         {
+            var unitPrice=unitPrice.toFloat()
             holder.OrderQtyValue.setText(ReQty.toString())
 //            Log.e("ReQty 456465   d",Qty)
             holder.netPrice.visibility = View.VISIBLE
@@ -137,6 +137,7 @@ class SalesPersonProductAdapterClass(
             holder.btnDeleteItem.visibility = View.VISIBLE
             var netPrice=netPrices.toFloat()
             holder.netPrice.setText("$" + "%.2f".format(netPrice))
+            holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitTypes + ")")
         }
         else if (taxValue==1)
         {
@@ -150,14 +151,15 @@ class SalesPersonProductAdapterClass(
             holder.OrderQtyValue.visibility = View.GONE
             holder.btnDeleteItem.visibility = View.GONE
             holder.orderQtyProduct.visibility = View.GONE
+            holder.ProductPrice.setText("$" + "%.2f".format(priceProduct) + "(" + UnitTypes + ")")
         }
 
         var productStoct = ProductItem.getCStock()
         if (productStoct == "0") {
-            holder.ProductStock.setText("Stock : " + productStoct.toString())
+            holder.ProductStock.setText("Stock : " + productStoct.toString()+"("+UnitTypes.toString()+")")
             holder.ProductStock.setTextColor(Color.parseColor("#DC3545"))
         } else {
-            holder.ProductStock.setText("Stock : " + productStoct.toString())
+            holder.ProductStock.setText("Stock : " + productStoct.toString()+"("+UnitTypes+")")
             holder.ProductStock.setTextColor(Color.parseColor("#000000"))
         }
         var image=ProductItem.getImageUrl()
