@@ -90,7 +90,7 @@ class CartListAdapterClass(
         else{
             holder.isFreeAndExchenge.visibility=View.GONE
         }
-        holder.cartTotalAmount.setText("$" + "%.2f".format(NetPrice))
+        holder.cartTotalAmount.setText("$" + "%.2f".format(NetPrice.toFloat()))
         holder.cartPpiece.setText("$" + "%.2f".format(priceProduct)+"/" +UnitType+ " X" +ReqQty)
         var image=cartListData.getImgPath()
         if (image!=null &&image!="") {

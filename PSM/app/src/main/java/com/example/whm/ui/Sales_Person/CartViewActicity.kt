@@ -16,7 +16,6 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -31,7 +30,6 @@ import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.CartListAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.SalesPersonProductAdapterClass
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.CartListModelClass
-import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getCartdetailsModle
 import com.squareup.picasso.Picasso
 import org.json.JSONArray
@@ -48,6 +46,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     lateinit var CustomerName:TextView
     var productListModelClass: ArrayList<CartListModelClass> = arrayListOf()
     lateinit var cartListAdapter:CartListAdapterClass
+
     var itemCounts: Int = 0
     var responseMessage: String? = null
     var pDialog: SweetAlertDialog? = null
@@ -69,7 +68,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     var MinPric: String? = null
     var minPrices: String? = null
     var dispValue1:String?=null
-    var disaValue1:String?=null
+    var disaValue2:String?=null
     var OQty: Int? = null
     var UnitPrice: Float? = null
     var UnitType: String? = null
@@ -86,6 +85,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     var priceValue: Double? = null
     var uah: Float = 0.0F
     var usd: Float = 0.0F
+    var DiscP: String? = null
+    var DiscA: String ?= null
     var uahEdited = false
     var usdEdited = false
     var getcartDetailsdata:MutableList<getCartdetailsModle> =ArrayList()
@@ -100,7 +101,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     lateinit var isExchangeCheckBox: CheckBox
     lateinit var discountAmount: EditText
     lateinit var discountPercent: EditText
-
+      var adapter: ArrayAdapter<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart_view_acticity)
@@ -317,7 +318,11 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
 
 
     override fun OnItemsClick(position: Int) {
+
         val ClickedItem:CartListModelClass=productListModelClass[position]
+        var free=ClickedItem.getFree()
+        var exchangevalue=ClickedItem.getExchange()
+        Log.e("free,exchangevalue",exchangevalue.toString()+"/"+free.toString())
         if (AppPreferences.internetConnectionCheck(this@CartViewActicity)) {
             val preferences = PreferenceManager.getDefaultSharedPreferences(this)
             var accessToken = preferences.getString("accessToken", "")
@@ -409,7 +414,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                 pricess = getcartDetailsdata[n].getprice()
 
                                 dispValue1=getcartDetailsdata[n].getdispValue()
-                                disaValue1=getcartDetailsdata[n].getdisaValue()
+                                disaValue2=getcartDetailsdata[n].getdisaValue()
 
                                 minPrices = getcartDetailsdata[n].getMinPric()
                                 isFree = getcartDetailsdata[n].getfrees().toString()
@@ -418,7 +423,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                 isFreelist.add(isFree.toString())
 
                                 dispValue.add(dispValue1.toString())
-                                disaValue.add(disaValue1.toString())
+                                disaValue.add(disaValue2.toString())
 
                                 mylist1.add(pricess.toString())
                                 minPriceslist.add(minPrices.toString())
@@ -428,9 +433,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                 mylist.add(UName.toString())
                             }
 
-                            var adapter = ArrayAdapter<String>(this,
-                                R.layout.support_simple_spinner_dropdown_item,
-                                mylist)
+                             adapter = ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, mylist)
                             spineer.adapter = adapter
                             for (i in 0..isdefault.size - 1) {
                                 Log.e("isdefault", isdefault[i].toString())
@@ -451,15 +454,15 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                         id: Long,
                                     ) {
                                         val item2: String = mylist1[position]
-                                        val dispValue1: String = dispValue[position]
-                                        val disaValue1: String = disaValue[position]
+                                          var dispValue1= dispValue[position]
+                                          var disaValue2= disaValue[position]
                                         minPrice = minPriceslist[position]
                                         isFrees = isFreelist[position]
                                         unitAutoidValue = unitAutoIdList[position]
                                         Log.e("isFrees", isFrees.toString())
                                         priceValue = item2.toDouble()
-                                        discountAmount.setText("%.2f".format(dispValue1.toDouble()))
-                                        discountPercent.setText("%.2f".format(disaValue1.toDouble()))
+                                        discountAmount.setText("%.2f".format(disaValue2!!.toDouble()))
+                                        discountPercent.setText("%.2f".format(dispValue1!!.toDouble()))
                                         Price.setText("%.2f".format(priceValue))
                                         Log.e("Price", Price.text.toString())
                                         if (isFreeCheckBox.isChecked) {
@@ -505,6 +508,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
 
                                 }
                             listDropdown(spineer)
+
                         }
 
                         else {
@@ -571,8 +575,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         isExchangeCheckBox = dilog.findViewById<CheckBox>(R.id.isExchangeCheckBox)
         var imageView13 = dilog.findViewById<ImageView>(R.id.imageView13)
         spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
- //        isFreeCheckBox.visibility=View.GONE
-//        isExchangeCheckBox.visibility=View.GONE
+         isFreeCheckBox.visibility=View.GONE
+        isExchangeCheckBox.visibility=View.GONE
         btnAddToCart.setText("Update")
         SProductID.setText(ClickedItem.getPId())
         s_ProductName.setText(ClickedItem.getPName())
@@ -818,21 +822,22 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                     NofItem = cartResponseResultData.getJSONObject(i).getString("NooofItem")
                                     OQty = cartResponseResultData.getJSONObject(i).getInt("OQty")
                                     UnitPrice = cartResponseResultData.getJSONObject(i).getDouble("UnitPrice").toFloat()
+                                     DiscP = cartResponseResultData.getJSONObject(i).getString("DiscP")
+                                     DiscA = cartResponseResultData.getJSONObject(i).getString("DiscA")
                                     UnitType = cartResponseResultData.getJSONObject(i).getString("UnitType")
                                     Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
                                     Log.e("Tax level ",Tax.toString())
                                     NetPrice=UnitPrice!!.toFloat()* OQty!!
-
 //                                    addCartDetailsModelClass("","",UnitType!!,0, unitPrice = UnitPrice!!,
 //                                        0, netPrice = NetPrice!!,0,0,0,0,"",draftAutoId!!,Total!!,NofItem!!,OQty!!)
                                     // addToCartData.add(cartData)
                                 }
+
                                 ClickedItem.setNetPrice(NetPrice)
                                 ClickedItem.setUnitPrice(UnitPrice)
                                 ClickedItem.setUnitType(UnitType)
                                 ClickedItem.setNofItem(NofItem)
                                 ClickedItem.setReqQty(OQty)
-                                ClickedItem.setUnitPrice(UnitPrice)
                                 ClickedItem.setTotal(Total)
                                 ClickedItem.setUnitType(UnitType)
                                 ClickedItem.settax(Tax)
@@ -921,6 +926,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         dilog.show()
         dilog.getWindow()!!.setAttributes(lp);
         cartListAdapter.notifyItemChanged(position)
+        spineer.setEnabled(false);
+        spineer.setClickable(false);
+        spineer.setAdapter(adapter);
     }
 
 

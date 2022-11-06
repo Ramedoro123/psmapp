@@ -35,6 +35,7 @@ import com.squareup.picasso.Picasso
 import org.json.JSONArray
 import org.json.JSONObject
 import java.lang.reflect.Field
+import kotlin.math.roundToInt
 
 
 class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
@@ -535,8 +536,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                         Log.e("isFrees", isFrees.toString())
                                         priceValue = item2.toDouble()
                                         Price.setText("%.2f".format(priceValue))
-                                        discountAmount.setText("%.2f".format(dispValue.toDouble()))
-                                        discountPercent.setText("%.2f".format(disaValue.toDouble()))
+                                        discountAmount.setText("%.2f".format(disaValue.toDouble()))
+                                        discountPercent.setText("%.2f".format(dispValue.toDouble()))
 
 
                                         Log.e("Price", Price.text.toString())
@@ -645,18 +646,48 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             valueIncrementDecrement.setText(valueOrderQty.toString())
         }
         var value1 = valueIncrementDecrement.text.toString()
-        var value: Int = 0
-        try {
-            value = value1.toInt()
-        } catch (nfe: NumberFormatException) {
-            // Handle the condition when str is not a number.
-        }
+//        var value: Int = 0
+//        try {
+//            value = value1.toInt()
+//        } catch (nfe: NumberFormatException) {
+//            // Handle the condition when str is not a number.
+//        }
+
+        var value:Int?=1
+        valueIncrementDecrement.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence,
+                start: Int,
+                count: Int,
+                after: Int,
+            ) {
+                if (!uahEdited) {
+                    usdEdited = true
+
+                }
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                var tmp = valueIncrementDecrement.text.toString()
+                if (!tmp.isEmpty() && usdEdited && tmp !="") {
+                    value=tmp.toInt()
+                }
+                else if (tmp.isEmpty()) {
+                    var tem3 = 0.00
+                      value=tem3.toInt()
+                }
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                usdEdited = false
+            }
+        })
         var countvalue = value
         incrementBtn.setOnClickListener(View.OnClickListener {
             if (value == 0 || value == null) {
                 valueIncrementDecrement.setText("1")
             } else {
-                countvalue = countvalue + 1
+                countvalue = countvalue!!+ 1
                 valueIncrementDecrement.setText(countvalue.toString())
             }
         })
@@ -665,12 +696,14 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 valueIncrementDecrement.setText("1")
             } else {
 
-                if (countvalue > 1) {
-                    countvalue = countvalue - 1;
+                if (countvalue!! > 1) {
+                    countvalue = countvalue !!- 1;
                     valueIncrementDecrement.setText(countvalue.toString());
                 }
             }
         })
+
+
 
         discountAmount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
@@ -688,10 +721,11 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 val tmpDisAmoun = discountAmount.text.toString()
                 val tmps = minPrice.toString()
                 val temsprie = Price.text.toString()
-                if (!tmpDisAmoun.isEmpty() && uahEdited && tmpDisAmoun != "." && tmps != null && tmps != "." && temsprie != "" && temsprie != null && tmpDisAmoun != "0.00") {
+                if (!tmpDisAmoun.isEmpty() && uahEdited && tmpDisAmoun != "." && tmps != null && tmps != "." && temsprie != "" && temsprie != null && tmpDisAmoun != "0.00" &&value!=0&&value!=null) {
                     uah = tmpDisAmoun.toFloat()
-                    var price = temsprie.toFloat()
-                    val minprice1 = tmps.toFloat()
+                    var orderQty=value!!.toFloat()
+                    var price = temsprie.toFloat()*orderQty
+                    val minprice1 = tmps.toFloat()*orderQty
                     var Amountdiscount:Float = price - uah
                     if (uah > price) {
                         discountAmount.text.replace(0, discountAmount.text.length, "0.00")
@@ -745,22 +779,25 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val tmp = discountPercent.text.toString()
+                val discountPercenttmp = discountPercent.text.toString()
                 val tmps = Price.text.toString()
                   var minp=minPrice.toString()
-                if (!tmp.isEmpty() && usdEdited && tmp != "." && tmps != null && tmps != "" && tmps != "." && tmp != "0.00"&&minp!="") {
-
-                    usd = tmp.toFloat()
-                    val price = tmps.toFloat()
-                    val minprice1=minp.toFloat()
-                    var Amountdiscount: Float = price - usd * 100 / 100
+                if (!discountPercenttmp.isEmpty() && usdEdited && discountPercenttmp != "." && tmps != null && tmps != "" && tmps != "." && discountPercenttmp != "0.00"&&minp!="" &&value!=0&&value!=null) {
+                    usd = discountPercenttmp.toFloat()
+                    var orderQty=value!!.toFloat()
+                    val price = tmps.toFloat()* orderQty
+                    val minprice1=minp.toFloat()* orderQty
+                    var  diaAmount=(usd * price)/ 100
+                    var Amountdiscount: Float =(price-diaAmount)
+                    Log.e("usd",usd.toString())
                     if (usd > 100) {
                         discountPercent.text.replace(0, discountPercent.text.length, "0.00")
                     }
                     if (minprice1 <= Amountdiscount) {
                         uah = usd * price / 100
                         discountAmount.setText("%.2f".format(uah))
-                    } else {
+                    }
+                    else {
                         var dilog = Dialog(this@SalesPersonProductList)
                         dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                         dilog.setCancelable(false)
@@ -784,7 +821,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     }
-                } else if (tmp.isEmpty()) {
+                } else if (discountPercenttmp.isEmpty()) {
                     discountAmount.text.clear()
                 }
             }
@@ -898,7 +935,6 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                                    .getDouble("UnitPrice").toFloat()
                                                UnitType = cartResponseResultData.getJSONObject(i).getString("UnitType")
                                                Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
-
                                                Log.e("Tax level ",Tax.toString())
                                                NetPrice=UnitPrice!!.toFloat()*OQty!!
                                            }

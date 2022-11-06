@@ -213,7 +213,17 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
 
 //                            var TaxType=responsDataObject.getString("TaxType")
                             var BillAddr=responsDataObject.getString("BillAddr")
+                            var State1=responsDataObject.getString("State1")
+                            var City1=responsDataObject.getString("City1")
+                            var Zipcode1=responsDataObject.getString("Zipcode1")
+
                             var ShipAddr=responsDataObject.getString("ShipAddr")
+                            var State2=responsDataObject.getString("State2")
+                            var City2=responsDataObject.getString("City2")
+                            var Zipcode2=responsDataObject.getString("Zipcode2")
+
+
+
                             var CustomerName=responsDataObject.getString("CustomerName")
                             var Status=responsDataObject.getString("Status")
                             var ShippingTypeName=responsDataObject.getString("ShippingTypeName")
@@ -239,8 +249,8 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                             orderNumber.setText(OrderNo.toString())
                             orderdate.setText(OrderDate.toString())
                             customerNameSp.setText(CustomerName.toString())
-                            shippingaddressSp.setText(ShipAddr.toString())
-                            billingAddressSp.setText(BillAddr.toString())
+                            shippingaddressSp.setText(ShipAddr.toString()+"\n"+City2+", "+State2+"-"+Zipcode2)
+                            billingAddressSp.setText(BillAddr.toString()+"\n"+City1+", "+State1+"-"+Zipcode1)
                             shippingTypeSp.setText(ShippingTypeName)
                             status.setText(Status.toString())
                             customeridCS.setText(CustomerId.toString())
