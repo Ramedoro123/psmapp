@@ -121,25 +121,21 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         customerName = preferences.getString("CustomerName", "")
         customerId = preferences.getString("customerId", "")
         ProductItemList = preferences.getString("ProductItemList", "")
-        draftAutoId = intent.getIntExtra("draftAutoId", 0)
+            draftAutoId = intent.getIntExtra("draftAutoId", 0)
         var draftAutoIdd = intent.getStringExtra("draftAutoIdd")
         var grandTotal = intent.getStringExtra("grandTotal")
         var noOfItems = intent.getStringExtra("noOfItems")
         if (draftAutoIdd!=null&&draftAutoIdd!=""&&draftAutoIdd!="0"){
             draftAutoId=draftAutoIdd.toInt()
         }
-        var noOfItem=username
-        var totalValue1=totalValue.toString()
-        if (grandTotal!=null&&noOfItems!=null&&grandTotal!=""&&noOfItems!="" ||noOfItem!=null&&noOfItems!=null&&totalValue1!=""&&totalValue1!="")
+        if (grandTotal!=null &&noOfItems!=null&&grandTotal!=""&&noOfItems!="")
         {
-            username = noOfItems
-            totalValue = grandTotal!!.toDouble()
+            username=noOfItems
+            totalValue=grandTotal!!.toDouble()
             cart_badge.setText(username)
-            orderTotalValue.setText("%.2f".format(totalValue))
+            orderTotalValue.setText("$%.2f".format(totalValue))
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(broadCastReceiver, IntentFilter("USER_NAME_CHANGED_ACTION"))
-
-
         userInformation.setOnClickListener(View.OnClickListener {
             var dilog = Dialog(this@SalesPersonProductList)
             dilog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -257,7 +253,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                  draftAutoId = intent.getIntExtra("draftAutoId", 0);
                  totalValue = total.toString().toDouble()
                 cart_badge.setText(username)
-                orderTotalValue.setText("%.2f".format(totalValue))
+                orderTotalValue.setText("$%.2f".format(totalValue))
             }
         }
     }
@@ -641,47 +637,22 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         Picasso.get().load(ClickedItem.getImageUrl()).error(R.drawable.default_pic)
             .into(imageView13);
         Price.filters = arrayOf(SalesPersonProductAdapterClass.DecimalDigitsInputFilter(5, 2))
-        var valueOrderQty = ClickedItem.getOQty()
+        var orderQty=ClickedItem.getOQty()
+        var valueOrderQty= ClickedItem.getReqQty()
         if (valueOrderQty != 0 && valueOrderQty.toString() != null && valueOrderQty.toString() != "0") {
             valueIncrementDecrement.setText(valueOrderQty.toString())
         }
+        if (orderQty!=0&&orderQty!=null) {
+                valueIncrementDecrement.setText(orderQty.toString())
+        }
+
         var value1 = valueIncrementDecrement.text.toString()
-//        var value: Int = 0
-//        try {
-//            value = value1.toInt()
-//        } catch (nfe: NumberFormatException) {
-//            // Handle the condition when str is not a number.
-//        }
-
-        var value:Int?=1
-        valueIncrementDecrement.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence,
-                start: Int,
-                count: Int,
-                after: Int,
-            ) {
-                if (!uahEdited) {
-                    usdEdited = true
-
-                }
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                var tmp = valueIncrementDecrement.text.toString()
-                if (!tmp.isEmpty() && usdEdited && tmp !="") {
-                    value=tmp.toInt()
-                }
-                else if (tmp.isEmpty()) {
-                    var tem3 = 0.00
-                      value=tem3.toInt()
-                }
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                usdEdited = false
-            }
-        })
+        var value: Int = 0
+        try {
+            value = value1.toInt()
+        } catch (nfe: NumberFormatException) {
+            // Handle the condition when str is not a number.
+        }
         var countvalue = value
         incrementBtn.setOnClickListener(View.OnClickListener {
             if (value == 0 || value == null) {
@@ -724,8 +695,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 if (!tmpDisAmoun.isEmpty() && uahEdited && tmpDisAmoun != "." && tmps != null && tmps != "." && temsprie != "" && temsprie != null && tmpDisAmoun != "0.00" &&value!=0&&value!=null) {
                     uah = tmpDisAmoun.toFloat()
                     var orderQty=value!!.toFloat()
-                    var price = temsprie.toFloat()*orderQty
-                    val minprice1 = tmps.toFloat()*orderQty
+                    var price = temsprie.toFloat()
+                    val minprice1 = tmps.toFloat()
                     var Amountdiscount:Float = price - uah
                     if (uah > price) {
                         discountAmount.text.replace(0, discountAmount.text.length, "0.00")
@@ -785,8 +756,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 if (!discountPercenttmp.isEmpty() && usdEdited && discountPercenttmp != "." && tmps != null && tmps != "" && tmps != "." && discountPercenttmp != "0.00"&&minp!="" &&value!=0&&value!=null) {
                     usd = discountPercenttmp.toFloat()
                     var orderQty=value!!.toFloat()
-                    val price = tmps.toFloat()* orderQty
-                    val minprice1=minp.toFloat()* orderQty
+                    val price = tmps.toFloat()
+                    val minprice1=minp.toFloat()
                     var  diaAmount=(usd * price)/ 100
                     var Amountdiscount: Float =(price-diaAmount)
                     Log.e("usd",usd.toString())
@@ -922,7 +893,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                        Log.e("sendRequestObjectProduct list",cartResponseResultData.toString())
                                        if (cartResponseResultData.length() != null && cartResponseResultData.length() > 0) {
 
-                                           var NetPrice:Float?=null
+                                           var NetPrice1:Float?=null
                                            for (i in 0 until cartResponseResultData.length()) {
                                                draftAutoId = cartResponseResultData.getJSONObject(i)
                                                    .getInt("DraftAutoId")
@@ -936,8 +907,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                                UnitType = cartResponseResultData.getJSONObject(i).getString("UnitType")
                                                Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
                                                Log.e("Tax level ",Tax.toString())
-                                               NetPrice=UnitPrice!!.toFloat()*OQty!!
                                            }
+                                           NetPrice1=(UnitPrice!!.toFloat()*OQty!!)-(valueIncrementDecrement.text.toString().toInt()!!*uah.toFloat())
                                            ClickedItem.setdraftAutoID(draftAutoId)
                                            ClickedItem.setUnitType(UnitType)
                                            ClickedItem.setNofItem(NofItem)
@@ -946,8 +917,9 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                            ClickedItem.setTotal(Total)
                                            ClickedItem.setUnitType(UnitType)
                                            ClickedItem.setIsTaxable(Tax)
-                                           ClickedItem.setNetPrice(NetPrice)
-                                           TotalPrice=(NetPrice!!)
+                                           ClickedItem.setNetPrice(NetPrice1)
+                                           TotalPrice=(NetPrice1!!)
+                                          Log.e("NetPrice1",NetPrice1.toString())
 //                                if (ClickedItem.getadded()!!>0){
 //                                    itemCounts++
 //                                }

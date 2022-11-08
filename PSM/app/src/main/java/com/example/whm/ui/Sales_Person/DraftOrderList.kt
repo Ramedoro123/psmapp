@@ -129,7 +129,7 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
                                     ,NoOfItems,ColorCode, grandTotal)
                             }
                             var totalOrder=modelClassDraftOrder.size
-                            SalesDraftOrder.setText("Order List"+"("+totalOrder+")")
+                            SalesDraftOrder.setText(" Draft Order List"+"("+totalOrder+")")
                             pDialog.dismiss()
                         } else {
 

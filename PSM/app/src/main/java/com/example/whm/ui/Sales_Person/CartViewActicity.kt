@@ -47,7 +47,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     var productListModelClass: ArrayList<CartListModelClass> = arrayListOf()
     lateinit var cartListAdapter:CartListAdapterClass
 
-    var itemCounts: Int = 0
+    var totalvalue:String?=null
+    var noOfItem:String?=null
     var responseMessage: String? = null
     var pDialog: SweetAlertDialog? = null
     var mylist = ArrayList<String>()
@@ -81,7 +82,6 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     var isExchangeValue: Int = 0
     var isdefault1: Int? = null
     var unitAutoidValue: Int? = null
-    var removedPosition: Int? = null
     var priceValue: Double? = null
     var uah: Float = 0.0F
     var usd: Float = 0.0F
@@ -125,31 +125,32 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         val preferences = PreferenceManager.getDefaultSharedPreferences(this@CartViewActicity)
        accessToken = preferences.getString("accessToken", "")
        empautoid = preferences.getString("EmpAutoId", "")
-        var  customerName = preferences.getString("CustomerName", "")
+        var customerName = preferences.getString("CustomerName", "")
         var customerId = preferences.getString("customerId", "")
         var draft= preferences.getString("OrderAutoid", "")
-        var noOfItem= preferences.getString("noOfItems", "")
-        var totalvalue= preferences.getString("grandTotal", "")
-//           var TotalAmounts =preferences.getString("TotalPrice","0.00")
-//           var totalcounts = preferences.getString("itemCounts", "")
+         noOfItem= preferences.getString("noOfItems", "")
+           totalvalue= preferences.getString("grandTotal", "")
+//        var TotalAmounts =preferences.getString("TotalPrice","0.00")
+//        var totalcounts = preferences.getString("itemCounts", "")
+
+        Log.e("noOfItem",noOfItem.toString())
         if (draft=="" || draft==null){
              draftAutoId=0
         }else if (draft!="" || draft!=null){
             draftAutoId=draft.toString().toInt()
-//            TotalAmount=TotalAmounts.toString().toFloat()
+            TotalAmount=totalvalue.toString().toFloat()
 //            totalcount=totalcounts.toString().toInt()
         }
-        Log.e("TotalAmount 13",TotalAmount.toString())
+
+        Log.e("TotalAmount 13",totalvalue.toString())
         Log.e("totalcount 13",totalcount.toString())
         btnBackCart.setOnClickListener(View.OnClickListener {
             var intent=Intent(this@CartViewActicity,SalesPersonProductList::class.java)
             intent.putExtra("draftAutoId",draftAutoId)
-            intent.putExtra("TotalAmount",TotalAmount)
             intent.putExtra("totalcount",totalcount)
             intent.putExtra("noOfItems",noOfItem)
             intent.putExtra("grandTotal",totalvalue)
-
-            Log.e("draftAutoId", draftAutoId.toString())
+            Log.e("noOfItem", noOfItem.toString())
             startActivity(intent)
             finish()
         })
@@ -465,44 +466,47 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                         discountPercent.setText("%.2f".format(dispValue1!!.toDouble()))
                                         Price.setText("%.2f".format(priceValue))
                                         Log.e("Price", Price.text.toString())
-                                        if (isFreeCheckBox.isChecked) {
-                                            isFreeCheckBox.toggle()
-                                            Price.isEnabled = true
-                                            discountAmount.isEnabled = true
-                                            discountPercent.isEnabled = true
-                                            Price.setBackgroundResource(R.drawable.borderline)
-                                            discountAmount.setBackgroundResource(R.drawable.borderline)
-                                            discountPercent.setBackgroundResource(R.drawable.borderline)
+
+                                        if (free!=0&&free!=null){
+                                            isFreeCheckBox.visibility=View.VISIBLE
+                                            checkFreeValue = 1
+                                            isFreeCheckBox.isEnabled=false
+                                            Price.text.clear()
+                                            Price.isEnabled = false
+                                            discountAmount.isEnabled = false
+                                            discountPercent.isEnabled = false
+                                            discountAmount.text.clear()
+                                            discountPercent.text.clear()
+                                            Price.setText("0.00")
+                                            Price.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                                            discountAmount.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                                            discountPercent.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                                            discountAmount.setText("0.00")
+                                            discountPercent.setText("0.00")
                                         }
-                                        if (isExchangeCheckBox.isChecked) {
-                                            isExchangeCheckBox.toggle()
-                                            Price.isEnabled = true
-                                            discountAmount.isEnabled = true
-                                            discountPercent.isEnabled = true
-                                            Price.setBackgroundResource(R.drawable.borderline)
-                                            discountAmount.setBackgroundResource(R.drawable.borderline)
-                                            discountPercent.setBackgroundResource(R.drawable.borderline)
+                                        else{
+                                            isFreeCheckBox.visibility=View.GONE
                                         }
-                                        var exchange=ClickedItem.getExchange()?.toInt()
-                                        var free = isFrees.toString().toInt()
-                                        Log.e("free",free.toString())
-                                        Log.e("exchange",exchange.toString())
-                                        if (free!=1){
-                                            isFreeCheckBox.setEnabled(false)
-                                            //isExchangeCheckBox.setEnabled(false)
-//                                            isFreeCheckBox.toggle()
-//                                            Price.isEnabled = true
-//                                            discountAmount.isEnabled = true
-//                                            discountPercent.isEnabled = true
-//                                            Price.setBackgroundResource(R.drawable.borderline)
-//                                            discountAmount.setBackgroundResource(R.drawable.borderline)
-//                                            discountPercent.setBackgroundResource(R.drawable.borderline)
+                                        if (exchangevalue!=0&&exchangevalue!=null){
+                                            isExchangeCheckBox.visibility=View.VISIBLE
+                                            isExchangeValue = 1
+                                            isExchangeCheckBox.isEnabled=false
+                                            Price.text.clear()
+                                            Price.isEnabled=false
+                                            discountAmount.isEnabled = false
+                                            discountPercent.isEnabled = false
+                                            discountAmount.text.clear()
+                                            discountPercent.text.clear()
+                                            Price.setText("0.00")
+                                            Price.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                                            discountAmount.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                                            discountPercent.setBackgroundColor(Color.parseColor("#E5E5E5"))
+                                            discountAmount.setText("0.00")
+                                            discountPercent.setText("0.00")
 
                                         }
-                                        else {
-                                            isFreeCheckBox.setEnabled(true)
-
-
+                                        else{
+                                            isExchangeCheckBox.visibility=View.GONE
                                         }
                                     }
 
@@ -577,6 +581,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         spineer = dilog.findViewById<Spinner>(R.id.spineer) as Spinner
          isFreeCheckBox.visibility=View.GONE
         isExchangeCheckBox.visibility=View.GONE
+
         btnAddToCart.setText("Update")
         SProductID.setText(ClickedItem.getPId())
         s_ProductName.setText(ClickedItem.getPName())
@@ -737,8 +742,6 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
             }
         })
 
-        isFreeCheckBox.setOnClickListener(this)
-        isExchangeCheckBox.setOnClickListener(this)
 
         btnAddToCart.setOnClickListener(View.OnClickListener {
 
@@ -826,13 +829,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                      DiscA = cartResponseResultData.getJSONObject(i).getString("DiscA")
                                     UnitType = cartResponseResultData.getJSONObject(i).getString("UnitType")
                                     Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
-                                    Log.e("Tax level ",Tax.toString())
-                                    NetPrice=UnitPrice!!.toFloat()* OQty!!
-//                                    addCartDetailsModelClass("","",UnitType!!,0, unitPrice = UnitPrice!!,
-//                                        0, netPrice = NetPrice!!,0,0,0,0,"",draftAutoId!!,Total!!,NofItem!!,OQty!!)
-                                    // addToCartData.add(cartData)
-                                }
 
+                                }
+                                NetPrice=(UnitPrice!!.toFloat()* OQty!!)-(valueIncrementDecrement.text.toString().toInt()!!*discountAmount.text.toString().toFloat())
                                 ClickedItem.setNetPrice(NetPrice)
                                 ClickedItem.setUnitPrice(UnitPrice)
                                 ClickedItem.setUnitType(UnitType)
@@ -842,12 +841,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                 ClickedItem.setUnitType(UnitType)
                                 ClickedItem.settax(Tax)
                                 ClickedItem.setNetPrice(NetPrice)
-//                                TotalPrice=(NetPrice!!)
-//                                if (ClickedItem.getadded()!!>0){
-//                                    itemCounts++
-//                                }
-                                TotalAmount=Total.toString().toFloat()
-                              ClickedItem.setdraftAutoId(draftAutoId)
+                                totalvalue=Total
                                 cartListAdapter.notifyItemChanged(position)
                                 //Adapter.NO_SELECTION
                                 var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
@@ -992,18 +986,11 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 sendRequestObject.put("pObj", pObj.put("unitAutoId",unitAutoidValue))
                 sendRequestObject.put("pObj", pObj.put("isFree",ClickedItem.getFree()))
                 sendRequestObject.put("pObj", pObj.put("isExchange",ClickedItem.getExchange()))
-                if (draftAutoId == 0) {
-                    sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+                if (draftAutoId==0) {
+                    sendRequestObject.put("pObj", pObj.put("draftAutoId", 0))
                 } else {
                     sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
                 }
-                //  Log.e("productId",productId.toString())
-//            Log.e("checkFreeValue", checkFreeValue.toString())
-//            Log.e("isExchangeValue", isExchangeValue.toString())
-//            Log.e("unitAutoidValue", unitAutoidValue.toString())
-                Log.e("draftAutoId", draftAutoId.toString())
-                Log.e("draftAutoId", sendRequestObject.toString())
-
                 //send request queue in vally
                 val queue = Volley.newRequestQueue(this)
                 val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
@@ -1013,16 +1000,27 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                         val responsedData = JSONObject(responseResult.getString("d"))
                         var responseMessage2 = responsedData.getString("responseMessage")
                         val responseStatus = responsedData.getInt("responseStatus")
-                        if (responseStatus == 200) {
+                        if (responseStatus==200) {
                             var responsDataObject = JSONObject(responsedData.getString("responseData"))
                             var Cstock = responsDataObject.getString("CStock")
+                            var UnitType = responsDataObject.getString("UnitType")
+                            var OrderTotal = responsDataObject.getString("OrderTotal")
+                            var TotalItems = responsDataObject.getString("TotalItems")
                             var bp = responsDataObject.getDouble("BP")
-                            var BP = bp.toFloat()
                             ClickedItem.setReqQty(0)
+                            ClickedItem.setOQty(0)
                             var n1: Float = 0.0F
                             ClickedItem.setNetPrice(n1)
-                            ClickedItem.setTotal("0.00")
+                            ClickedItem.setUnitType(UnitType)
+                            ClickedItem.setTotal(OrderTotal)
+                            ClickedItem.setNofItem(TotalItems)
+                            val intent = Intent("USER_NAME_CHANGED_ACTION")
+                            intent.putExtra("usernames", NofItem.toString())
+                            Log.e("NofItem",NofItem.toString())
+                            intent.putExtra("Total", Total.toString())
+                            intent.putExtra("draftAutoId", draftAutoId)
                             CustomerName.setText("Cart(" + productListModelClass.size + ")").toString()
+
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                             popUp.setContentText(responseMessage2.toString())
                             popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -1050,9 +1048,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                             popUp.setCanceledOnTouchOutside(false)
                             popUp.setCancelable(false)
                             pDialog.setCancelable(false)
-//                                        warningMessage(message = responseMessage1.toString())
-//                                        Log.e("message",responseMessage1.toString())
-                            //  pDialog!!.dismiss()
+
                         }
                     },
                     Response.ErrorListener { pDialog!!.dismiss() })
@@ -1142,58 +1138,12 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
     }
 
     override fun onClick(Box: View?) {
-        Box as CheckBox
-        var isChecked: Boolean = Box.isChecked
-        when (Box.id) {
-            R.id.isFreeCheckBox -> if (isChecked) {
-                checkFreeValue = 1
-                isFreeCheckedfunction(true)
-            } else {
-                isFreeUnCheckedFunction()
-            }
-            R.id.isExchangeCheckBox -> if (isChecked) {
-                isExchangeValue = 1
-                isFreeCheckedfunction(isFreeChecked = false)
-            } else {
-                isFreeUnCheckedFunction()
-
-            }
-
-        }
 
     }
 
-    private fun isFreeCheckedfunction(isFreeChecked: Boolean) {
-        if (isFreeChecked) {
-            isExchangeCheckBox.isChecked = false
 
-        } else {
-            isFreeCheckBox.isChecked = false
-        }
-        Price.isEnabled = false
-        discountAmount.isEnabled = false
-        discountPercent.isEnabled = false
-        discountAmount.text.clear()
-        discountPercent.text.clear()
-        Price.setText("0.00")
-        Price.setBackgroundColor(Color.parseColor("#E5E5E5"))
-        discountAmount.setBackgroundColor(Color.parseColor("#E5E5E5"))
-        discountPercent.setBackgroundColor(Color.parseColor("#E5E5E5"))
-        discountAmount.setText("0.00")
-        discountPercent.setText("0.00")
-    }
-
-    private fun isFreeUnCheckedFunction() {
-        checkFreeValue = 0
-        isExchangeValue = 0
-        Price.isEnabled = true
-        discountAmount.isEnabled = true
-        discountPercent.isEnabled = true
-        Price.setBackgroundResource(R.drawable.borderline)
-        discountAmount.setBackgroundResource(R.drawable.borderline)
-        discountPercent.setBackgroundResource(R.drawable.borderline)
-        Price.setText("%.2f".format(priceValue))
-        discountAmount.setText("%.2f".format(0.00))
-        discountPercent.setText("%.2f".format(0.00))
-    }
 }
+
+
+
+

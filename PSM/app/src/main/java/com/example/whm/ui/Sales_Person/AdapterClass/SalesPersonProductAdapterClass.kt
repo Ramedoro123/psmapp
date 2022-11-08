@@ -109,6 +109,7 @@ class SalesPersonProductAdapterClass(
         {
             var netPrice=netPrices.toFloat()
             var unitPrice=unitPrice.toFloat()
+            holder.netPrice.setText("$" + "%.2f".format(netPrice))
             holder.OrderQtyValue.setText(Qty.toString())
             holder.orderQtyProduct.visibility = View.VISIBLE
             holder.OrderQtyValue.visibility = View.VISIBLE
@@ -123,7 +124,6 @@ class SalesPersonProductAdapterClass(
             else{
                 holder.taxableLevel.visibility = View.GONE
             }
-            holder.netPrice.setText("$" + "%.2f".format(netPrice))
             holder.ProductPrice.setText("$" + "%.2f".format(unitPrice) + "(" + UnitTypes + ")")
         }
         else if ((netPrices != null && netPrices!="" &&netPrices!="0.0" &&ReQty!="0" &&ReQty!=""&&ReQty!=null && unitPrice !="0.0" && unitPrice !="" && unitPrice != null))
