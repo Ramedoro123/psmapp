@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.OrderItemModelClass
@@ -46,7 +47,30 @@ class SalesPersonItemAdapterClass(private val OrderItemListData: ArrayList<Order
         var image=orderItemPosition.getimageUrl().toString()
         var ReqQty=orderItemPosition.getrequiredQty().toString()
         var netPrice=orderItemPosition.getnetPrice().toString()
-
+        var isFree=orderItemPosition.getisFreeItem()
+        var isExchange=orderItemPosition.getsExchange()
+        var Taxs=orderItemPosition.getTaxs()
+              holder.isFreeAndExchenge.visibility=View.GONE
+             if (isFree!=null &&isFree!=0)
+             {
+                 holder.isFreeAndExchenge.visibility=View.VISIBLE
+                 holder.isFreeAndExchenge.background.setTint(ContextCompat.getColor(Listdata!!, R.color.Kelly_Green))
+                 holder.isFreeAndExchenge.setText("Free")
+             }
+            else if (isExchange!=null &&isExchange!=0)
+             {
+                 holder.isFreeAndExchenge.visibility=View.VISIBLE
+                 holder.isFreeAndExchenge.background.setTint(ContextCompat.getColor(Listdata!!, R.color.purpleLite))
+                 holder.isFreeAndExchenge.setText("Exchange")
+             }
+           else if (Taxs!=null &&Taxs!=0)
+             {
+                 holder.isFreeAndExchenge.visibility=View.VISIBLE
+                 holder.isFreeAndExchenge.setText("Taxable")
+             }
+             else{
+                 holder.isFreeAndExchenge.visibility=View.GONE
+             }
         if (unitprice!=null&&unitprice!=""&&unitType!=null&&unitType!="")
         {
             var unitprice=unitprice.toString().toFloat()

@@ -1151,8 +1151,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                             LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
 
                             productAdapterClass.notifyItemChanged(actualPosition)
-                            productAdapterClass.notifyItemRangeChanged(actualPosition,
-                                getcartDetailsdata.size)
+                            productAdapterClass.notifyItemRangeChanged(actualPosition, getcartDetailsdata.size)
 
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                             popUp.setContentText(responseMessage2.toString())

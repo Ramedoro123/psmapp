@@ -1004,23 +1004,20 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                             var responsDataObject = JSONObject(responsedData.getString("responseData"))
                             var Cstock = responsDataObject.getString("CStock")
                             var UnitType = responsDataObject.getString("UnitType")
-                             Total=responsDataObject.getString("OrderTotal")
-                             NofItem = responsDataObject.getString("TotalItems")
+                             var Total=responsDataObject.getString("OrderTotal")
+                            var NofItem = responsDataObject.getString("TotalItems")
                             var bp = responsDataObject.getDouble("BP")
-                            ClickedItem.setReqQty(0)
-                            ClickedItem.setOQty(0)
                             var n1: Float = 0.0F
                             ClickedItem.setNetPrice(n1)
                             ClickedItem.setUnitType(UnitType)
-                            ClickedItem.setTotal(Total!!)
-                            ClickedItem.setNofItem(NofItem!!)
+                            ClickedItem.setTotal(Total)
+                            ClickedItem.setNofItem(NofItem)
                             noOfItem=NofItem
                             totalvalue=Total
-
-                            Log.e("responsDataObject delete",responsedData.toString())
-
-
                             CustomerName.setText("Cart(" + productListModelClass.size + ")").toString()
+                            Log.e("responsDataObject delete",responsedData.toString())
+                            cartListAdapter.notifyItemChanged(actualPosition)
+                            cartListAdapter.notifyItemRangeChanged(actualPosition, getcartDetailsdata.size)
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                             popUp.setContentText(responseMessage2.toString())
                             popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -1034,6 +1031,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                             popUp.setCanceledOnTouchOutside(false)
                             popUp.setCancelable(false)
                             pDialog.setCancelable(false)
+
                         } else {
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                             popUp.setContentText(responseMessage2.toString())

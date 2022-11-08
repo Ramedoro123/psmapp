@@ -6,7 +6,11 @@ class OrderItemModelClass(  productId: Int,
                               unitPrice: String,
                               netPrice: String,
                               imageUrl: String,
-                              requiredQty: String)
+                              requiredQty: String,
+                            sExchange : Int,
+                            isFreeItem: Int,
+                            Tax: Int,
+)
 {
 
        private var productId: Int
@@ -16,6 +20,9 @@ class OrderItemModelClass(  productId: Int,
        private var netPrice: String
        private var imageUrl: String
        private var requiredQty: String
+       private var sExchange : Int
+       private var isFreeItem: Int
+       private var Tax: Int
        init {
            this.productId=productId
            this.productName=productName
@@ -24,6 +31,9 @@ class OrderItemModelClass(  productId: Int,
            this.netPrice=netPrice
            this.imageUrl=imageUrl
            this.requiredQty=requiredQty
+           this.sExchange =sExchange
+           this.isFreeItem=isFreeItem
+           this.Tax=Tax
        }
     fun getproductId():Int?{
         return productId
@@ -45,5 +55,12 @@ class OrderItemModelClass(  productId: Int,
     }
     fun getrequiredQty():String?{
         return requiredQty
+    }fun getsExchange():Int?{
+        return sExchange
+    }fun getisFreeItem():Int?{
+        return isFreeItem
+    }
+    fun getTaxs():Int?{
+        return Tax
     }
 }

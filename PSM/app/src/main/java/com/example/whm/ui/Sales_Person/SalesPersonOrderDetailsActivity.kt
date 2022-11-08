@@ -410,9 +410,13 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
                                 var NetPrice = responsdata.getJSONObject(i).getString("NetPrice")
                                 var ImageUrl = responsdata.getJSONObject(i).getString("ImageUrl")
                                 var RequiredQty = responsdata.getJSONObject(i).getString("RequiredQty")
+                                var sExchange = responsdata.getJSONObject(i).getInt("IsExchange")
+                                var isFreeItem = responsdata.getJSONObject(i).getInt("isFreeItem")
+                                var Tax = responsdata.getJSONObject(i).getInt("Tax")
                                 Log.e("RequiredQty",RequiredQty.toString())
                                 //    Log.e("DueBalance",twoDigitValue.)
-                                SalsePersonOrderItems(ProductId,ProductName,UnitType,UnitPrice,NetPrice,ImageUrl,RequiredQty)
+                                SalsePersonOrderItems(ProductId,ProductName,UnitType,UnitPrice,NetPrice,ImageUrl,RequiredQty,sExchange,
+                                        isFreeItem,Tax)
                             }
 
                             for (i in 0 until RemarkLists.length())
@@ -482,9 +486,13 @@ class SalesPersonOrderDetailsActivity : AppCompatActivity() {
         unitPrice: String,
         netPrice: String,
         imageUrl: String,
-        requiredQty: String
+        requiredQty: String,
+        sExchange:Int,
+        isFreeItem:Int,
+        Tax:Int
     ) {
-        var ModelClassCustomer1 = OrderItemModelClass(productId,productName,unitType,unitPrice,netPrice,imageUrl,requiredQty)
+        var ModelClassCustomer1 = OrderItemModelClass(productId,productName,unitType,unitPrice,netPrice,imageUrl,requiredQty,sExchange,
+                isFreeItem,Tax)
         modelClassOrderItems.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.OrderCustomerDetailsRecyclerView)
         customerOrderItemAdapter = SalesPersonItemAdapterClass(modelClassOrderItems, this)
