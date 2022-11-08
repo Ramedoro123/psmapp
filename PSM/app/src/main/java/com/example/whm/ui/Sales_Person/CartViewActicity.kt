@@ -128,8 +128,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         var customerName = preferences.getString("CustomerName", "")
         var customerId = preferences.getString("customerId", "")
         var draft= preferences.getString("OrderAutoid", "")
-         noOfItem= preferences.getString("noOfItems", "")
-           totalvalue= preferences.getString("grandTotal", "")
+         noOfItem  = preferences.getString("noOfItems", "")
+         totalvalue = preferences.getString("grandTotal", "")
 //        var TotalAmounts =preferences.getString("TotalPrice","0.00")
 //        var totalcounts = preferences.getString("itemCounts", "")
 
@@ -141,9 +141,6 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
             TotalAmount=totalvalue.toString().toFloat()
 //            totalcount=totalcounts.toString().toInt()
         }
-
-        Log.e("TotalAmount 13",totalvalue.toString())
-        Log.e("totalcount 13",totalcount.toString())
         btnBackCart.setOnClickListener(View.OnClickListener {
             var intent=Intent(this@CartViewActicity,SalesPersonProductList::class.java)
             intent.putExtra("draftAutoId",draftAutoId)
@@ -470,6 +467,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                         if (free!=0&&free!=null){
                                             isFreeCheckBox.visibility=View.VISIBLE
                                             checkFreeValue = 1
+                                            isFreeCheckBox.isChecked=true
                                             isFreeCheckBox.isEnabled=false
                                             Price.text.clear()
                                             Price.isEnabled = false
@@ -490,6 +488,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                                         if (exchangevalue!=0&&exchangevalue!=null){
                                             isExchangeCheckBox.visibility=View.VISIBLE
                                             isExchangeValue = 1
+                                            isExchangeCheckBox.isChecked=true
                                             isExchangeCheckBox.isEnabled=false
                                             Price.text.clear()
                                             Price.isEnabled=false
@@ -1001,26 +1000,27 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                         var responseMessage2 = responsedData.getString("responseMessage")
                         val responseStatus = responsedData.getInt("responseStatus")
                         if (responseStatus==200) {
+
                             var responsDataObject = JSONObject(responsedData.getString("responseData"))
                             var Cstock = responsDataObject.getString("CStock")
                             var UnitType = responsDataObject.getString("UnitType")
-                            var OrderTotal = responsDataObject.getString("OrderTotal")
-                            var TotalItems = responsDataObject.getString("TotalItems")
+                             Total=responsDataObject.getString("OrderTotal")
+                             NofItem = responsDataObject.getString("TotalItems")
                             var bp = responsDataObject.getDouble("BP")
                             ClickedItem.setReqQty(0)
                             ClickedItem.setOQty(0)
                             var n1: Float = 0.0F
                             ClickedItem.setNetPrice(n1)
                             ClickedItem.setUnitType(UnitType)
-                            ClickedItem.setTotal(OrderTotal)
-                            ClickedItem.setNofItem(TotalItems)
-                            val intent = Intent("USER_NAME_CHANGED_ACTION")
-                            intent.putExtra("usernames", NofItem.toString())
-                            Log.e("NofItem",NofItem.toString())
-                            intent.putExtra("Total", Total.toString())
-                            intent.putExtra("draftAutoId", draftAutoId)
-                            CustomerName.setText("Cart(" + productListModelClass.size + ")").toString()
+                            ClickedItem.setTotal(Total!!)
+                            ClickedItem.setNofItem(NofItem!!)
+                            noOfItem=NofItem
+                            totalvalue=Total
 
+                            Log.e("responsDataObject delete",responsedData.toString())
+
+
+                            CustomerName.setText("Cart(" + productListModelClass.size + ")").toString()
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                             popUp.setContentText(responseMessage2.toString())
                             popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")

@@ -158,7 +158,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
             })
             dilog.show()
             dilog.getWindow()!!.setAttributes(lp);
-            pDialog!!.dismiss()
+//            pDialog!!.dismiss()
             //  Toast.makeText(this,customerName.toString(),Toast.LENGTH_LONG).show()
         })
         syncProduct.setOnClickListener(View.OnClickListener {
@@ -908,7 +908,8 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                                Tax = cartResponseResultData.getJSONObject(i).getInt("Tax")
                                                Log.e("Tax level ",Tax.toString())
                                            }
-                                           NetPrice1=(UnitPrice!!.toFloat()*OQty!!)-(valueIncrementDecrement.text.toString().toInt()!!*uah.toFloat())
+
+                                           NetPrice1=(UnitPrice!!.toFloat()* OQty!!)-(valueIncrementDecrement.text.toString().toInt()!!*discountAmount.text.toString().toFloat())
                                            ClickedItem.setdraftAutoID(draftAutoId)
                                            ClickedItem.setUnitType(UnitType)
                                            ClickedItem.setNofItem(NofItem)
@@ -918,7 +919,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                                            ClickedItem.setUnitType(UnitType)
                                            ClickedItem.setIsTaxable(Tax)
                                            ClickedItem.setNetPrice(NetPrice1)
-                                           TotalPrice=(NetPrice1!!)
+//                                           TotalPrice=(NetPrice1!!)
                                           Log.e("NetPrice1",NetPrice1.toString())
 //                                if (ClickedItem.getadded()!!>0){
 //                                    itemCounts++
