@@ -938,8 +938,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         alertbox.confirmButtonBackgroundColor = Color.parseColor("#E60606")
         alertbox.setCancelClickListener { sDialog ->
             val ClickedItem: CartListModelClass = productListModelClass[position]
-            val actualPosition = position
-            productListModelClass.removeAt(actualPosition)
+
+            productListModelClass.removeAt(position)
             if (AppPreferences.internetConnectionCheck(this)) {
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                 var accessToken = preferences.getString("accessToken", "")
@@ -1016,8 +1016,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                             totalvalue=Total
                             CustomerName.setText("Cart(" + productListModelClass.size + ")").toString()
                             Log.e("responsDataObject delete",responsedData.toString())
-                            cartListAdapter.notifyItemChanged(actualPosition)
-                            cartListAdapter.notifyItemRangeChanged(actualPosition, getcartDetailsdata.size)
+                            cartListAdapter.notifyItemChanged(position)
+                            cartListAdapter.notifyItemRangeChanged(position, productListModelClass.size)
                             var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
                             popUp.setContentText(responseMessage2.toString())
                             popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
@@ -1060,7 +1060,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 } catch (e: Exception) {
                     Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
                 }
-            } else {
+            }
+            else {
                 val dialog = this?.let { Dialog(it) }
                 dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
@@ -1075,8 +1076,8 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
                 }
                 dialog?.show()
             }
-            cartListAdapter.notifyItemChanged(actualPosition)
-            cartListAdapter.notifyItemRangeChanged(actualPosition, productListModelClass.size)
+            cartListAdapter.notifyItemChanged(position)
+            cartListAdapter.notifyItemRangeChanged(position, getcartDetailsdata.size)
             sDialog.dismissWithAnimation()
         }
         alertbox.setConfirmClickListener { sDialog ->
