@@ -1,7 +1,7 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
 class ModelClassCustomerList(AI:Int,CN:String,CId:String,CT:String,DueBalances:Float,SAdd:String,BAdd:String,CPN:String,Email:String
-                             ,C1:String,MN:String,SCA:String,PLN:String,TD:String,ctype:String,OnRoute:String) {
+                             ,C1:String,MN:String,SCA:String,PLN:String,TD:String,ctype:String,OnRoute:String,CD:String) {
     private var AI:Int
     private var CN:String
     private var CId: String
@@ -18,6 +18,7 @@ class ModelClassCustomerList(AI:Int,CN:String,CId:String,CT:String,DueBalances:F
     private var TD:String
     private var ctype:String
     private var OnRoute:String
+    private var CD:String
 
     init {
         this.AI=AI
@@ -36,6 +37,7 @@ class ModelClassCustomerList(AI:Int,CN:String,CId:String,CT:String,DueBalances:F
         this.TD=TD
         this.ctype=ctype
         this.OnRoute=OnRoute
+        this.CD=CD
     }
     fun getAI(): Int? {
         return AI
@@ -89,6 +91,9 @@ class ModelClassCustomerList(AI:Int,CN:String,CId:String,CT:String,DueBalances:F
     }
     fun getOnRoute():String{
         return OnRoute
+    }
+    fun getCD():String{
+        return CD
     }
 
 }

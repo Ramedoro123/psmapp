@@ -46,6 +46,7 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
         var customerTerms=CustomerList.getCT()
         var ctype=CustomerList.getctype()
         var OnRoute=CustomerList.getOnRoute()
+        var CD=CustomerList.getCD()
         var deuBalance=CustomerList.getDueBalances()!!.toFloat()
         if (deuBalance>0.00){
             holder.Duevalue.setText("Due : $"+"%.2f".format(deuBalance.toFloat()))
@@ -75,6 +76,7 @@ class AdapterClassCustomerList(private val CustomerList:List<ModelClassCustomerL
             intent.putExtra("customerTerms",customerTerms)
             intent.putExtra("ctype",ctype)
             intent.putExtra("OnRoute",OnRoute)
+            intent.putExtra("CD",CD)
             Listdata?.startActivity(intent)
             (Listdata as Activity).finish()
         })

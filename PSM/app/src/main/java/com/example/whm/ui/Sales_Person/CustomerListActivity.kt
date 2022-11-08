@@ -261,9 +261,10 @@ public class CustomerListActivity : AppCompatActivity() {
                         var TD=responseData.getJSONObject(i).getString("TD")
                         var ctype=responseData.getJSONObject(i).getString("ctype")
                         var OnRoute=responseData.getJSONObject(i).getString("OnRoute")
+                        var CD=responseData.getJSONObject(i).getString("CD")
 
                   //    Log.e("DueBalance",twoDigitValue.)
-                        ModelClassCustomer(AI,CN,CId,CT,DueBalances,SAdd,BAdd,CPN,Email,C1,MN,SCA,PLN,TD,ctype,OnRoute)
+                        ModelClassCustomer(AI,CN,CId,CT,DueBalances,SAdd,BAdd,CPN,Email,C1,MN,SCA,PLN,TD,ctype,OnRoute,CD)
                     }
                     var totalCustomer=ModelClassCustomer.size
                     CustomerTitle.setText("Customer List"+"("+totalCustomer+")")
@@ -298,8 +299,8 @@ public class CustomerListActivity : AppCompatActivity() {
     }
 
     private fun ModelClassCustomer(AI:Int,CN: String, CId: String,CT:String,DueBalances:Float,SAdd:String,BAdd:String,
-                                   CPN:String,Email:String,C1:String,MN:String,SCA:String,PLN:String,TD:String,ctype:String,OnRoute:String) {
-        var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalances,SAdd,BAdd,CPN,Email,C1,MN,SCA,PLN,TD,ctype,OnRoute)
+                                   CPN:String,Email:String,C1:String,MN:String,SCA:String,PLN:String,TD:String,ctype:String,OnRoute:String,CD:String) {
+        var ModelClassCustomer1 = ModelClassCustomerList(AI,CN, CId,CT,DueBalances,SAdd,BAdd,CPN,Email,C1,MN,SCA,PLN,TD,ctype,OnRoute,CD)
         ModelClassCustomer.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.CustomerView)
         CustomerAdapter = AdapterClassCustomerList(ModelClassCustomer, this)

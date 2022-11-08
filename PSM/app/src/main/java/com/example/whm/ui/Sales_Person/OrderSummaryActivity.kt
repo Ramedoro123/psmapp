@@ -179,14 +179,15 @@ class OrderSummaryActivity : AppCompatActivity() {
                     var tmp1=tmp.toFloat()
                     var tmp2=tmps1.toFloat()
                     var total1=tmp2-tmp1
-                    var round1=total1.roundToInt().toFloat()
-                    var adjs=round1!!-total1!!
+                    var round2=total1.roundToInt().toFloat()
+                    var adjs=round2!!-total1!!
                     adjcmentV.setText("%.2f".format(adjs.toDouble()))
-                    payableAmount.setText("%.2f".format(round1))
-                } else if (tmp.isEmpty()) {
+                    payableAmount.setText("%.2f".format(round2))
+                }
+                else if (tmp.isEmpty()) {
                     var tem3 = 0.00
                     var temp3 = tmps1!!.toFloat()
-                    var gangs = temp3 + tem3
+                    var gangs = temp3+tem3
                     payableAmount.setText("%.2f".format(gangs.roundToInt().toFloat()))
                     overAllDisP.text.clear()
                 }
@@ -541,18 +542,13 @@ class OrderSummaryActivity : AppCompatActivity() {
                                  disAmount=overAllDisAmount1.toFloat()
                                  adjsment =adjcmentV1.toFloat()
                             }
-//                            else{
-//                                disAmount=0.2f
-//                                adjsment=0.2f
-//                            }
-
-                          if (subTotals!=null)
-                          {
-                                   Total=(adjsment!!+subTotals+WeightTaxs+MLTaxValue)-disAmount!!
+                          if (subTotals!=null&&Tax!=""&&Tax!=null)
+                          {         var totalTaxs=Tax.toFloat()
+                                   Total=(adjsment!!+subTotals+WeightTaxs+totalTaxs+MLTaxValue)-disAmount!!
                                    round=Total!!.roundToInt().toFloat()
                                    var adjs=round!!-Total!!
                                   adjcmentV.setText("%.2f".format(adjs.toDouble()))
-                                  payableAmount.setText("%.2f".format(round!!.roundToInt().toFloat()))
+                                  payableAmount.setText("%.2f".format(round))
                           }
 //                        salsePRemark
 //                        driverRemark

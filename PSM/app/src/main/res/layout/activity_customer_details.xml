@@ -58,7 +58,7 @@
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
         <ScrollView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,12 +70,14 @@
                 android:layout_marginBottom="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:context=".Detail1">
+
                     <TextView
                         android:id="@+id/textView95"
                         android:layout_width="0dp"
@@ -97,7 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_begin="135dp" />
+                        app:layout_constraintGuide_begin="144dp" />
 
                     <TextView
                         android:id="@+id/CSTID"
@@ -167,10 +169,10 @@
                         android:text="Customer Name"
                         android:textColor="@color/black"
                         android:textSize="15dp"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/customerNameCst"
-                        android:textStyle="bold" />
+                        app:layout_constraintTop_toTopOf="@+id/customerNameCst" />
 
                     <TextView
                         android:id="@+id/customerNameCst"
@@ -546,9 +548,46 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
+                        android:text="Customer Discount"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/customerDiscountValue" />
+
+                    <TextView
+                        android:id="@+id/customerDiscountValue"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:padding="2dp"
+                        android:text="0.00%"
+                        android:textColor="#1E9FF2"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView131"
+                        app:layout_constraintTop_toBottomOf="@+id/termsId" />
+
+                    <TextView
+                        android:id="@+id/textView133"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="@color/colorAccents"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/customerDiscountValue" />
+
+                    <TextView
+                        android:id="@+id/textView134"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
                         android:text="Due Balance"
                         android:textColor="@color/redLight"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="parent"
@@ -563,31 +602,33 @@
                         android:text="$0.00"
                         android:textColor="@color/redLight"
                         android:textSize="15dp"
-                        android:textStyle="bold"
+                        android:textStyle="normal"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView131"
-                        app:layout_constraintTop_toBottomOf="@+id/termsId" />
+                        app:layout_constraintStart_toEndOf="@+id/textView134"
+                        app:layout_constraintTop_toBottomOf="@+id/customerDiscountValue" />
 
                     <TextView
-                        android:id="@+id/textView133"
+                        android:id="@+id/textView41"
                         android:layout_width="0dp"
                         android:layout_height="1dp"
-                        android:background="@color/colorAccents"
+                        android:background="@color/colorAccent"
+                        android:text="TextView"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/dueBlance" />
 
                     <TextView
-                        android:id="@+id/textView134"
+                        android:id="@+id/textView47"
                         android:layout_width="0dp"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:padding="2dp"
                         android:text="Store Credit"
                         android:textColor="@color/Kelly_Green"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintEnd_toStartOf="@+id/StoreCredit"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/StoreCredit" />
 
@@ -602,7 +643,7 @@
                         android:textSize="15dp"
                         android:textStyle="normal"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView134"
+                        app:layout_constraintStart_toStartOf="@+id/guideline2"
                         app:layout_constraintTop_toBottomOf="@+id/dueBlance" />
 
 
