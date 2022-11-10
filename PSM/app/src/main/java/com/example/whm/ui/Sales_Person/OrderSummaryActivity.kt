@@ -30,6 +30,10 @@ import org.json.JSONObject
 import java.lang.reflect.Field
 import java.util.regex.Pattern
 import kotlin.math.roundToInt
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
+
 
 
 class OrderSummaryActivity : AppCompatActivity() {
@@ -66,6 +70,7 @@ class OrderSummaryActivity : AppCompatActivity() {
     var adjcment: String? = null
     var MLTax: String? = null
     var WeightTax: String? = null
+    var Tax: String? = null
     var uah: Float = 0.0F
     var usd: Float = 0.0F
     var uahEdited = false
@@ -133,13 +138,23 @@ class OrderSummaryActivity : AppCompatActivity() {
             val inflater: MenuInflater = popupMenu.getMenuInflater()
             inflater.inflate(R.menu.more_optionmenu, popupMenu.getMenu())
             var ChangeBillNo = popupMenu.menu?.findItem(R.id.submitOrder)
+            var deleteOrderBtn = popupMenu.menu?.findItem(R.id.deleteOrderBtn)
+//              popup Menu.menu.setGroupDividerEnabled(true)
             if (ChangeBillNo != null) {
                 ChangeBillNo.isVisible = true
+            }
+            if (deleteOrderBtn != null) {
+                deleteOrderBtn.isVisible = true
             }
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.submitOrder -> {
                     OrderSubmitFunction()
+                        true
+                    }
+                    R.id.deleteOrderBtn -> {
+//                 Toast.makeText(this,"hello",Toast.LENGTH_LONG).show()
+                        deleteDraftOrder()
                         true
                     }
                     else -> false
@@ -163,9 +178,9 @@ class OrderSummaryActivity : AppCompatActivity() {
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val tmp = overAllDisAmount.text.toString()
-                val tmps = SubTotal.toString()
-                var tmps1 = Total
-                if (!tmp.isEmpty() && uahEdited && tmp != "." && tmps != null && tmps != "."&&tmps1!=null&&tmps1!=0.2f ) {
+                val tmps=SubTotal.toString()
+                var tmps1=Total
+                if (!tmp.isEmpty() && uahEdited && tmp != "." && tmps != null && tmps != "."&&tmps1!=null&&tmps1!=0.0f) {
                     uah = tmp.toFloat()
                     val minprice = tmps.toFloat()
                     if (minprice>=uah) {
@@ -176,17 +191,17 @@ class OrderSummaryActivity : AppCompatActivity() {
                         overAllDisAmount.text.replace(0, overAllDisAmount.text.length, "0.00")
                         Toast.makeText(this@OrderSummaryActivity,"Percent Amount should not be greater than Sub Total Amount.",Toast.LENGTH_LONG).show()
                     }
-                    var tmp1=tmp.toFloat()
-                    var tmp2=tmps1.toFloat()
-                    var total1=tmp2-tmp1
-                    var round2=total1.roundToInt().toFloat()
-                    var adjs=round2!!-total1!!
-                    adjcmentV.setText("%.2f".format(adjs.toDouble()))
-                    payableAmount.setText("%.2f".format(round2))
+                            var tmp1 = tmp.toFloat()
+                            var grandTotal = (tmps1)-(tmp1)
+                            var round1 = grandTotal.roundToInt().toFloat()
+                            var adjs = round1!!-grandTotal!!
+                            adjcmentV.setText("%.2f".format(adjs.toDouble()))
+                            payableAmount.setText("%.2f".format(round1))
+
                 }
                 else if (tmp.isEmpty()) {
                     var tem3 = 0.00
-                    var temp3 = tmps1!!.toFloat()
+                    var temp3=tmps1!!.toFloat()
                     var gangs = temp3+tem3
                     payableAmount.setText("%.2f".format(gangs.roundToInt().toFloat()))
                     overAllDisP.text.clear()
@@ -253,11 +268,14 @@ class OrderSummaryActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 var tmp = shipingCharge.text.toString()
+                val DisAmount = overAllDisAmount.text.toString()
                 var tmps = Total
-                if (!tmp.isEmpty() && usdEdited && tmp != "." && tmps != null && tmps !=null && tmps !=0.2f) {
+                var DisAmount1:Float?=null
+                if (!tmp.isEmpty() && usdEdited && tmp.trim() != ""&& tmps != null&&DisAmount!=""&&DisAmount!=null) {
                     var tmp1=tmp.toFloat()
+                     DisAmount1=DisAmount.toFloat()
                     var tmp2=tmps.toFloat()
-                    var total=tmp1+tmp2
+                    var total=(tmp2+tmp1)-(DisAmount1)
                     var round1=total.roundToInt().toFloat()
                     var adjs=round1!!-total!!
                     adjcmentV.setText("%.2f".format(adjs.toDouble()))
@@ -265,9 +283,11 @@ class OrderSummaryActivity : AppCompatActivity() {
                 }
                 else if (tmp.isEmpty()) {
                     var tem3 = 0.00
-                    var temp3 = tmps!!.toFloat()
-                    var gangs = temp3 + tem3
+                    var temp3=tmps!!.toFloat()
+                    var DisAmount=DisAmount!!.toFloat()
+                    var gangs = temp3+tem3-DisAmount
                     payableAmount.setText("%.2f".format(gangs.roundToInt().toFloat()))
+                    shipingCharge.text.clear()
                 }
             }
 
@@ -277,6 +297,125 @@ class OrderSummaryActivity : AppCompatActivity() {
         })
 
         OrderSummaryFunction()
+    }
+
+    private fun deleteDraftOrder() {
+        if (AppPreferences.internetConnectionCheck(this)) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+            var accessToken = preferences.getString("accessToken", "")
+            var empautoid = preferences.getString("EmpAutoId", "")
+            var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+            pDialog!!.titleText = "Fetching ..."
+            pDialog!!.setCancelable(false)
+            pDialog!!.show()
+            val sendRequestObject = JSONObject()
+            val requestContainer = JSONObject()
+            val pObj = JSONObject()
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("appVersion", AppPreferences.AppVersion)
+            )
+            sendRequestObject.put(
+                "requestContainer", requestContainer.put(
+                    "deviceID",
+                    Settings.Secure.getString(
+                        this!!.contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
+                )
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceName", AppPreferences.DeviceName)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("accessToken", accessToken)
+            )
+            sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
+            if (draftAutoId != 0) {
+                sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoId))
+            }
+
+            Log.e("sendRequestObject order ordersubmit", sendRequestObject.toString())
+
+            //send request queue in vally
+            val queue = Volley.newRequestQueue(this)
+            val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                AppPreferences.DeleteDraftOrder, sendRequestObject,
+                { response ->
+                    val responseResult = JSONObject(response.toString())
+                    val responsedData = JSONObject(responseResult.getString("d"))
+                    var responseMessage2 = responsedData.getString("responseMessage")
+                    val responseStatus = responsedData.getInt("responseStatus")
+                    if (responseStatus == 200) {
+
+                        var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                        popUp.setContentText(responseMessage2.toString())
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            startActivity(Intent(this,MainActivity2::class.java))
+                            finish()
+                            popUp.dismiss()
+                            pDialog.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
+
+                    } else {
+                        var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        popUp.setContentText(responseMessage2.toString())
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            popUp.dismiss()
+                            pDialog.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
+//                                        warningMessage(message = responseMessage1.toString())
+//                                        Log.e("message",responseMessage1.toString())
+                        //  pDialog!!.dismiss()
+                    }
+                },
+                Response.ErrorListener { pDialog!!.dismiss() })
+            JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                10000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+            try {
+                queue.add(JsonObjectRequest)
+            } catch (e: Exception) {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+            }
+        } else {
+            val dialog = this?.let { Dialog(it) }
+            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+            val btDismiss =
+                dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+            btDismiss?.setOnClickListener {
+                dialog.dismiss()
+                val intent = Intent(this, MainActivity2::class.java)
+                this?.startActivity(intent)
+                finish()
+
+            }
+            dialog?.show()
+        }
     }
 
     private fun OrderSubmitFunction() {
@@ -485,7 +624,7 @@ class OrderSummaryActivity : AppCompatActivity() {
                              var WeightQty = responsDataObject.getString("WeightQty")
                              WeightTax = responsDataObject.getString("WeightTax")
                             var TaxType = responsDataObject.getString("TaxType")
-                            var Tax = responsDataObject.getString("Tax")
+                            Tax = responsDataObject.getString("Tax")
                             var CD = responsDataObject.getString("CD")
                             var DisAmt = responsDataObject.getString("DisAmt")
                             var  discountP= CD.toFloat()
@@ -512,7 +651,7 @@ class OrderSummaryActivity : AppCompatActivity() {
                             mlTax.setText("$ %.2f".format(MLTaxValue.toDouble()))
                         }else if (Tax!="0"&&Tax!=""&&Tax!=null)
                         {
-                            var totalTaxs=Tax.toFloat()
+                            var totalTaxs=Tax!!.toFloat()
                             totalTax.visibility=View.VISIBLE
                             textView8.visibility=View.VISIBLE
                             totalTax.setText("%.2f".format(totalTaxs.toDouble()))
@@ -543,10 +682,11 @@ class OrderSummaryActivity : AppCompatActivity() {
                                  adjsment =adjcmentV1.toFloat()
                             }
                           if (subTotals!=null&&Tax!=""&&Tax!=null)
-                          {         var totalTaxs=Tax.toFloat()
-                                   Total=(adjsment!!+subTotals+WeightTaxs+totalTaxs+MLTaxValue)-disAmount!!
-                                   round=Total!!.roundToInt().toFloat()
-                                   var adjs=round!!-Total!!
+                          {         var totalTaxs=Tax!!.toFloat()
+                                   Total=(subTotals+WeightTaxs+totalTaxs+MLTaxValue)
+                                    var grandTotal=Total!!-disAmount!!
+                                   round=grandTotal!!.roundToInt().toFloat()
+                                   var adjs=round!!-grandTotal!!
                                   adjcmentV.setText("%.2f".format(adjs.toDouble()))
                                   payableAmount.setText("%.2f".format(round))
                           }
@@ -813,10 +953,15 @@ class OrderSummaryActivity : AppCompatActivity() {
 
         val inflater = menuInflater
         var ChangeBillNo: MenuItem? = null
+        var deleteOrderBtn: MenuItem? = null
         inflater.inflate(R.menu.menuitem, menu)
         ChangeBillNo = menu?.findItem(R.id.submitOrder)
+        deleteOrderBtn = menu?.findItem(R.id.deleteOrderBtn)
         if (ChangeBillNo != null) {
             ChangeBillNo.isVisible = true
+        }
+        if (deleteOrderBtn != null) {
+            deleteOrderBtn.isVisible = true
         }
         return super.onCreateOptionsMenu(menu)
     }

@@ -13,6 +13,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -27,6 +28,7 @@ import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.DraftOrderListAdapter
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.ModelClassDraftOrderList
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.SalesPersonProductModel
+import com.example.myapplication.com.example.whm.ui.Sales_Person.SwipeGesture
 import org.json.JSONObject
 
 class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAdapter.OnItemClickListeners {
@@ -65,7 +67,126 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
             dialog?.show()
         }
     }
+    private fun deleteDraftOrder(draftAutoid:Int) {
+        if (AppPreferences.internetConnectionCheck(this)) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+            var accessToken = preferences.getString("accessToken", "")
+            var empautoid = preferences.getString("EmpAutoId", "")
+            var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+            pDialog!!.titleText = "Fetching ..."
+            pDialog!!.setCancelable(false)
+            pDialog!!.show()
+            val sendRequestObject = JSONObject()
+            val requestContainer = JSONObject()
+            val pObj = JSONObject()
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("appVersion", AppPreferences.AppVersion)
+            )
+            sendRequestObject.put(
+                "requestContainer", requestContainer.put(
+                    "deviceID",
+                    Settings.Secure.getString(
+                        this!!.contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
+                )
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceName", AppPreferences.DeviceName)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("accessToken", accessToken)
+            )
+            sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
+            if (draftAutoid!=0) {
+                sendRequestObject.put("pObj", pObj.put("draftAutoId", draftAutoid))
+            }
 
+            Log.e("sendRequestObject order ordersubmit", sendRequestObject.toString())
+
+            //send request queue in vally
+            val queue = Volley.newRequestQueue(this)
+            val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                AppPreferences.DeleteDraftOrder, sendRequestObject,
+                { response ->
+                    val responseResult = JSONObject(response.toString())
+                    val responsedData = JSONObject(responseResult.getString("d"))
+                    var responseMessage2 = responsedData.getString("responseMessage")
+                    val responseStatus = responsedData.getInt("responseStatus")
+                    if (responseStatus == 200) {
+
+                        var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                        popUp.setContentText(responseMessage2.toString())
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+//                            startActivity(Intent(this,MainActivity2::class.java))
+                            SalesDraftOrder.setText(" Draft Order List"+"("+modelClassDraftOrder.size+")")
+                            customerOrderAdapter.notifyDataSetChanged()
+//                             finish()
+                            popUp.dismiss()
+                            pDialog.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
+
+                    } else {
+                        var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        popUp.setContentText(responseMessage2.toString())
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            popUp.dismiss()
+                            pDialog.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
+//                                        warningMessage(message = responseMessage1.toString())
+//                                        Log.e("message",responseMessage1.toString())
+                        //  pDialog!!.dismiss()
+                    }
+                },
+                Response.ErrorListener { pDialog!!.dismiss() })
+            JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                10000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+            try {
+                queue.add(JsonObjectRequest)
+            } catch (e: Exception) {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+            }
+        } else {
+            val dialog = this?.let { Dialog(it) }
+            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+            val btDismiss =
+                dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+            btDismiss?.setOnClickListener {
+                dialog.dismiss()
+                val intent = Intent(this, MainActivity2::class.java)
+                this?.startActivity(intent)
+                finish()
+
+            }
+            dialog?.show()
+        }
+    }
     private fun DraftListfunctionCall() {
         if (AppPreferences.internetConnectionCheck(this)) {
             val preferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -187,8 +308,32 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
         modelClassDraftOrder.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.OrderCustomerRecyclerView)
         customerOrderAdapter = DraftOrderListAdapter(modelClassDraftOrder, this,this@DraftOrderList)
-        recyclerview.adapter = customerOrderAdapter
 
+        val SwipeGesture=object :SwipeGesture(this){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val ClickedItem: ModelClassDraftOrderList=modelClassDraftOrder[direction]
+                when(direction){
+                    ItemTouchHelper.LEFT ->{
+                        customerOrderAdapter.deleteItem(viewHolder.adapterPosition)
+//                        Toast.makeText(this@DraftOrderList,customerOrderAdapter.toString(),Toast.LENGTH_LONG).show()
+                        deleteDraftOrder(draftAutoid=ClickedItem.getDraftAutoId()!!.toInt())
+                    }
+                    ItemTouchHelper.RIGHT->{
+                        val ClickedItem: ModelClassDraftOrderList=modelClassDraftOrder[direction]
+                        var intent:Intent=Intent(this@DraftOrderList,SalesPersonProductList::class.java)
+                        intent.putExtra("draftAutoIdd",ClickedItem.getDraftAutoId().toString())
+                        intent.putExtra("grandTotal",ClickedItem.getgrandTotal().toString())
+                        intent.putExtra("noOfItems",ClickedItem.getnoOfItems().toString())
+                        Toast.makeText(this@DraftOrderList,ClickedItem.getDraftAutoId().toString(),Toast.LENGTH_LONG).show()
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+        }
+        val tochHelper=ItemTouchHelper(SwipeGesture)
+        tochHelper.attachToRecyclerView(recyclerview)
+        recyclerview.adapter = customerOrderAdapter
     }
 
     override fun onClick(v: View?) {

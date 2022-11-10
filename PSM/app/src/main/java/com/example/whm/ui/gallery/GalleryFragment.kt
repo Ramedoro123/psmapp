@@ -53,6 +53,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.UpdateLocation.setCanceledOnTouchOutside
 import com.example.myapplication.com.example.whm.ui.inventoryreceive.ReceivePOAdapter1
+import com.squareup.picasso.Picasso
 import org.json.JSONArray
 class GalleryFragment : Fragment() {
     private lateinit var galleryViewModel: GalleryViewModel
@@ -132,6 +133,7 @@ class GalleryFragment : Fragment() {
 
         if (AppPreferences.internetConnectionCheck(this.context)) {
              barcode = binding.barcodetype
+            barcode!!.requestFocus()
             val imm =
                 (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(view?.windowToken,0)
             val btnupdatestock: Button = binding.btnupdatestock
@@ -161,6 +163,7 @@ class GalleryFragment : Fragment() {
                                         dialog.dismiss()
                                         barcode!!.text.clear()
                                         barcode!!.setText("")
+                                        barcode!!.requestFocus()
                                         barcodeenter = ""
                                     }
                                     val dialog: AlertDialog = alertemail.create()
@@ -330,7 +333,7 @@ class GalleryFragment : Fragment() {
                     val DefaultStock = jsonrepd.getString("stock")
                     val DefaultStock2 = jsonrepd.getString("SPiece")
                      DUnit = jsonrepd.getInt("Dunit")
-                    var imagesurl = ""
+                    var imagesurl:String?=null
                     if (jsonrepd.getString("OPath") == null) {
                         imagesurl = jsonrepd.getString("ImageUrl")
                     } else {
@@ -421,14 +424,20 @@ class GalleryFragment : Fragment() {
                         dilog.show()
                         dilog.getWindow()!!.setAttributes(lp);
                     })
-                    Glide.with(this)
-                        .load(imagesurl)
-                        .into(imagur)
+                    if (imagesurl!=""&&imagesurl!=null) {
+                        Picasso.get().load(imagesurl).error(com.example.myapplication.R.drawable.default_pic)
+                            .into(imagur);
+                    }
+                    else{
+                        imagur.setImageResource(com.example.myapplication.R.drawable.default_pic)
+                    }
                     pDialog.dismiss()
                 } else {
                     showproductdetails?.visibility = View.GONE
                     val barcodeC: EditText = binding.barcodetype
+                    barcodeC.requestFocus()
                     barcodeC.text.clear()
+                    barcodeC.focusable
                     barcode.text = ""
                     pDialog.dismiss()
                     val dialog = SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)

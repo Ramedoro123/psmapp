@@ -940,6 +940,7 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
             val ClickedItem: CartListModelClass = productListModelClass[position]
 
             productListModelClass.removeAt(position)
+            cartListAdapter.notifyDataSetChanged()
             if (AppPreferences.internetConnectionCheck(this)) {
                 val preferences = PreferenceManager.getDefaultSharedPreferences(this)
                 var accessToken = preferences.getString("accessToken", "")

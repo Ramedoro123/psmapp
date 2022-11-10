@@ -43,7 +43,10 @@ class DraftOrderListAdapter(private val OrderListData: ArrayList<ModelClassDraft
 
         }
     }
-
+fun deleteItem(i: Int){
+    OrderListData.removeAt(i)
+    notifyDataSetChanged()
+}
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.salseperson_orderlist_view, parent, false)
