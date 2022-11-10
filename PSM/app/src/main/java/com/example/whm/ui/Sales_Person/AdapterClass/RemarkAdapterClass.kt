@@ -38,7 +38,6 @@ class RemarkAdapterClass(private val OrderItemListData: ArrayList<remarks>,var L
 //            holder.view17.visibility=View.VISIBLE
             holder.remarksLevel.setText(employType.toString() + " \n(" + employName.toString() +") :")
             holder.remarksvalue.setText(employremarks.toString())
-
         }
         else{
             holder.remarksLevel.visibility=View.GONE
