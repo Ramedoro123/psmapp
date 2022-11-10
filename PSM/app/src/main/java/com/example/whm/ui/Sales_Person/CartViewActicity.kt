@@ -15,6 +15,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -110,12 +111,35 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
          CustomerName=findViewById<TextView>(R.id.CustomerName)
         var CustomerInformation=findViewById<TextView>(R.id.CustomerInformation)
         OrderSummary.setOnClickListener(View.OnClickListener {
-
+                 if (noOfItem!=""&&noOfItem!=null&&noOfItem!="0") {
 //           startActivity(Intent(this@CartViewActicity,OrderSummaryActivity::class.java))
-            var intent=Intent(this@CartViewActicity,OrderSummaryActivity::class.java)
-            intent.putExtra("draftAutoId",draftAutoId)
-            startActivity(intent)
-           finish()
+                     var intent = Intent(this@CartViewActicity, OrderSummaryActivity::class.java)
+                     intent.putExtra("draftAutoId", draftAutoId)
+                     startActivity(intent)
+                     finish()
+                 }
+                 else{
+                     var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                     popUp.setContentText("Atleast One Item Required.")
+                     popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                     popUp.setConfirmClickListener()
+                     { sDialog ->
+                         sDialog.dismissWithAnimation()
+                         var intent=Intent(this@CartViewActicity,SalesPersonProductList::class.java)
+                         intent.putExtra("draftAutoId",draftAutoId)
+                         intent.putExtra("totalcount",totalcount)
+                         intent.putExtra("noOfItems",noOfItem)
+                         intent.putExtra("grandTotal",totalvalue)
+                         Log.e("noOfItem", noOfItem.toString())
+                         startActivity(intent)
+                         finish()
+                         popUp.dismiss()
+                     }
+
+                     popUp.show()
+                     popUp.setCanceledOnTouchOutside(false)
+                     popUp.setCancelable(false)
+                 }
         })
 
 //        var bundle :Bundle ?=intent.extras
@@ -136,9 +160,9 @@ class CartViewActicity : AppCompatActivity(), View.OnClickListener, CartListAdap
         Log.e("noOfItem",noOfItem.toString())
         if (draft=="" || draft==null){
              draftAutoId=0
-        }else if (draft!="" || draft!=null){
+        }else if ((draft!=""&&draft!=null)){
             draftAutoId=draft.toString().toInt()
-            TotalAmount=totalvalue.toString().toFloat()
+//            TotalAmount=totalvalue!!.toFloat()
 //            totalcount=totalcounts.toString().toInt()
         }
         btnBackCart.setOnClickListener(View.OnClickListener {

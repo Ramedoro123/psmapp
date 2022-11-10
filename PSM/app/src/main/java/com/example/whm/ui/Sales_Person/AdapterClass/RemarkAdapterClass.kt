@@ -14,7 +14,7 @@ class RemarkAdapterClass(private val OrderItemListData: ArrayList<remarks>,var L
     inner class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         var remarksLevel: TextView = itemView.findViewById(R.id.remarksLevel)
         var remarksvalue: TextView = itemView.findViewById(R.id.remarksvalue)
-        var view17:View = itemView.findViewById(R.id.view17)
+//        var view17:View = itemView.findViewById(R.id.view17)
     }
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -35,7 +35,7 @@ class RemarkAdapterClass(private val OrderItemListData: ArrayList<remarks>,var L
         {
             holder.remarksLevel.visibility=View.VISIBLE
             holder.remarksvalue.visibility=View.VISIBLE
-            holder.view17.visibility=View.VISIBLE
+//            holder.view17.visibility=View.VISIBLE
             holder.remarksLevel.setText(employType.toString() + " \n(" + employName.toString() +") :")
             holder.remarksvalue.setText(employremarks.toString())
 
@@ -43,7 +43,7 @@ class RemarkAdapterClass(private val OrderItemListData: ArrayList<remarks>,var L
         else{
             holder.remarksLevel.visibility=View.GONE
             holder.remarksvalue.visibility=View.GONE
-            holder.view17.visibility=View.GONE
+//            holder.view17.visibility=View.GONE
         }
     }
 

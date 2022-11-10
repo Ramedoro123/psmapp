@@ -1,6 +1,5 @@
 package com.example.myapplication.com.example.whm
 import android.app.Dialog
-import android.content.ContentResolver
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -8,16 +7,15 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Build
 import android.os.Build.DEVICE
-import android.provider.Settings.Secure
 import android.view.Window
 import android.widget.Button
-import com.example.myapplication.BuildConfig
+import androidx.viewbinding.BuildConfig
 object AppPreferences {
-    const  val AppVersion = BuildConfig.VERSION_NAME
-    const val BASEURL = "https://api.a1whm.com/AndroidAPI/"  // This is Test Api's
-    const val apiurl = "https://api.a1whm.com/Packerapi/"    // This is Test Api's
-    const val PackerUrl= "https://api.a1whm.com/PackerApi/"  // This is Test Api's
-    const val salesPersonUrl="https://api.a1whm.com//WebApi/"//This is test Api's By Ram 01/09/2022
+    const  val AppVersion=com.example.myapplication.BuildConfig.VERSION_NAME
+    const val BASEURL = "http://api1.a1whm.com/AndroidAPI/"  // This is Test Api's
+    const val apiurl = "http://api1.a1whm.com/Packerapi/"    // This is Test Api's
+    const val PackerUrl= "http://api1.a1whm.com/PackerApi/"  // This is Test Api's
+    const val salesPersonUrl="http://api1.a1whm.com//WebApi/"//This is test Api's By Ram 01/09/2022
     const val GET_ORDERS = "WDriverOrder.asmx/getOrders"
     const val SUBMIT_LOAD_ORDER = "WDriverOrder.asmx/SubmitLoadOrder"
     const val GET_ASSIGN_ORDER = "WDriverOrder.asmx/getDriverOrderList"

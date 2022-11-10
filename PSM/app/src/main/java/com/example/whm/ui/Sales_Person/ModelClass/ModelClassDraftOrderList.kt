@@ -1,6 +1,6 @@
 package com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass
 
-class ModelClassDraftOrderList(  DraftAutoId: Int,orderDate: String, customerName: String, status: String,noOfItems: String, colorCode: String, grandTotal: String,)
+class ModelClassDraftOrderList(  DraftAutoId: Int,orderDate: String, customerName: String, status: String,noOfItems: String, colorCode: String, grandTotal: String,CustomerId: String,CustomerAutoId: String,)
 {
     private var DraftAutoId:Int
     private var orderDate:String
@@ -9,6 +9,8 @@ class ModelClassDraftOrderList(  DraftAutoId: Int,orderDate: String, customerNam
     private var noOfItems: String
     private var colorCode: String
     private var grandTotal: String
+    private var CustomerId: String
+    private var CustomerAutoId: String
     init {
         this.DraftAutoId=DraftAutoId
         this.orderDate=orderDate
@@ -17,6 +19,8 @@ class ModelClassDraftOrderList(  DraftAutoId: Int,orderDate: String, customerNam
         this.noOfItems=noOfItems
         this.colorCode=colorCode
         this.grandTotal=grandTotal
+        this.CustomerId=CustomerId
+        this.CustomerAutoId=CustomerAutoId
     }
     fun getDraftAutoId():Int?{
         return DraftAutoId
@@ -38,5 +42,11 @@ class ModelClassDraftOrderList(  DraftAutoId: Int,orderDate: String, customerNam
     }
     fun getgrandTotal():String?{
         return grandTotal
+    }
+    fun getCustomerId():String?{
+        return CustomerId
+    }
+    fun getCustomerAutoId():String?{
+        return CustomerAutoId
     }
 }

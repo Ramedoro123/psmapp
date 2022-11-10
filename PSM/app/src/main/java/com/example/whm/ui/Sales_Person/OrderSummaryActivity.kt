@@ -1,9 +1,9 @@
 package com.example.whm.ui.Sales_Person
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.Settings
@@ -25,15 +25,12 @@ import com.example.myapplication.R
 import com.example.myapplication.com.example.whm.AppPreferences
 import com.example.myapplication.com.example.whm.MainActivity2
 import com.example.myapplication.com.example.whm.ui.Sales_Person.ModelClass.getShippingTypeDataModel
-import com.example.myapplication.com.example.whm.ui.inventoryreceive.DatePickerFragment
 import org.json.JSONObject
 import java.lang.reflect.Field
+import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
-import androidx.recyclerview.widget.DividerItemDecoration
-
-
-
 
 
 class OrderSummaryActivity : AppCompatActivity() {
@@ -113,23 +110,19 @@ class OrderSummaryActivity : AppCompatActivity() {
             finish()
         })
         deliveryDate?.setOnClickListener {
-            val datePickerFragment = DatePickerFragment()
-            val supportFragmentManager = this.supportFragmentManager
-            supportFragmentManager.setFragmentResultListener(
-                "REQUEST_KEY",
-                this
-            ) { resultKey, bundle ->
-                if (resultKey == "REQUEST_KEY") {
-                    val date = bundle.getString("SELECTED_DATE")
-                    deliveryDate?.text = date
-                    deliveryDate!!.requestFocus()
-                    //  spvendor!!.requestFocus()
+            val c: Calendar = Calendar.getInstance()
+            val dialog = DatePickerDialog(this, object : DatePickerDialog.OnDateSetListener {
+                override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                    val _year = year.toString()
+                    val _month = if (month + 1 < 10) "0" + (month + 1) else (month + 1).toString()
+                    val _date = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+                    val _pickedDate = "$_month-$_date-$_year"
+                    Log.e("PickedDate: ", "Date: $_pickedDate") //2019-02-12
+                    deliveryDate?.text = _pickedDate
                 }
-
-            }
-            datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
-            datePickerFragment.enterTransition
-
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.MONTH))
+            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000)
+            dialog.show()
         }
         shipingCharge.filters= arrayOf(OrderSummaryActivity.DecimalDigitsInputFilter(6,2))
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -178,6 +171,8 @@ class OrderSummaryActivity : AppCompatActivity() {
             }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val tmp = overAllDisAmount.text.toString()
+                var shipingCharges = shipingCharge.text.toString()
+                var shipingChargesvalue:Float?=null
                 val tmps=SubTotal.toString()
                 var tmps1=Total
                 if (!tmp.isEmpty() && uahEdited && tmp != "." && tmps != null && tmps != "."&&tmps1!=null&&tmps1!=0.0f) {
@@ -191,8 +186,14 @@ class OrderSummaryActivity : AppCompatActivity() {
                         overAllDisAmount.text.replace(0, overAllDisAmount.text.length, "0.00")
                         Toast.makeText(this@OrderSummaryActivity,"Percent Amount should not be greater than Sub Total Amount.",Toast.LENGTH_LONG).show()
                     }
+                    if (shipingCharges!=""&&shipingCharges!=null){
+                        shipingChargesvalue=shipingCharges.toFloat()
+                    }
+                    else{
+                        shipingChargesvalue=0.0f
+                    }
                             var tmp1 = tmp.toFloat()
-                            var grandTotal = (tmps1)-(tmp1)
+                            var grandTotal = (tmps1+shipingChargesvalue)-(tmp1)
                             var round1 = grandTotal.roundToInt().toFloat()
                             var adjs = round1!!-grandTotal!!
                             adjcmentV.setText("%.2f".format(adjs.toDouble()))
@@ -200,10 +201,20 @@ class OrderSummaryActivity : AppCompatActivity() {
 
                 }
                 else if (tmp.isEmpty()) {
+                    var shipvalue:Float?=null
+                    if (shipingCharges!=null&&shipingCharges!="")
+                    {
+                        shipvalue=shipingCharges.toFloat()
+                    }else{
+                        shipvalue=0.0f
+                    }
                     var tem3 = 0.00
                     var temp3=tmps1!!.toFloat()
-                    var gangs = temp3+tem3
-                    payableAmount.setText("%.2f".format(gangs.roundToInt().toFloat()))
+                    var gangs = temp3+tem3+ shipvalue!!
+                    var round1 = gangs.roundToInt().toFloat()
+                    var adjs = round1!!-gangs!!
+                    adjcmentV.setText("%.2f".format(adjs.toDouble()))
+                    payableAmount.setText("%.2f".format(round1))
                     overAllDisP.text.clear()
                 }
             }
@@ -224,11 +235,14 @@ class OrderSummaryActivity : AppCompatActivity() {
 
                 }
             }
-
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 val tmp = overAllDisP.text.toString()
+                var shipingCharges=shipingCharge.text.toString()
+                var shipingChargesvalue:Float?=null
                 val tmps = SubTotal.toString()
-                if (!tmp.isEmpty() && usdEdited && tmp != "." && tmps != null && tmps != "" && tmps != "." && tmp != "0") {
+
+                var tmps1=Total
+                if (!tmp.isEmpty() && usdEdited && tmp != "." && tmps != null && tmps != "" && tmps != "." && tmp != "0"&&tmps1!=null&&tmps1!=0.0f) {
                     usd = tmp.toFloat()
                     val price = tmps.toFloat()
                         uah = usd * price / 100
@@ -244,7 +258,36 @@ class OrderSummaryActivity : AppCompatActivity() {
                         overAllDisP.text.replace(0, overAllDisP.text.length, "0.00")
                         Toast.makeText(this@OrderSummaryActivity,"Percent Amount should not be greater than Sub Total Amount.",Toast.LENGTH_LONG).show()
                     }
+                      if (shipingCharges!=""&&shipingCharges!=null){
+                          shipingChargesvalue=shipingCharges.toFloat()
+                      }
+                      else{
+                          shipingChargesvalue=0.0f
+                      }
+                    var tmp1 = uah.toFloat()
+                    var grandTotal = (tmps1+shipingChargesvalue!!)-(tmp1)
+                    var round1 = grandTotal.roundToInt().toFloat()
+                    var adjs = round1!!-grandTotal!!
+                    adjcmentV.setText("%.2f".format(adjs.toDouble()))
+                    payableAmount.setText("%.2f".format(round1))
+
+
+
                 } else if (tmp.isEmpty()) {
+                    var shipvalue:Float?=null
+                    if (shipingCharges!=null&&shipingCharges!="")
+                    {
+                        shipvalue=shipingCharges.toFloat()
+                    }else{
+                        shipvalue=0.0f
+                    }
+                    var tem3 = 0.00
+                    var temp3=tmps1!!.toFloat()
+                    var gangs = temp3+tem3+shipvalue!!
+                    var round1 = gangs.roundToInt().toFloat()
+                    var adjs = round1!!-gangs!!
+                    adjcmentV.setText("%.2f".format(adjs.toDouble()))
+                    payableAmount.setText("%.2f".format(round1))
                     overAllDisAmount.text.clear()
                 }
             }
@@ -253,6 +296,7 @@ class OrderSummaryActivity : AppCompatActivity() {
                 usdEdited = false
             }
         })
+
         shipingCharge.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence,
@@ -267,25 +311,36 @@ class OrderSummaryActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                var tmp = shipingCharge.text.toString()
+                var shiping = shipingCharge.text.toString()
                 val DisAmount = overAllDisAmount.text.toString()
                 var tmps = Total
                 var DisAmount1:Float?=null
-                if (!tmp.isEmpty() && usdEdited && tmp.trim() != ""&& tmps != null&&DisAmount!=""&&DisAmount!=null) {
-                    var tmp1=tmp.toFloat()
-                     DisAmount1=DisAmount.toFloat()
+                if (!shiping.isEmpty() && usdEdited && shiping.trim() != ""&& tmps != null) {
+                    if (DisAmount!=""&&DisAmount!=null)
+                    {
+                        DisAmount1=DisAmount.toFloat()
+                    }else{
+                        DisAmount1=0.0f
+                    }
+                    var shiping1=shiping.toFloat()
                     var tmp2=tmps.toFloat()
-                    var total=(tmp2+tmp1)-(DisAmount1)
+                    var total=(tmp2+shiping1)-(DisAmount1!!)
                     var round1=total.roundToInt().toFloat()
                     var adjs=round1!!-total!!
                     adjcmentV.setText("%.2f".format(adjs.toDouble()))
                     payableAmount.setText("%.2f".format(round1.toFloat()))
                 }
-                else if (tmp.isEmpty()) {
+                else if (shiping.isEmpty()) {
                     var tem3 = 0.00
                     var temp3=tmps!!.toFloat()
-                    var DisAmount=DisAmount!!.toFloat()
-                    var gangs = temp3+tem3-DisAmount
+                    var DisAmount2:Float?=null
+                    if (DisAmount!=""&&DisAmount!=null) {
+                        DisAmount2 = DisAmount!!.toFloat()
+                    }
+                    else{
+                        DisAmount2=0.0f
+                    }
+                    var gangs = temp3+tem3-DisAmount2!!
                     payableAmount.setText("%.2f".format(gangs.roundToInt().toFloat()))
                     shipingCharge.text.clear()
                 }

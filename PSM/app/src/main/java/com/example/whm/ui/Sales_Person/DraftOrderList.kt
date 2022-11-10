@@ -238,6 +238,8 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
                             Log.e("responseData",responseData.toString())
                             for (i in 0 until responseData.length()) {
                                 var DraftAutoId = responseData.getJSONObject(i).getInt("DraftAutoId")
+                                var CustomerId = responseData.getJSONObject(i).getString("CId")
+                                var CustomerAutoId = responseData.getJSONObject(i).getString("AI")
                                 var OrderDate = responseData.getJSONObject(i).getString("OrderDate")
                                 var CustomerName = responseData.getJSONObject(i).getString("CustomerName")
                                 var Status = responseData.getJSONObject(i).getString("Status")
@@ -247,7 +249,8 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
                                 Log.e("ColorCode1",ColorCode.toString())
                                 //    Log.e("DueBalance",twoDigitValue.)
                                 SalsePModelClassList(DraftAutoId,OrderDate,CustomerName,Status
-                                    ,NoOfItems,ColorCode, grandTotal)
+                                    ,NoOfItems,ColorCode, grandTotal,CustomerId,CustomerAutoId)
+                                Log.e("CustomerAutoId",CustomerId)
                             }
                             var totalOrder=modelClassDraftOrder.size
                             SalesDraftOrder.setText(" Draft Order List"+"("+totalOrder+")")
@@ -303,28 +306,59 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
         noOfItems: String,
         colorCode: String,
         grandTotal: String,
+        CustomerId: String,
+        CustomerAutoId: String
     ) {
-        var ModelClassCustomer1 = ModelClassDraftOrderList(DraftAutoId,orderDate,customerName,status,noOfItems,colorCode,grandTotal)
+        var ModelClassCustomer1 = ModelClassDraftOrderList(DraftAutoId,orderDate,customerName,status,noOfItems,colorCode,grandTotal,CustomerId,CustomerAutoId)
         modelClassDraftOrder.add(ModelClassCustomer1)
         val recyclerview = findViewById<RecyclerView>(R.id.OrderCustomerRecyclerView)
         customerOrderAdapter = DraftOrderListAdapter(modelClassDraftOrder, this,this@DraftOrderList)
 
         val SwipeGesture=object :SwipeGesture(this){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val ClickedItem: ModelClassDraftOrderList=modelClassDraftOrder[direction]
+                val ClickedItem: ModelClassDraftOrderList=modelClassDraftOrder[viewHolder.bindingAdapterPosition]
                 when(direction){
                     ItemTouchHelper.LEFT ->{
+                        var alertbox = SweetAlertDialog(this@DraftOrderList, SweetAlertDialog.WARNING_TYPE)
+                        alertbox.titleText = "Are you sure?"
+                        alertbox.setContentText("You want to delete. ").contentTextSize = 20
+                        alertbox.cancelButtonBackgroundColor = Color.parseColor("#4cae4c")
+                        alertbox.setCancelButton("Yes")
+                        { sDialog ->
+                            customerOrderAdapter.notifyDataSetChanged()
+                            finish()
+                            sDialog.dismissWithAnimation()
+                        }
+                        alertbox.confirmText = "No"
+                        alertbox.confirmButtonBackgroundColor = Color.parseColor("#E60606")
+                        alertbox.setCancelClickListener { sDialog ->
+
                         customerOrderAdapter.deleteItem(viewHolder.adapterPosition)
 //                        Toast.makeText(this@DraftOrderList,customerOrderAdapter.toString(),Toast.LENGTH_LONG).show()
                         deleteDraftOrder(draftAutoid=ClickedItem.getDraftAutoId()!!.toInt())
+
+                            sDialog.dismissWithAnimation()
+                        }
+                        alertbox.setConfirmClickListener { sDialog ->
+                            customerOrderAdapter.notifyDataSetChanged()
+                            sDialog.dismissWithAnimation()
+                        }
+                        alertbox.setCanceledOnTouchOutside(false)
+                        alertbox.show()
                     }
                     ItemTouchHelper.RIGHT->{
-                        val ClickedItem: ModelClassDraftOrderList=modelClassDraftOrder[direction]
                         var intent:Intent=Intent(this@DraftOrderList,SalesPersonProductList::class.java)
                         intent.putExtra("draftAutoIdd",ClickedItem.getDraftAutoId().toString())
                         intent.putExtra("grandTotal",ClickedItem.getgrandTotal().toString())
                         intent.putExtra("noOfItems",ClickedItem.getnoOfItems().toString())
-                        Toast.makeText(this@DraftOrderList,ClickedItem.getDraftAutoId().toString(),Toast.LENGTH_LONG).show()
+                        val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this@DraftOrderList)
+                        val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
+                        sharedLoadOrderPage.putString("customerId", ClickedItem.getCustomerId().toString())
+                        sharedLoadOrderPage.putString("customerAutoId", ClickedItem.getCustomerAutoId().toString())
+                        sharedLoadOrderPage.putString("CustomerName", ClickedItem.getcustomerName().toString())
+                        //sharedLoadOrderPage.putString("UpdateLocation",ValueUpdate.toString())
+                        sharedLoadOrderPage.apply()
+                        Log.e("ClickedItem.getCustomerAutoId().toString()",ClickedItem.getCustomerAutoId().toString())
                         startActivity(intent)
                         finish()
                     }
@@ -347,6 +381,13 @@ class DraftOrderList : AppCompatActivity(),View.OnClickListener,DraftOrderListAd
         intent.putExtra("draftAutoIdd",ClickedItem.getDraftAutoId().toString())
         intent.putExtra("grandTotal",ClickedItem.getgrandTotal().toString())
         intent.putExtra("noOfItems",ClickedItem.getnoOfItems().toString())
+        val sharedLoadOrderPreferences = PreferenceManager.getDefaultSharedPreferences(this@DraftOrderList)
+        val sharedLoadOrderPage = sharedLoadOrderPreferences.edit()
+        sharedLoadOrderPage.putString("customerId", ClickedItem.getCustomerAutoId().toString())
+        sharedLoadOrderPage.putString("customerAutoId", ClickedItem.getCustomerAutoId().toString())
+        sharedLoadOrderPage.putString("CustomerName", ClickedItem.getcustomerName().toString())
+        //sharedLoadOrderPage.putString("UpdateLocation",ValueUpdate.toString())
+        sharedLoadOrderPage.apply()
         startActivity(intent)
         finish()
     }

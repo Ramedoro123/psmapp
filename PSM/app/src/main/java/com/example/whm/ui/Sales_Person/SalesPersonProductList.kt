@@ -127,6 +127,9 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
         var noOfItems = intent.getStringExtra("noOfItems")
         if (draftAutoIdd!=null&&draftAutoIdd!=""&&draftAutoIdd!="0"){
             draftAutoId=draftAutoIdd.toInt()
+            Log.e("draftAutoIdd",draftAutoId.toString())
+            Log.e("grandTotal",grandTotal.toString())
+            Log.e("noOfItems",noOfItems.toString())
         }
         if (grandTotal!=null &&noOfItems!=null&&grandTotal!=""&&noOfItems!="")
         {
@@ -1212,6 +1215,7 @@ class SalesPersonProductList : AppCompatActivity(), View.OnClickListener,
                 }
                 dialog?.show()
             }
+
             sDialog.dismissWithAnimation()
         }
         alertbox.setConfirmClickListener { sDialog ->
