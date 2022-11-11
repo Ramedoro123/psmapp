@@ -940,6 +940,7 @@ class GalleryFragment : Fragment() {
                             (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Inventory Check"
                             }
                         updates.setCanceledOnTouchOutside(false)
+                        updates.setCancelable(false)
                         updates.show()
                         barcode?.setText("")
                         barcode?.requestFocus()
@@ -950,6 +951,7 @@ class GalleryFragment : Fragment() {
                             resmsg.toString()
                         )
                           update.setCanceledOnTouchOutside(false)
+                          update.setCancelable(false)
                           update.show()
 
                     }

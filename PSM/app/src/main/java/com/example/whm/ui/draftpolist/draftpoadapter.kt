@@ -16,13 +16,18 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.com.example.whm.ui.Sales_Person.AdapterClass.DraftOrderListAdapter
 import com.example.myapplication.com.example.whm.ui.load_order_page.setSupportActionBar
 import com.example.whm.ui.inventoryreceive.ReceivePO
 
 
-internal class draftpoadapter(private var draftModel: List<draftpomodel>, var activity: Context?) :
+internal class draftpoadapter(private var draftModel: ArrayList<draftpomodel>, var activity: Context?, private val listener:draftpoadapter.OnItemClickListeners,) :
     RecyclerView.Adapter<draftpoadapter.MyViewHolder>() {
-    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    public interface OnItemClickListeners {
+        fun OnItemsClick(position: Int)
+        fun OnDeleteClicks(position: Int)
+    }
+    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) ,View.OnClickListener{
         var BillNo: TextView = view.findViewById(R.id.txtbillno)
         var BillDAte: TextView = view.findViewById(R.id.billdate)
         var txtnoofproduct: TextView = view.findViewById(R.id.product)
@@ -31,8 +36,25 @@ internal class draftpoadapter(private var draftModel: List<draftpomodel>, var ac
         var DAutoid:Int=0
         var Status:Int=0
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
-    }
+        init {
 
+            itemView.setOnClickListener(View.OnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.OnItemsClick(position)
+                }
+            })
+
+        }
+
+        override fun onClick(v: View?) {
+
+        }
+    }
+    fun deleteItem(i: Int){
+        draftModel.removeAt(i)
+        notifyDataSetChanged()
+    }
     @NonNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)

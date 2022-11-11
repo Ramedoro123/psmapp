@@ -36,5 +36,12 @@
             android:actionLayout="@layout/toolbar"
             android:visible="false"
             android:title="Change Bill No" />
+        <item
+            android:id="@+id/deletePo"
+            android:orderInCategory="200"
+            app:showAsAction="collapseActionView"
+            android:actionLayout="@layout/toolbar"
+            android:visible="false"
+            android:title="Delete PO" />
     </group>
 </menu>

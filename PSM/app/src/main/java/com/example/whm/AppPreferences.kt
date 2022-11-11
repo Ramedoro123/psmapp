@@ -66,6 +66,7 @@ object AppPreferences {
     const val DraftOrderList=salesPersonUrl+"WliveOrderMaster.asmx/DraftOrderList"
     const val OrderDetailsAPI=salesPersonUrl+"WliveOrderMaster.asmx/OrderDetails"
     const val DeleteDraftOrder=salesPersonUrl+"WliveOrderMaster.asmx/DeletedraftOrder"
+    const val deletePOOrder=BASEURL+"WPOReceive.asmx/deletePO"
 
     //for devices
     var manufacturer = Build.MANUFACTURER

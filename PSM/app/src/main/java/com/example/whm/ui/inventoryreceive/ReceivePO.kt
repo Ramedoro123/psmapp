@@ -186,10 +186,15 @@ class ReceivePO : AppCompatActivity() {
 
         val inflater = menuInflater
         var ChangeBillNo: MenuItem? = null
+        var deletePo: MenuItem? = null
         inflater.inflate(R.menu.menuitem, menu)
         ChangeBillNo = menu?.findItem(R.id.ChangeBillNo)
+        deletePo = menu?.findItem(R.id.deletePo)
         if (ChangeBillNo != null) {
             ChangeBillNo.isVisible = true
+        }
+        if (deletePo!=null){
+            deletePo.isVisible = true
         }
         return super.onCreateOptionsMenu(menu)
     }
@@ -229,8 +234,133 @@ class ReceivePO : AppCompatActivity() {
                 ChangeBillNo()
                 false
             }
+            R.id.deletePo -> {
+                deletePoOrder()
+                false
+            }
 
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun deletePoOrder() {
+        if (AppPreferences.internetConnectionCheck(this)) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+            var accessToken = preferences.getString("accessToken", "")
+            var empautoid = preferences.getString("EmpAutoId", "")
+            var pDialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+            pDialog!!.progressHelper.barColor = Color.parseColor("#A5DC86")
+            pDialog!!.titleText = "Fetching ..."
+            pDialog!!.setCancelable(false)
+            pDialog!!.show()
+            val sendRequestObject = JSONObject()
+            val requestContainer = JSONObject()
+            val pObj = JSONObject()
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("appVersion", AppPreferences.AppVersion)
+            )
+            sendRequestObject.put(
+                "requestContainer", requestContainer.put(
+                    "deviceID",
+                    Settings.Secure.getString(
+                        this!!.contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
+                )
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceVersion", AppPreferences.versionRelease)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("deviceName", AppPreferences.DeviceName)
+            )
+            sendRequestObject.put(
+                "requestContainer",
+                requestContainer.put("accessToken", accessToken)
+            )
+            sendRequestObject.put("requestContainer", requestContainer.put("userAutoId", empautoid))
+            if (DAutoid!=0) {
+                sendRequestObject.put("cObj", pObj.put("draftAutoId", DAutoid))
+            }
+
+            Log.e("sendRequestObject order ordersubmit", sendRequestObject.toString())
+
+            //send request queue in vally
+            val queue = Volley.newRequestQueue(this)
+            val JsonObjectRequest = JsonObjectRequest(Request.Method.POST,
+                AppPreferences.deletePOOrder, sendRequestObject,
+                { response ->
+                    val responseResult = JSONObject(response.toString())
+                    val responsedData = JSONObject(responseResult.getString("d"))
+                    var responseMessage2 = responsedData.getString("responseMessage")
+                    val responseStatus = responsedData.getInt("responseCode")
+                    if (responseStatus == 201) {
+
+                        var popUp = SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                        popUp.setContentText(responseMessage2.toString())
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            startActivity(Intent(this,MainActivity2::class.java))
+//                            SalesDraftOrder.setText(" Draft Order List"+"("+modelClassDraftOrder.size+")")
+//                            customerOrderAdapter.notifyDataSetChanged()
+                             finish()
+                            popUp.dismiss()
+                            pDialog.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
+
+                    } else {
+                        var popUp = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        popUp.setContentText(responseMessage2.toString())
+                        popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
+                        popUp.setConfirmClickListener()
+                        { sDialog ->
+                            sDialog.dismissWithAnimation()
+                            popUp.dismiss()
+                            pDialog.dismiss()
+                        }
+                        popUp.show()
+                        popUp.setCanceledOnTouchOutside(false)
+                        popUp.setCancelable(false)
+                        pDialog.setCancelable(false)
+//                                        warningMessage(message = responseMessage1.toString())
+//                                        Log.e("message",responseMessage1.toString())
+                        //  pDialog!!.dismiss()
+                    }
+                },
+                Response.ErrorListener { pDialog!!.dismiss() })
+            JsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+                10000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
+            try {
+                queue.add(JsonObjectRequest)
+            } catch (e: Exception) {
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+            }
+        } else {
+            val dialog = this?.let { Dialog(it) }
+            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog?.setContentView(com.example.myapplication.R.layout.dailog_log)
+            val btDismiss =
+                dialog?.findViewById<Button>(com.example.myapplication.R.id.btDismissCustomDialog)
+            btDismiss?.setOnClickListener {
+                dialog.dismiss()
+                val intent = Intent(this, MainActivity2::class.java)
+                this?.startActivity(intent)
+                finish()
+
+            }
+            dialog?.show()
         }
     }
 
