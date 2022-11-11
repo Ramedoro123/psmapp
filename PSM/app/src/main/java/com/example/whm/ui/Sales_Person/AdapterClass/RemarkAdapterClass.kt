@@ -45,7 +45,6 @@ class RemarkAdapterClass(private val OrderItemListData: ArrayList<remarks>,var L
 //            holder.view17.visibility=View.GONE
         }
     }
-
     override fun getItemCount(): Int {
         return OrderItemListData.size
     }
