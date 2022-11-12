@@ -760,22 +760,39 @@ class GalleryFragment : Fragment() {
                 before: Int,
                 count: Int
             ) {
-                BindProductList()
+                if (autotextView!!.text.toString()!="" &&autotextView!!.text.toString()!=null) {
+                    BindProductList()
+                }
+                else if (autotextView!!.text.toString().isEmpty())
+                {
+                    var product="0"
+                    var total=autotextView!!.text.toString()+product
+                    Log.e("onTextChanged",sproductid.toString())
+                      sproductid=total
+                }
             }
 
             override fun afterTextChanged(s: Editable) {
-               // BindProductList()
+                if (autotextView!!.text.toString()!="")
+                {
+                    var product="0"
+                    var total=autotextView!!.text.toString()
+                    sproductid=total
+                    Log.e("afterTextChanged",sproductid.toString())
+                    BindProductList()
+                }
             }
         })
 
         btnpoqty.setOnClickListener(View.OnClickListener {
             if (AppPreferences.internetConnectionCheck(this.context)) {
                 var productname = autotextView!!.text.toString()
-                if (productname == "" || sproductid?.toIntOrNull()?.let{it}==null ||sproductid=="") {
+                if (productname==""|| sproductid?.toIntOrNull()?.let{it}==null ||sproductid=="") {
                     Select_product()
                 }
                 else {
                     sproductid?.let { it1 -> manualbindproductdetails(it1) }
+                    sproductid=""
                     dialog?.dismiss()
                 }
             }
@@ -1037,8 +1054,9 @@ class GalleryFragment : Fragment() {
                     )
                 )
             )
-            Log.e("EmpAutoId",EmpAutoId.toString())
+
             JSONObj.put("cObj", Jsonarraplist.put("search", autotextView!!.text))
+            Log.e("JSONObj",JSONObj.toString())
             val BINDPRODUCTLISTm = JsonObjectRequest(
                 Request.Method.POST, AppPreferences.BIND_PRODUCT_IDNAME_BY_SEARCH, JSONObj,
                 { response ->
@@ -1070,8 +1088,9 @@ class GalleryFragment : Fragment() {
                         autotextView?.onItemClickListener =
                             AdapterView.OnItemClickListener { _, _, j, _ ->
                                 sproductid = productArrayId[j].toString()
-
                             }
+
+
                     }
 //                    else{
 //                        var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
@@ -1135,7 +1154,7 @@ class GalleryFragment : Fragment() {
         var accessToken = preferences.getString("accessToken", "")
         JSONObj.put("requestContainer", Jsonarra.put("accessToken", accessToken))
         JSONObj.put("pObj", details.put("productId", sproductid))
-        Log.e("accessToken",accessToken.toString())
+        Log.e("accessToken tokan12313",JSONObj.toString())
         val reqPRODUCTDETAILS = JsonObjectRequest(
             Request.Method.POST, AppPreferences.PRODUCT_MANAUL_DETAILS, JSONObj,
             Response.Listener { response ->
@@ -1276,11 +1295,18 @@ class GalleryFragment : Fragment() {
                             dilog.getWindow()!!.setAttributes(lp);
                         })
 
-                        Glide.with(this)
-                            .load(imagesurl)
-                            .into(imagur)
+                        if (imagesurl!=""&&imagesurl!=null) {
+                            Picasso.get().load(imagesurl).error(com.example.myapplication.R.drawable.default_pic)
+                                .into(imagur);
+                        }
+                        else{
+                            imagur.setImageResource(com.example.myapplication.R.drawable.default_pic)
+                        }
+
+
                         pDialog.dismiss()
-                    }else{
+                    }
+                    else{
                         var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
                         popUp.setContentText(presponsmsg)
                         popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
