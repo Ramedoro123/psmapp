@@ -1169,7 +1169,7 @@ class GalleryFragment : Fragment() {
                    // Toast.makeText(context, presponsmsg, Toast.LENGTH_SHORT).show()
                     menu?.isVisible = true
                     val jsondata = resultobj.getString("responseData")
-                    if (jsondata!=null &&jsondata!="") {
+                    if (jsondata!=null &&jsondata!=""&&jsondata!="null") {
                         val jsonrepd = JSONObject(jsondata.toString())
                         val ProductId = jsonrepd.getString("PId")
                         val pname = jsonrepd.getString("PName")
@@ -1307,18 +1307,23 @@ class GalleryFragment : Fragment() {
                         pDialog.dismiss()
                     }
                     else{
+                        showproductdetails?.visibility = View.GONE
                         var popUp = SweetAlertDialog(this.context, SweetAlertDialog.WARNING_TYPE)
                         popUp.setContentText(presponsmsg)
                         popUp.cancelButtonBackgroundColor = Color.parseColor("#DC3545")
                         popUp.setConfirmClickListener()
                         { sDialog ->
                             sDialog.dismissWithAnimation()
+                            showproductdetails?.visibility = View.GONE
                             popUp.dismiss()
+                            pDialog.dismiss()
                         }
                         popUp.show()
+                        popUp.setCancelable(false)
                         popUp.setCanceledOnTouchOutside(false)
                     }
-                    } else {
+                    }
+                   else {
                     showproductdetails?.visibility = View.GONE
                     pDialog.dismiss()
                     val dialog = SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)

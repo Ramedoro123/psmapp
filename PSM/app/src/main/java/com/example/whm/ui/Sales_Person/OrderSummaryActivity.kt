@@ -629,10 +629,7 @@ class OrderSummaryActivity : AppCompatActivity() {
             sendRequestObject.put(
                 "requestContainer", requestContainer.put(
                     "deviceID",
-                    Settings.Secure.getString(
-                        this!!.contentResolver,
-                        Settings.Secure.ANDROID_ID
-                    )
+                    Settings.Secure.getString(this!!.contentResolver, Settings.Secure.ANDROID_ID)
                 )
             )
             sendRequestObject.put(
@@ -656,6 +653,7 @@ class OrderSummaryActivity : AppCompatActivity() {
             }
 
             Log.e("sendRequestObject order summery", sendRequestObject.toString())
+            Log.e("AppPreferences.AppVersion", AppPreferences.AppVersion)
 
             //send request queue in vally
             val queue = Volley.newRequestQueue(this)
@@ -688,23 +686,33 @@ class OrderSummaryActivity : AppCompatActivity() {
                             var adjcments=adjcment!!.toFloat()
                             var MLTaxValue=MLTax!!.toFloat()
                             var WeightTaxs=WeightTax!!.toFloat()
-                        if(MLQty!=null &&MLQty!="0" &&WeightQty!=null &&WeightQty!="0"
-                            &&WeightQty!=""&&MLQty!="" &&MLTax!="0"&&MLTax!=""&&MLTax!=null&&WeightTax!=""&&WeightTax!="0"&&WeightTax!=null){
+                        if(MLQty!=null &&MLQty!="0"&&MLQty!="" &&MLTax!="0"&&MLTax!=""&&MLTax!=null){
                              Log.e("MLQty",MLQty)
                             var MLQtys=MLQty.toFloat()
                             var MLTaxValue=MLTax!!.toFloat()
-                            var WeightQtys=WeightQty.toFloat()
-                            var WeightTaxs=WeightTax!!.toFloat()
                             mlTaxLevel.visibility=View.VISIBLE
-                            weightTaxLevel.visibility=View.VISIBLE
-                            weightTax.visibility=View.VISIBLE
                             mlTax.visibility=View.VISIBLE
                             mlTaxLevel.setText("ML Tax (QTY : %.2f".format(MLQtys.toDouble()) + ")")
+                            mlTax.setText("$ %.2f".format(MLTaxValue.toDouble()))
+                        }else{
+                            mlTaxLevel.visibility=View.GONE
+                            mlTax.visibility=View.GONE
+                        }
+                        if (WeightQty!=null &&WeightQty!="0" &&WeightQty!=""&&WeightTax!=""&&WeightTax!="0"&&WeightTax!=null)
+                        {
+                            var WeightQtys=WeightQty.toFloat()
+                            var WeightTaxs=WeightTax!!.toFloat()
+                            weightTaxLevel.visibility=View.VISIBLE
+                            weightTax.visibility=View.VISIBLE
                             weightTaxLevel.setText("Weight Tax (QTY : %.2f".format(WeightQtys.toDouble()) + ")")
 
                             weightTax.setText("$ %.2f".format(WeightTaxs.toDouble()))
-                            mlTax.setText("$ %.2f".format(MLTaxValue.toDouble()))
-                        }else if (Tax!="0"&&Tax!=""&&Tax!=null)
+                        }
+                        else{
+                            weightTaxLevel.visibility=View.GONE
+                            weightTax.visibility=View.GONE
+                        }
+                       if (Tax!="0"&&Tax!=""&&Tax!=null)
                         {
                             var totalTaxs=Tax!!.toFloat()
                             totalTax.visibility=View.VISIBLE
@@ -712,10 +720,6 @@ class OrderSummaryActivity : AppCompatActivity() {
                             totalTax.setText("%.2f".format(totalTaxs.toDouble()))
                         }
                         else{
-                            mlTaxLevel.visibility=View.GONE
-                            weightTaxLevel.visibility=View.GONE
-                            weightTax.visibility=View.GONE
-                            mlTax.visibility=View.GONE
                             totalTax.visibility=View.GONE
                             textView8.visibility=View.GONE
                         }

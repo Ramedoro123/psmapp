@@ -9,9 +9,11 @@ import android.os.Build
 import android.os.Build.DEVICE
 import android.view.Window
 import android.widget.Button
-import androidx.viewbinding.BuildConfig
+import com.example.myapplication.BuildConfig
+
 object AppPreferences {
-    const  val AppVersion=com.example.myapplication.BuildConfig.VERSION_NAME
+//    const  val AppVersion=com.example.myapplication.BuildConfig.VERSION_NAME
+    const  val AppVersion= BuildConfig.VERSION_NAME
     const val BASEURL = "http://api1.a1whm.com/AndroidAPI/"  // This is Test Api's
     const val apiurl = "http://api1.a1whm.com/Packerapi/"    // This is Test Api's
     const val PackerUrl= "http://api1.a1whm.com/PackerApi/"  // This is Test Api's
